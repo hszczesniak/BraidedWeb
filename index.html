@@ -69,6 +69,13 @@
             right: 0;
         }
 
+        /* Mobile-specific adjustment for bottom-right buttons */
+        @media (max-width: 768px) {
+            .bottom-right {
+                bottom: 170px; /* Move up to stay above keyboard */
+            }
+        }
+
         .bottom-left {
             position: fixed;
             bottom: 0;
@@ -268,7 +275,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 28px;
             cursor: pointer;
             position: absolute;
             top: 50%;
@@ -641,6 +648,18 @@
             text-align: center;
         }
 
+        /* Mobile-specific modal width */
+        @media (max-width: 768px) {
+            .modal-content {
+                max-width: calc(100vw - 40px);
+                margin: 0 20px;
+            }
+
+            .rules-content {
+                max-width: calc(100vw - 40px) !important;
+            }
+        }
+
         .rules-content {
             max-width: 600px;
             max-height: 80vh;
@@ -836,6 +855,10 @@
 <body>
     <div class="game-container">
         <div class="header-buttons">
+            <div class="button-group top-left">
+                <button class="icon-button" id="zoomInButton">+</button>
+                <button class="icon-button" id="zoomOutButton">−</button>
+            </div>
             <div class="button-group top-right">
                 <button class="icon-button" id="themeButton">🎨</button>
                 <button class="icon-button" id="infoButton">ℹ️</button>
@@ -844,10 +867,6 @@
                 <button class="icon-button" id="clearButton">🗑️</button>
                 <button class="icon-button" id="hintButton">💡</button>
                 <button class="icon-button" id="spellCheckButton">📖</button>
-            </div>
-            <div class="button-group bottom-left">
-                <button class="icon-button" id="zoomOutButton">−</button>
-                <button class="icon-button" id="zoomInButton">+</button>
             </div>
         </div>
 
@@ -1186,6 +1205,25 @@
             });
         }
 
+        function resetZoomAndScroll() {
+            const gameBoard = document.getElementById('gameBoard');
+            const scrollContainer = document.getElementById('scrollContainer');
+            const wrapper = document.querySelector('.game-board-wrapper');
+            
+            // Reset zoom to 1x
+            gameState.scale = 1;
+            gameState.lastScale = 1;
+            gameBoard.style.transform = 'scale(1)';
+            wrapper.style.setProperty('--zoom-scale', '1');
+            
+            // Center scroll after layout updates
+            requestAnimationFrame(() => {
+                const scrollHeight = scrollContainer.scrollHeight;
+                const containerHeight = scrollContainer.clientHeight;
+                scrollContainer.scrollTop = (scrollHeight - containerHeight) / 2;
+            });
+        }
+
         function checkWin() {
             saveProgress();
             
@@ -1211,6 +1249,10 @@
                     const elapsedTime = (new Date() - gameState.startTime) / 1000;
                     localStorage.setItem(`level_${level.id}_completed`, 'true');
                     gameState.selectedCircleIndex = null;
+                    
+                    // Reset zoom and center scroll BEFORE animation
+                    resetZoomAndScroll();
+                    
                     renderGameBoard(); // Immediately remove selection highlight
                     gameState.isPlayingWinAnimation = true;
                     gameState.gameCompleted = true;
@@ -1235,7 +1277,7 @@
             
             // Hide controls
             setTimeout(() => {
-                document.querySelectorAll('.top-right, .bottom-right, .bottom-left').forEach(el => {
+                document.querySelectorAll('.top-left, .top-right, .bottom-right').forEach(el => {
                     el.style.opacity = '0';
                 });
             }, 500);
@@ -1458,8 +1500,8 @@
             // Hide bottom-right buttons (clear, hint, spell check)
             document.querySelector('.bottom-right').style.display = 'none';
             
-            // Hide bottom-left buttons (zoom)
-            document.querySelector('.bottom-left').style.display = 'none';
+            // Hide top-left buttons (zoom)
+            document.querySelector('.top-left').style.display = 'none';
             
             // Show top-right buttons with opacity transition
             document.querySelector('.top-right').style.opacity = '1';
@@ -1996,7 +2038,6 @@
 
         // Pinch zoom support
         let initialDistance = 0;
-        const gameBoard = document.getElementById('gameBoard');
 
         document.addEventListener('touchstart', (e) => {
             if (e.touches.length === 2) {
@@ -2016,6 +2057,7 @@
                 
                 const scale = (currentDistance / initialDistance) * gameState.lastScale;
                 gameState.scale = Math.min(Math.max(scale, 0.5), 2.0);
+                const gameBoard = document.getElementById('gameBoard');
                 gameBoard.style.transform = `scale(${gameState.scale})`;
                 
                 // Update CSS variable for padding
@@ -2071,8 +2113,8 @@
                 // Hide bottom-right buttons (clear, hint, spell check)
                 document.querySelector('.bottom-right').style.display = 'none';
                 
-                // Hide bottom-left buttons (zoom)
-                document.querySelector('.bottom-left').style.display = 'none';
+                // Hide top-left buttons (zoom)
+                document.querySelector('.top-left').style.display = 'none';
                 
                 // Add "See Results" button if it doesn't exist
                 if (!document.getElementById('seeResultsButton')) {
