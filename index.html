@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Bradley Hand', cursive, sans-serif;
+            background: linear-gradient(135deg, rgba(209, 89, 161, 0.2), rgba(209, 89, 161, 0.35));
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body.simple-theme {
+            font-family: 'Helvetica', Arial, sans-serif;
+        }
+
+        .game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header-buttons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .header-buttons > * {
+            pointer-events: auto;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .top-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .top-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .bottom-right {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+        }
+
+        .bottom-left {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        .icon-button {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .icon-button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        .icon-button.active {
+            color: rgb(209, 89, 161);
+        }
+
+        #spellCheckButton.active {
+            background: rgb(209, 89, 161);
+            color: white;
+        }
+
+        .scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: block;
+            padding: 20px;
+            position: relative;
+        }
+
+        .scroll-container.no-scroll {
+            overflow: hidden;
+        }
+
+        /* Custom scrollbar styling - Chrome/Edge */
+        .scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: rgba(209, 89, 161, 0.3);
+            border-radius: 4px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(209, 89, 161, 0.5);
+        }
+
+        /* Firefox scrollbar */
+        .scroll-container {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(209, 89, 161, 0.3) transparent;
+        }
+
+        /* Game board wrapper - only center horizontally, allow full vertical scroll */
+        .game-board-wrapper {
+            min-height: 100%;
+            display: flex;
+            justify-content: center;
+            /* Padding scales non-linearly with zoom: 
+               at 1x = 5vh, at 1.5x = 17.5vh, at 2x = 40vh 
+               Formula: 5vh + (scale-1) * 35vh */
+            padding: calc(5vh + (var(--zoom-scale, 1) - 1) * 35vh) 0;
+        }
+
+        .game-board {
+            transform-origin: center center;
+            transition: transform 0.3s ease;
+            padding: 10px;
+            align-self: center;
+        }
+
+        .letter-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: -10px;
+            position: relative;
+        }
+
+        .left-subword {
+            width: 150px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-right: -10px;
+            z-index: 10;
+        }
+
+        body:not(.simple-theme) .left-subword {
+            margin-top: -45px;
+        }
+
+        .right-subword {
+            width: 150px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-left: -10px;
+            z-index: 1;
+        }
+
+        body:not(.simple-theme) .right-subword {
+            margin-top: -10px;
+        }
+
+        .subword-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.4s ease;
+        }
+
+        .subword-container.glowing {
+            transform: scale(1.15);
+        }
+
+        .spell-check-dot {
+            width: 7px;
+            height: 7px;
+            background: rgb(185, 54, 54);
+            border-radius: 50%;
+            margin: 5px;
+        }
+
+        .subword-letter {
+            font-size: 24px;
+            width: 45px;
+            text-align: center;
+            transition: transform 0.6s ease-in-out, color 0.6s ease-in-out;
+        }
+
+        .subword-letter.glowing {
+            transform: scale(1.15);
+        }
+
+        .simple-theme .subword-container {
+            margin-top: -20px;
+        }
+
+        .simple-theme .left-subword .subword-letter {
+            margin-right: 10px;
+        }
+
+        .simple-theme .right-subword .subword-container {
+            margin-top: 20px;
+            margin-left: 10px;
+        }
+
+        .main-circle-container {
+            position: relative;
+            width: 120px;
+            height: 80px;
+        }
+
+        .main-circle-container.selected::before {
+            content: '';
+            position: absolute;
+            width: 57px;
+            height: 57px;
+            border-radius: 50%;
+            background: rgba(209, 89, 161, 0.3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1000;
+        }
+
+        body:not(.simple-theme) .main-circle-container.selected::before {
+            width: 55px;
+            height: 55px;
+        }
+
+        .main-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid #333;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 102;
+            transition: all 0.3s ease;
+        }
+
+        .main-circle:hover {
+            opacity: 0.8;
+        }
+
+        .simple-theme .main-circle {
+            background: transparent;
+            font-size: 28px;
+        }
+
+        .simple-theme .main-circle.first-last {
+            border: none;
+            background: transparent;
+        }
+
+        .main-circle.selected {
+            background: transparent !important;
+        }
+
+        .simple-theme .main-circle.selected {
+            background: transparent !important;
+        }
+
+        .main-circle.hint {
+            color: rgb(209, 89, 161);
+        }
+
+        .main-circle.glowing {
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+
+        .main-circle.subword-glow {
+            transform: translate(-50%, -50%) scale(1.15);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .simple-theme .main-circle.subword-glow {
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+        }
+
+        .main-circle.win-glow {
+            color: rgb(209, 89, 161);
+            transform: translate(-50%, -50%) scale(1.15);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .simple-theme .main-circle.win-glow {
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+        }
+
+        body:not(.simple-theme) .main-circle {
+            border: none;
+        }
+
+        .simple-theme .main-circle {
+            border: 4px solid #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .simple-theme .main-circle {
+                border-color: white;
+            }
+        }
+
+        .circle-background {
+            position: absolute;
+            width: 120px;
+            height: 137px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            pointer-events: none;
+        }
+
+        .circle-image {
+            position: absolute;
+            width: 120px;
+            height: 137px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .subword-line {
+            position: absolute;
+            z-index: 101;
+        }
+
+        /* Simple theme subword lines */
+        .simple-theme .subword-entering {
+            width: 30px;
+            height: 4px;
+            border-radius: 2px;
+            left: 3px;
+            top: 32px;
+            transform: rotate(10deg);
+        }
+
+        .simple-theme .subword-continuing {
+            width: 4px;
+            height: 18px;
+            top: 67px;
+        }
+
+        .simple-theme .subword-continuing.left {
+            left: calc(50% - 15px);
+        }
+
+        .simple-theme .subword-continuing.right {
+            left: calc(50% + 11px);
+        }
+
+        .simple-theme .subword-exiting {
+            width: 30px;
+            height: 4px;
+            border-radius: 2px;
+            left: calc(50% + 28px);
+            top: 112px;
+            transform: rotate(10deg);
+        }
+
+        .keyboard {
+            padding: 20px;
+            background: transparent;
+        }
+
+        .keyboard.hidden {
+            display: none;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .key {
+            width: 30px;
+            height: 40px;
+            border: none;
+            background: rgba(209, 89, 161, 0.2);
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Bradley Hand', cursive, sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .simple-theme .key {
+            font-family: 'Helvetica', Arial, sans-serif;
+        }
+
+        .key:hover {
+            background: rgba(209, 89, 161, 0.4);
+            transform: scale(1.05);
+        }
+
+        .key:active {
+            transform: scale(0.95);
+        }
+
+        .key.delete {
+            background: rgba(185, 54, 54, 0.2);
+            font-family: 'Helvetica', Arial, sans-serif;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        /* Win Page Styles */
+        .win-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: 40px 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .win-page.show {
+            display: flex;
+        }
+
+        .win-content {
+            max-width: 500px;
+            margin: auto;
+            text-align: center;
+            background: linear-gradient(135deg, rgb(91, 104, 176), rgb(142, 50, 147));
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .win-close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+
+        .win-close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .win-date {
+            font-size: 32px;
+            color: rgb(64, 180, 217);
+            text-shadow: 1px 3px 0 rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .win-message {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+        }
+
+        .win-message h2 {
+            font-size: 28px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .win-word {
+            font-size: 42px;
+            color: rgb(64, 180, 217);
+            text-shadow: 1px 3px 0 rgba(0, 0, 0, 0.3);
+            margin: 15px 0;
+        }
+
+        .win-hints {
+            font-size: 24px;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .win-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .win-button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Bradley Hand', cursive, sans-serif;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .win-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .win-button.share {
+            background: rgb(209, 89, 161);
+            color: white;
+        }
+
+        .win-button.admire {
+            background: rgb(64, 180, 217);
+            color: white;
+        }
+
+        .win-app-promo {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px 20px;
+            margin-bottom: 20px;
+        }
+
+        .win-app-promo h3 {
+            font-size: 26px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .win-app-promo p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+        }
+
+        .win-app-link {
+            display: inline-block;
+            background: white;
+            color: rgb(142, 50, 147);
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .win-app-link:hover {
+            transform: scale(1.05);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .rules-content {
+            max-width: 600px;
+            max-height: 80vh;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rules-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rules-header h2 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 36px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .close-button:hover {
+            color: #333;
+        }
+
+        .rules-scroll {
+            overflow-y: auto;
+            padding: 20px 30px 30px;
+            text-align: left;
+        }
+
+        .rules-section {
+            margin-bottom: 20px;
+        }
+
+        .rules-section p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .rules-image {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            margin: 15px auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .modal-button.primary {
+            background: rgb(209, 89, 161);
+            color: white;
+        }
+
+        .modal-button.secondary {
+            background: #ddd;
+        }
+
+        .modal-button:hover {
+            transform: scale(1.05);
+        }
+
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1500;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+        }
+
+        .confetti-piece img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, rgb(57, 28, 47), rgb(40, 20, 33));
+                color: white;
+            }
+
+            body.simple-theme {
+                background: linear-gradient(135deg, rgb(57, 28, 47), rgb(40, 20, 33));
+            }
+
+            .main-circle {
+                border-color: white;
+                color: white;
+            }
+
+            .icon-button {
+                background: rgba(50, 50, 50, 0.8);
+                color: white;
+            }
+
+            .keyboard {
+                background: transparent;
+            }
+
+            .key {
+                background: rgba(100, 100, 100, 0.3);
+                color: white;
+            }
+
+            .modal-content {
+                background: #333;
+                color: white;
+            }
+
+            .rules-header {
+                border-bottom-color: #555;
+            }
+
+            .close-button {
+                color: #aaa;
+            }
+
+            .close-button:hover {
+                color: #fff;
+            }
+        }
+
+        /* Color definitions - matching DesignConstants.swift */
+        .color-lightblue { color: rgb(64, 180, 217); }
+        .color-purple { color: rgb(142, 50, 147); }
+        .color-green { color: rgb(49, 147, 71); }
+        .color-blue { color: rgb(91, 104, 176); }
+        .color-pink { color: rgb(209, 89, 161); }
+        .color-dm-purple { color: rgb(213, 107, 255); }
+        .color-dm-blue { color: rgb(133, 145, 200); }
+        .color-red { color: rgb(185, 54, 54); }
+        .color-cyan { color: rgb(51, 187, 238); }
+        .color-teal { color: rgb(0, 153, 136); }
+        .color-magenta { color: rgb(238, 51, 119); }
+        .color-orange { color: rgb(238, 119, 51); }
+
+        .bg-lightblue { background: rgb(64, 180, 217); }
+        .bg-purple { background: rgb(142, 50, 147); }
+        .bg-green { background: rgb(49, 147, 71); }
+        .bg-blue { background: rgb(91, 104, 176); }
+        .bg-pink { background: rgb(209, 89, 161); }
+        .bg-dm-purple { background: rgb(213, 107, 255); }
+        .bg-dm-blue { background: rgb(133, 145, 200); }
+        .bg-red { background: rgb(185, 54, 54); }
+        .bg-cyan { background: rgb(51, 187, 238); }
+        .bg-teal { background: rgb(0, 153, 136); }
+        .bg-magenta { background: rgb(238, 51, 119); }
+        .bg-orange { background: rgb(238, 119, 51); }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header-buttons">
+            <div class="button-group top-right">
+                <button class="icon-button" id="themeButton">🎨</button>
+                <button class="icon-button" id="infoButton">ℹ️</button>
+            </div>
+            <div class="button-group bottom-right">
+                <button class="icon-button" id="clearButton">🗑️</button>
+                <button class="icon-button" id="hintButton">💡</button>
+                <button class="icon-button" id="spellCheckButton">📖</button>
+            </div>
+            <div class="button-group bottom-left">
+                <button class="icon-button" id="zoomOutButton">−</button>
+                <button class="icon-button" id="zoomInButton">+</button>
+            </div>
+        </div>
+
+        <div class="scroll-container" id="scrollContainer">
+            <div class="game-board-wrapper">
+                <div class="game-board" id="gameBoard"></div>
+            </div>
+        </div>
+
+        <div class="keyboard" id="keyboard">
+            <div class="keyboard-row" id="row1"></div>
+            <div class="keyboard-row" id="row2"></div>
+            <div class="keyboard-row" id="row3"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="clearModal">
+        <div class="modal-content">
+            <h2>Clear All?</h2>
+            <p>Are you sure you want to clear all your guessed letters?</p>
+            <div class="modal-buttons">
+                <button class="modal-button secondary" onclick="closeModal('clearModal')">Cancel</button>
+                <button class="modal-button primary" onclick="confirmClear()">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="hintModal">
+        <div class="modal-content">
+            <h2>Hint?</h2>
+            <p id="hintMessage">Are you sure you want to use a hint?</p>
+            <div class="modal-buttons">
+                <button class="modal-button secondary" onclick="closeModal('hintModal')">Cancel</button>
+                <button class="modal-button primary" onclick="confirmHint()">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="spellCheckModal">
+        <div class="modal-content">
+            <h2>Spell check?</h2>
+            <p>Clue words that are not valid English will be marked with a red dot.</p>
+            <div class="modal-buttons">
+                <button class="modal-button secondary" onclick="closeModal('spellCheckModal')">Cancel</button>
+                <button class="modal-button primary" onclick="confirmSpellCheck()">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="rulesModal">
+        <div class="modal-content rules-content">
+            <div class="rules-header">
+                <h2>How to Play</h2>
+                <button class="close-button" onclick="closeModal('rulesModal')">×</button>
+            </div>
+            <div class="rules-scroll">
+                <div class="rules-section">
+                    <p>The main word is displayed vertically with only the first and last letters visible. In this example, the main word is a 6 letter word starting with B and ending with S.</p>
+                    <img src="images/rules1.png" alt="Main word example" class="rules-image rules-img-1">
+                </div>
+                
+                <div class="rules-section">
+                    <p>Fill in the missing letters by tapping a circle and selecting a letter from the keyboard below or typing it.</p>
+                </div>
+                
+                <div class="rules-section">
+                    <p>Clue words start with a letter or two on the left, use some of the letters from the main word following the thread of their color, and end with a letter or two on the right. In this example, the first clue word is DRAW in light blue. It uses the RA from the main word.</p>
+                    <img src="images/rules2.png" alt="Clue word example" class="rules-image rules-img-2">
+                </div>
+                
+                <div class="rules-section">
+                    <p>Use the clue words to help you solve the main word!</p>
+                </div>
+                
+                <div class="rules-section">
+                    <p>If you need a hint, select the letter you want to be revealed, and then press the light bulb icon on the top right. This will reveal the correct letter in pink.</p>
+                    <img src="images/rules3.png" alt="Hint example" class="rules-image rules-img-3">
+                </div>
+                
+                <div class="rules-section">
+                    <p>You can also activate spell check mode by pressing the book icon just below the light bulb. This will mark any clue words that are not valid English words with a red dot. Remember, no dot means it is a real word, but not necessarily the correct word for this level.</p>
+                    <img src="images/rules5.png" alt="Spell check example" class="rules-image rules-img-5">
+                </div>
+                
+                <div class="rules-section">
+                    <p>You win when you solve the main word with all the correct clue words!</p>
+                    <img src="images/rules4.png" alt="Win example" class="rules-image rules-img-4">
+                </div>
+                
+                <div class="modal-buttons">
+                    <button class="modal-button primary" onclick="closeModal('rulesModal')">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Win Page -->
+    <div class="win-page" id="winPage" onclick="if(event.target === this) admirePuzzle()">
+        <div class="win-content">
+            <button class="win-close-button" onclick="admirePuzzle()">✕</button>
+            <div class="win-date" id="winDate"></div>
+            
+            <div class="win-message">
+                <h2>You solved</h2>
+                <div class="win-word" id="winWord"></div>
+                <div class="win-hints" id="winHints"></div>
+            </div>
+
+            <div class="win-buttons">
+                <button class="win-button share" onclick="shareResults()">SHARE</button>
+            </div>
+
+            <div class="win-app-promo">
+                <h3>Want more puzzles?</h3>
+                <p>Download the Braided app for 90 free campaign levels!</p>
+                <a href="https://apps.apple.com/us/app/braided/id6755253476" class="win-app-link" target="_blank">Download Now</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        const gameState = {
+            level: null,
+            guessedLetters: {},
+            hintedLetters: [],
+            selectedCircleIndex: null,
+            spellCheckEnabled: false,
+            startTime: new Date(),
+            backgroundTime: null,
+            subwordCompletionTimes: {},
+            completedSubwords: new Set(),
+            scale: 1,
+            lastScale: 1,
+            isPlayingWinAnimation: false,
+            showKeyboard: true,
+            theme: 'Default',
+            isSpeedingUpAnimation: false,
+            gameCompleted: false,
+            completionTime: null
+        };
+
+        // Sample level data - replace with your actual level
+        const level = {
+            id: '182',
+            word: 'COCONUT',
+            subwords: [
+                { word: "STOCKS", prefix: 'ST', startIndex: 1, endIndex: 2, suffix: 'KS' },
+                { word: "SCONE", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'E' },
+                { word: "DONUT", prefix: 'D', startIndex: 3, endIndex: 5, suffix: 'T' }
+            ]
+        };
+
+        // Color schemes
+        const colors = {
+            light: ['lightblue', 'purple', 'green', 'blue', 'lightblue', 'purple', 'green', 'blue', 'lightblue', 'purple', 'green', 'blue'],
+            dark: ['lightblue', 'dm-purple', 'green', 'dm-blue', 'lightblue', 'dm-purple', 'green', 'dm-blue', 'lightblue', 'dm-purple', 'green', 'dm-blue'],
+            simple: ['cyan', 'red', 'teal', 'magenta', 'orange', 'cyan', 'red', 'teal', 'magenta', 'orange']
+        };
+
+        const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
+
+        // Utility Functions
+        const dictionaryCache = {};
+        const subwordValidationCache = {};
+        
+        async function checkWordInDictionary(word) {
+            // Check cache first
+            if (word in dictionaryCache) {
+                return dictionaryCache[word];
+            }
+
+            const wordLower = word.toLowerCase();
+
+            try {
+                const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordLower}`);
+                
+                if (response.ok) {
+                    dictionaryCache[word] = true;
+                    return true;
+                } else if (response.status === 404) {
+                    dictionaryCache[word] = false;
+                    return false;
+                } else {
+                    // For other errors, default to accepting the word
+                    dictionaryCache[word] = true;
+                    return true;
+                }
+            } catch (error) {
+                // Network errors default to accepting the word
+                dictionaryCache[word] = true;
+                return true;
+            }
+        }
+        
+        function getSubwordText(subword) {
+            let word = subword.prefix;
+            for (let i = subword.startIndex; i <= subword.endIndex; i++) {
+                const letter = gameState.guessedLetters[i];
+                if (!letter) return null;
+                word += letter;
+            }
+            word += subword.suffix;
+            return word;
+        }
+        
+        async function validateAllSubwords() {
+            if (!gameState.spellCheckEnabled) {
+                // Clear cache when spell check is disabled
+                Object.keys(subwordValidationCache).forEach(key => {
+                    delete subwordValidationCache[key];
+                });
+                renderGameBoard(); // Immediately re-render to clear dots
+                return;
+            }
+            
+            for (const [subIdx, subword] of level.subwords.entries()) {
+                const word = getSubwordText(subword);
+                const fullWord = subword.word;
+                
+                // If word doesn't have all letters filled in, mark as invalid
+                if (!word || word.length < fullWord.length) {
+                    subwordValidationCache[subIdx] = false;
+                } else if (word.length >= 3) {
+                    // Word is complete, check if it's valid
+                    const isValid = await checkWordInDictionary(word);
+                    subwordValidationCache[subIdx] = isValid;
+                } else {
+                    // Complete but too short to validate
+                    delete subwordValidationCache[subIdx];
+                }
+            }
+            renderGameBoard();
+        }
+
+        function isDarkMode() {
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+
+        function getColorScheme() {
+            if (gameState.theme === 'Simple') return colors.simple;
+            return isDarkMode() ? colors.dark : colors.light;
+        }
+
+        function saveProgress() {
+            const key = `level_${level.id}_progress`;
+            const hintKey = `level_${level.id}_hints`;
+            const prevTimeKey = `level_${level.id}_prev_time`;
+            const subwordTimesKey = `level_${level.id}_subword_times`;
+            const completedSubwordsKey = `level_${level.id}_completed_subwords`;
+            const completionTimeKey = `level_${level.id}_completion_time`;
+
+            const userInputs = Array.from({ length: level.word.length }, (_, i) => 
+                gameState.guessedLetters[i] || ''
+            );
+
+            const currentSessionTime = (new Date() - gameState.startTime) / 1000;
+
+            localStorage.setItem(prevTimeKey, currentSessionTime.toString());
+            localStorage.setItem(key, JSON.stringify(userInputs));
+            localStorage.setItem(hintKey, JSON.stringify(gameState.hintedLetters));
+            
+            const subwordIndices = Object.keys(gameState.subwordCompletionTimes);
+            const subwordTimes = Object.values(gameState.subwordCompletionTimes);
+            localStorage.setItem(`${subwordTimesKey}_indices`, JSON.stringify(subwordIndices));
+            localStorage.setItem(`${subwordTimesKey}_values`, JSON.stringify(subwordTimes));
+            localStorage.setItem(completedSubwordsKey, JSON.stringify([...gameState.completedSubwords]));
+            
+            // Save completion time if puzzle is completed
+            if (gameState.completionTime !== null) {
+                localStorage.setItem(completionTimeKey, gameState.completionTime.toString());
+            }
+        }
+
+        function loadProgress() {
+            const key = `level_${level.id}_progress`;
+            const hintKey = `level_${level.id}_hints`;
+            const prevTimeKey = `level_${level.id}_prev_time`;
+            const subwordTimesKey = `level_${level.id}_subword_times`;
+            const completedSubwordsKey = `level_${level.id}_completed_subwords`;
+            const completionTimeKey = `level_${level.id}_completion_time`;
+
+            const savedInputs = JSON.parse(localStorage.getItem(key) || '[]');
+            savedInputs.forEach((input, index) => {
+                if (input) gameState.guessedLetters[index] = input;
+            });
+
+            const savedHints = JSON.parse(localStorage.getItem(hintKey) || '[]');
+            gameState.hintedLetters = savedHints;
+
+            const previousTime = parseFloat(localStorage.getItem(prevTimeKey) || '0');
+            gameState.startTime = new Date(Date.now() - previousTime * 1000);
+
+            const savedIndices = JSON.parse(localStorage.getItem(`${subwordTimesKey}_indices`) || '[]');
+            const savedTimes = JSON.parse(localStorage.getItem(`${subwordTimesKey}_values`) || '[]');
+            savedIndices.forEach((idx, i) => {
+                gameState.subwordCompletionTimes[idx] = savedTimes[i];
+            });
+
+            const savedCompleted = JSON.parse(localStorage.getItem(completedSubwordsKey) || '[]');
+            gameState.completedSubwords = new Set(savedCompleted);
+
+            const savedTheme = localStorage.getItem('theme') || 'Default';
+            gameState.theme = savedTheme;
+            if (savedTheme === 'Simple') {
+                document.body.classList.add('simple-theme');
+            }
+            
+            // Load completion time if puzzle was completed
+            const savedCompletionTime = localStorage.getItem(completionTimeKey);
+            if (savedCompletionTime) {
+                gameState.completionTime = parseFloat(savedCompletionTime);
+            }
+        }
+
+        function checkForNewlyCompletedSubwords() {
+            const currentTime = (new Date() - gameState.startTime) / 1000;
+
+            level.subwords.forEach((subword, subIdx) => {
+                if (gameState.completedSubwords.has(subIdx)) return;
+
+                let isComplete = true;
+                for (let i = subword.startIndex; i <= subword.endIndex; i++) {
+                    const guessed = gameState.guessedLetters[i];
+                    const correct = level.word[i];
+                    if (!guessed || guessed !== correct) {
+                        isComplete = false;
+                        break;
+                    }
+                }
+
+                if (isComplete) {
+                    gameState.completedSubwords.add(subIdx);
+                    gameState.subwordCompletionTimes[subIdx] = currentTime;
+                }
+            });
+        }
+
+        function checkWin() {
+            saveProgress();
+            
+            let allFilled = true;
+            for (let i = 1; i < level.word.length - 1; i++) {
+                if (!gameState.guessedLetters[i]) {
+                    allFilled = false;
+                    break;
+                }
+            }
+
+            if (allFilled) {
+                let isCorrect = true;
+                for (let i = 0; i < level.word.length; i++) {
+                    if (i === 0 || i === level.word.length - 1) continue;
+                    if (gameState.guessedLetters[i] !== level.word[i]) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+
+                if (isCorrect) {
+                    const elapsedTime = (new Date() - gameState.startTime) / 1000;
+                    localStorage.setItem(`level_${level.id}_completed`, 'true');
+                    gameState.selectedCircleIndex = null;
+                    renderGameBoard(); // Immediately remove selection highlight
+                    gameState.isPlayingWinAnimation = true;
+                    gameState.gameCompleted = true;
+                    gameState.completionTime = elapsedTime;
+                    saveProgress(); // Save the completion time
+                    playWinAnimation(elapsedTime);
+                }
+            }
+        }
+
+        function playWinAnimation(elapsedTime) {
+            // Hide keyboard
+            document.getElementById('keyboard').classList.add('hidden');
+            
+            // Remove any selection highlights from both containers and circles
+            document.querySelectorAll('.main-circle-container').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelectorAll('.main-circle').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Hide controls
+            setTimeout(() => {
+                document.querySelectorAll('.top-right, .bottom-right, .bottom-left').forEach(el => {
+                    el.style.opacity = '0';
+                });
+            }, 500);
+
+            // Show confetti
+            showConfetti();
+
+            let currentDelay = 1800;
+            const pulseDuration = 900;
+            const pauseBetween = 300;
+            const colorScheme = getColorScheme();
+
+            // Animate each subword in sequence
+            level.subwords.forEach((subword, subIdx) => {
+                const color = colorScheme[subIdx % colorScheme.length];
+                
+                setTimeout(() => {
+                    // Pulse the prefix and suffix letters
+                    document.querySelectorAll(`[data-subword-index="${subIdx}"] .subword-letter`).forEach(el => {
+                        el.classList.add('glowing');
+                    });
+                    
+                    // Pulse and color the main word letters in this subword
+                    for (let i = subword.startIndex; i <= subword.endIndex; i++) {
+                        const circle = document.querySelectorAll('.main-circle')[i];
+                        if (circle) {
+                            circle.classList.add('subword-glow');
+                            // Temporarily change color to subword color
+                            const colorClass = `color-${color}`;
+                            const colorElement = document.querySelector(`.${colorClass}`);
+                            if (colorElement) {
+                                const computedColor = window.getComputedStyle(colorElement).color;
+                                circle.style.color = computedColor;
+                            }
+                        }
+                    }
+                }, currentDelay);
+                
+                setTimeout(() => {
+                    // Remove pulse from prefix/suffix
+                    document.querySelectorAll(`[data-subword-index="${subIdx}"] .subword-letter`).forEach(el => {
+                        el.classList.remove('glowing');
+                    });
+                    
+                    // Remove pulse and color from main word letters
+                    for (let i = subword.startIndex; i <= subword.endIndex; i++) {
+                        const circle = document.querySelectorAll('.main-circle')[i];
+                        if (circle) {
+                            circle.classList.remove('subword-glow');
+                            circle.style.color = '';
+                        }
+                    }
+                }, currentDelay + pulseDuration);
+                
+                currentDelay += pulseDuration + pauseBetween;
+            });
+
+            // Glow entire main word in pink
+            setTimeout(() => {
+                document.querySelectorAll('.main-circle').forEach(el => {
+                    el.classList.add('win-glow');
+                });
+            }, currentDelay);
+            currentDelay += pulseDuration;
+
+            // Return to normal - remove pink glow and make white (except hints)
+            setTimeout(() => {
+                document.querySelectorAll('.main-circle').forEach((el, index) => {
+                    el.classList.remove('win-glow');
+                    // Keep hints pink, make others white
+                    if (!gameState.hintedLetters.includes(index)) {
+                        el.style.color = '';
+                    }
+                });
+            }, currentDelay);
+            currentDelay += 300;
+
+            // Hide confetti
+            setTimeout(() => {
+                document.querySelector('.confetti-container')?.remove();
+            }, currentDelay);
+
+            // Show win page
+            setTimeout(() => {
+                showWinPage(elapsedTime);
+                gameState.isPlayingWinAnimation = false;
+            }, currentDelay + 500);
+        }
+
+        function showConfetti() {
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            document.body.appendChild(container);
+
+            // Always use default theme colors for confetti (since we don't have simple theme confetti images)
+            const confettiColors = isDarkMode() ? colors.dark : colors.light;
+            const pieces = 110;
+
+            for (let i = 0; i < pieces; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.top = '-100px';
+                
+                const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                const randInt = Math.floor(Math.random() * 3) + 9; // 9, 10, or 11
+                const formattedNum = randInt.toString().padStart(2, '0'); // Format as 09, 10, 11
+                
+                // Create img element for confetti
+                const img = document.createElement('img');
+                img.src = `images/${color}-confetti-${formattedNum}.png`;
+                img.style.width = (30 + Math.random() * 20) + 'px';
+                piece.appendChild(img);
+
+                container.appendChild(piece);
+
+                const delay = Math.random() * 800;
+                const duration = 700 + Math.random() * 1300;
+                const drift = (Math.random() - 0.5) * 100;
+
+                setTimeout(() => {
+                    piece.style.transition = `all ${duration}ms ease-in`;
+                    piece.style.top = '100vh';
+                    piece.style.transform = `translateX(${drift}px) rotate(${Math.random() * 720}deg)`;
+                }, delay);
+            }
+        }
+
+        function showWinPage(elapsedTime) {
+            // Get current date
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            document.getElementById('winDate').textContent = dateString;
+            document.getElementById('winWord').textContent = level.word;
+            
+            const hintCount = gameState.hintedLetters.length;
+            const hintText = hintCount === 1 ? `with ${hintCount} hint!` : `with ${hintCount} hints!`;
+            document.getElementById('winHints').textContent = hintText;
+            
+            document.getElementById('winPage').classList.add('show');
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return mins > 0 ? `${mins}:${secs.toString().padStart(2, '0')}` : `${secs}s`;
+        }
+
+        function shareResults() {
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', { 
+                month: 'long', 
+                day: 'numeric',
+                year: 'numeric'
+            });
+            
+            let shareText = `✨Braided - ${dateString}✨\n`;
+            
+            // Main word with hints marked
+            let mainWord = level.word[0] + ' ';
+            for (let i = 1; i < level.word.length - 1; i++) {
+                if (gameState.hintedLetters.includes(i)) {
+                    if (mainWord.endsWith(' ')) {
+                        mainWord = mainWord.slice(0, -1);
+                    }
+                    mainWord += '💡';
+                } else {
+                    mainWord += '_ ';
+                }
+            }
+            mainWord += level.word[level.word.length - 1];
+            
+            const elapsedTime = gameState.completionTime || (new Date() - gameState.startTime) / 1000;
+            shareText += `🧵${mainWord} - ${formatTime(elapsedTime)}\n`;
+            
+            // Subwords: sorted by completion time
+            const subwordEntries = Object.entries(gameState.subwordCompletionTimes)
+                .map(([idx, time]) => ({ idx: parseInt(idx), time }))
+                .sort((a, b) => a.time - b.time);
+            
+            for (const { idx, time } of subwordEntries) {
+                const subword = level.subwords[idx];
+                let subwordText = subword.prefix + ' ';
+                
+                for (let i = subword.startIndex; i <= subword.endIndex; i++) {
+                    if (gameState.hintedLetters.includes(i)) {
+                        if (subwordText.endsWith(' ')) {
+                            subwordText = subwordText.slice(0, -1);
+                        }
+                        subwordText += '💡';
+                    } else {
+                        subwordText += '_ ';
+                    }
+                }
+                subwordText += subword.suffix;
+                shareText += `🪡${subwordText} - ${formatTime(time)}\n`;
+            }
+            
+            // Copy to clipboard or share
+            if (navigator.share) {
+                navigator.share({
+                    text: shareText
+                }).catch(err => console.log('Share failed:', err));
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Results copied to clipboard!');
+                });
+            }
+        }
+
+        function admirePuzzle() {
+            document.getElementById('winPage').classList.remove('show');
+            
+            // Hide bottom-right buttons (clear, hint, spell check)
+            document.querySelector('.bottom-right').style.display = 'none';
+            
+            // Hide bottom-left buttons (zoom)
+            document.querySelector('.bottom-left').style.display = 'none';
+            
+            // Show top-right buttons with opacity transition
+            document.querySelector('.top-right').style.opacity = '1';
+            
+            // Add a "See Results" button to the top-right if it doesn't exist
+            if (!document.getElementById('seeResultsButton')) {
+                const resultsButton = document.createElement('button');
+                resultsButton.id = 'seeResultsButton';
+                resultsButton.className = 'icon-button';
+                resultsButton.innerHTML = '📊';
+                resultsButton.title = 'See Results';
+                resultsButton.style.fontSize = '24px';
+                resultsButton.addEventListener('click', () => {
+                    showWinPageAgain();
+                });
+                document.querySelector('.top-right').appendChild(resultsButton);
+            }
+        }
+
+        function showWinPageAgain() {
+            // Populate the win page content
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            document.getElementById('winDate').textContent = dateString;
+            document.getElementById('winWord').textContent = level.word;
+            
+            const hintCount = gameState.hintedLetters.length;
+            const hintText = hintCount === 1 ? `with ${hintCount} hint!` : `with ${hintCount} hints!`;
+            document.getElementById('winHints').textContent = hintText;
+            
+            document.getElementById('winPage').classList.add('show');
+        }
+
+        // Modal Functions
+        function updateRulesImages() {
+            const isDark = isDarkMode();
+            const prefix = isDark ? 'dark_rules' : 'rules';
+            
+            document.querySelector('.rules-img-1').src = `images/${prefix}1.png`;
+            document.querySelector('.rules-img-2').src = `images/${prefix}2.png`;
+            document.querySelector('.rules-img-3').src = `images/${prefix}3.png`;
+            document.querySelector('.rules-img-4').src = `images/${prefix}4.png`;
+            document.querySelector('.rules-img-5').src = `images/${prefix}5.png`;
+        }
+
+        function showModal(id) {
+            document.getElementById(id).classList.add('show');
+            if (id === 'rulesModal') {
+                updateRulesImages();
+            }
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function confirmClear() {
+            for (let i = 1; i < level.word.length - 1; i++) {
+                if (!gameState.hintedLetters.includes(i)) {
+                    delete gameState.guessedLetters[i];
+                }
+            }
+            renderGameBoard();
+            saveProgress();
+            
+            // Re-validate after clearing (non-blocking)
+            validateAllSubwords();
+            
+            closeModal('clearModal');
+        }
+
+        function confirmHint() {
+            const targetIndex = findHintTargetIndex();
+            gameState.guessedLetters[targetIndex] = level.word[targetIndex];
+            gameState.hintedLetters.push(targetIndex);
+            
+            checkForNewlyCompletedSubwords();
+            checkWin();
+
+            let nextIndex = targetIndex + 1;
+            while (nextIndex < level.word.length - 1 && gameState.hintedLetters.includes(nextIndex)) {
+                nextIndex++;
+            }
+            gameState.selectedCircleIndex = nextIndex < level.word.length - 1 ? nextIndex : null;
+
+            renderGameBoard();
+            
+            // Re-validate after hint (non-blocking)
+            validateAllSubwords();
+            
+            closeModal('hintModal');
+        }
+
+        function confirmSpellCheck() {
+            gameState.spellCheckEnabled = true;
+            document.getElementById('spellCheckButton').classList.add('active');
+            validateAllSubwords();
+            closeModal('spellCheckModal');
+        }
+
+        function findHintTargetIndex() {
+            if (gameState.selectedCircleIndex !== null) {
+                return gameState.selectedCircleIndex;
+            }
+            for (let i = 1; i < level.word.length - 1; i++) {
+                if (!gameState.guessedLetters[i]) return i;
+            }
+            for (let i = 1; i < level.word.length - 1; i++) {
+                if (!gameState.hintedLetters.includes(i)) return i;
+            }
+            return 1;
+        }
+
+        // Render Functions
+        function calculateSubwordSides() {
+            const sides = {};
+            
+            level.subwords.forEach((subword, subIdx) => {
+                if (sides[subIdx] !== undefined) return;
+
+                const thisRange = { start: subword.startIndex, end: subword.endIndex };
+                const overlapping = [];
+
+                level.subwords.forEach((other, otherIdx) => {
+                    if (otherIdx === subIdx) return;
+                    const otherRange = { start: other.startIndex, end: other.endIndex };
+                    
+                    if (thisRange.start < otherRange.end && otherRange.start < thisRange.end) {
+                        overlapping.push(otherIdx);
+                    }
+                });
+
+                sides[subIdx] = 'left';
+                overlapping.forEach(idx => sides[idx] = 'right');
+            });
+
+            return sides;
+        }
+
+        function renderGameBoard() {
+            const board = document.getElementById('gameBoard');
+            board.innerHTML = '';
+
+            const subwordSides = calculateSubwordSides();
+            const colorScheme = getColorScheme();
+
+            level.word.split('').forEach((letter, index) => {
+                const row = document.createElement('div');
+                row.className = 'letter-row';
+
+                // Left subword
+                const leftSubword = document.createElement('div');
+                leftSubword.className = 'left-subword';
+                
+                level.subwords.forEach((subword, subIdx) => {
+                    if (subword.startIndex === index) {
+                        const container = document.createElement('div');
+                        container.className = 'subword-container';
+                        container.setAttribute('data-subword-index', subIdx);
+                        
+                        // Show red dot only if spell check is enabled AND word is marked as invalid
+                        if (gameState.spellCheckEnabled && subwordValidationCache[subIdx] === false) {
+                            const dot = document.createElement('div');
+                            dot.className = 'spell-check-dot';
+                            container.appendChild(dot);
+                        }
+
+                        const subwordLetter = document.createElement('div');
+                        subwordLetter.className = `subword-letter color-${colorScheme[subIdx % colorScheme.length]}`;
+                        subwordLetter.textContent = subword.prefix;
+                        container.appendChild(subwordLetter);
+
+                        leftSubword.appendChild(container);
+                    }
+                });
+                row.appendChild(leftSubword);
+
+                // Main circle
+                const circleContainer = document.createElement('div');
+                circleContainer.className = 'main-circle-container';
+                
+                // Add circle images for Default theme
+                if (gameState.theme === 'Default' && index !== 0 && index !== level.word.length - 1) {
+                    // Base blank circle
+                    const blankCircle = document.createElement('img');
+                    blankCircle.src = 'images/blank_circle.png';
+                    blankCircle.className = 'circle-image';
+                    circleContainer.appendChild(blankCircle);
+
+                    // Check for entering subword
+                    level.subwords.forEach((subword, subIdx) => {
+                        const color = colorScheme[subIdx % colorScheme.length];
+                        const side = subwordSides[subIdx];
+
+                        if (subword.startIndex === index) {
+                            const img = document.createElement('img');
+                            img.src = `images/${color}-${side === 'left' ? '02' : '08'}.png`;
+                            img.className = 'circle-image';
+                            circleContainer.appendChild(img);
+                        }
+                    });
+
+                    // Check for continuing subwords
+                    level.subwords.forEach((subword, subIdx) => {
+                        const color = colorScheme[subIdx % colorScheme.length];
+                        const side = subwordSides[subIdx];
+
+                        if (subword.startIndex <= index && subword.endIndex - 1 > index) {
+                            const img = document.createElement('img');
+                            img.src = `images/${color}-${side === 'left' ? '07' : '03'}.png`;
+                            img.className = 'circle-image';
+                            circleContainer.appendChild(img);
+                        }
+                    });
+
+                    // Check for exiting subword
+                    level.subwords.forEach((subword, subIdx) => {
+                        const color = colorScheme[subIdx % colorScheme.length];
+                        const side = subwordSides[subIdx];
+
+                        if (subword.endIndex - 1 === index) {
+                            const img = document.createElement('img');
+                            img.src = `images/${color}-${side === 'left' ? '06' : '05'}.png`;
+                            img.className = 'circle-image';
+                            circleContainer.appendChild(img);
+                        }
+                    });
+                }
+
+                const circle = document.createElement('div');
+                circle.className = 'main-circle';
+                
+                // Add first-last class for simple theme
+                if (gameState.theme === 'Simple' && (index === 0 || index === level.word.length - 1)) {
+                    circle.classList.add('first-last');
+                }
+                
+                if (gameState.selectedCircleIndex === index) {
+                    circle.classList.add('selected');
+                    circleContainer.classList.add('selected');
+                }
+                
+                if (gameState.hintedLetters.includes(index)) {
+                    circle.classList.add('hint');
+                }
+
+                // Add subword lines for simple theme
+                if (gameState.theme === 'Simple') {
+                    level.subwords.forEach((subword, subIdx) => {
+                        const color = colorScheme[subIdx % colorScheme.length];
+                        const side = subwordSides[subIdx];
+
+                        if (subword.startIndex === index) {
+                            const line = document.createElement('div');
+                            line.className = `subword-line subword-entering bg-${color}`;
+                            circleContainer.appendChild(line);
+                        }
+
+                        if (subword.startIndex <= index && subword.endIndex - 1 > index) {
+                            const line = document.createElement('div');
+                            line.className = `subword-line subword-continuing ${side} bg-${color}`;
+                            circleContainer.appendChild(line);
+                        }
+
+                        if (subword.endIndex - 1 === index) {
+                            const contLine = document.createElement('div');
+                            contLine.className = `subword-line subword-continuing ${side} bg-${color}`;
+                            circleContainer.appendChild(contLine);
+
+                            const exitLine = document.createElement('div');
+                            exitLine.className = `subword-line subword-exiting bg-${color}`;
+                            circleContainer.appendChild(exitLine);
+                        }
+                    });
+                }
+
+                if (index === 0 || index === level.word.length - 1) {
+                    circle.textContent = letter;
+                } else if (gameState.guessedLetters[index]) {
+                    circle.textContent = gameState.guessedLetters[index];
+                }
+
+                circle.addEventListener('click', () => {
+                    if (index !== 0 && index !== level.word.length - 1 && 
+                        !gameState.hintedLetters.includes(index) &&
+                        !localStorage.getItem(`level_${level.id}_completed`)) {
+                        gameState.selectedCircleIndex = index;
+                        renderGameBoard();
+                    }
+                });
+
+                circleContainer.appendChild(circle);
+                row.appendChild(circleContainer);
+
+                // Right subword
+                const rightSubword = document.createElement('div');
+                rightSubword.className = 'right-subword';
+                
+                level.subwords.forEach((subword, subIdx) => {
+                    if (subword.endIndex === index) {
+                        const container = document.createElement('div');
+                        container.className = 'subword-container';
+                        container.setAttribute('data-subword-index', subIdx);
+
+                        const subwordLetter = document.createElement('div');
+                        subwordLetter.className = `subword-letter color-${colorScheme[subIdx % colorScheme.length]}`;
+                        subwordLetter.textContent = subword.suffix;
+                        container.appendChild(subwordLetter);
+
+                        rightSubword.appendChild(container);
+                    }
+                });
+                row.appendChild(rightSubword);
+
+                board.appendChild(row);
+            });
+        }
+
+        function renderKeyboard() {
+            keyboardRows.forEach((rowLetters, rowIndex) => {
+                const row = document.getElementById(`row${rowIndex + 1}`);
+                row.innerHTML = '';
+
+                rowLetters.split('').forEach(letter => {
+                    const key = document.createElement('button');
+                    key.className = 'key';
+                    key.textContent = letter;
+                    key.addEventListener('click', () => handleLetterInput(letter));
+                    row.appendChild(key);
+                });
+
+                if (rowIndex === 2) {
+                    const deleteKey = document.createElement('button');
+                    deleteKey.className = 'key delete';
+                    deleteKey.textContent = '⌫';
+                    deleteKey.addEventListener('click', handleDelete);
+                    row.appendChild(deleteKey);
+                }
+            });
+        }
+
+        function handleLetterInput(letter) {
+            if (gameState.selectedCircleIndex === null) return;
+            
+            let index = gameState.selectedCircleIndex;
+            if (!gameState.hintedLetters.includes(index)) {
+                gameState.guessedLetters[index] = letter;
+                checkForNewlyCompletedSubwords();
+                checkWin();
+
+                // If game was won, stop here - don't update selection or re-render
+                if (gameState.gameCompleted) {
+                    return;
+                }
+
+                // Try to move to the next non-hint position
+                let nextIndex = index;
+                do {
+                    if (nextIndex >= level.word.length - 2) break;
+                    nextIndex++;
+                } while (gameState.hintedLetters.includes(nextIndex));
+                
+                // Only update selection if we found a valid non-hint position
+                // (not the last letter, and not a hint)
+                if (nextIndex < level.word.length - 1 && !gameState.hintedLetters.includes(nextIndex)) {
+                    gameState.selectedCircleIndex = nextIndex;
+                }
+                // Otherwise, keep selection on the current position
+
+                renderGameBoard();
+                
+                // Trigger spell check validation after input (non-blocking)
+                validateAllSubwords();
+            }
+        }
+
+        function handleDelete() {
+            if (gameState.selectedCircleIndex === null) return;
+
+            let index = gameState.selectedCircleIndex;
+            const deletingEmpty = !gameState.guessedLetters[index];
+
+            if (!gameState.hintedLetters.includes(index)) {
+                delete gameState.guessedLetters[index];
+            }
+
+            if (deletingEmpty) {
+                do {
+                    if (index <= 1) break;
+                    index--;
+                    gameState.selectedCircleIndex = index;
+                } while (gameState.hintedLetters.includes(index));
+            }
+
+            renderGameBoard();
+            
+            // Trigger spell check validation after delete (non-blocking)
+            validateAllSubwords();
+        }
+
+        // Event Listeners
+        document.getElementById('clearButton').addEventListener('click', () => {
+            showModal('clearModal');
+        });
+
+        document.getElementById('hintButton').addEventListener('click', () => {
+            const message = gameState.selectedCircleIndex !== null 
+                ? 'Are you sure you want to use a hint for the selected letter?'
+                : 'Are you sure you want to use a hint?';
+            document.getElementById('hintMessage').textContent = message;
+            showModal('hintModal');
+        });
+
+        document.getElementById('spellCheckButton').addEventListener('click', () => {
+            if (!gameState.spellCheckEnabled) {
+                showModal('spellCheckModal');
+            } else {
+                gameState.spellCheckEnabled = false;
+                document.getElementById('spellCheckButton').classList.remove('active');
+                // Clear validation cache and immediately re-render to remove dots
+                Object.keys(subwordValidationCache).forEach(key => {
+                    delete subwordValidationCache[key];
+                });
+                renderGameBoard();
+            }
+        });
+
+        document.getElementById('themeButton').addEventListener('click', () => {
+            if (!gameState.isPlayingWinAnimation) {
+                gameState.theme = gameState.theme === 'Default' ? 'Simple' : 'Default';
+                localStorage.setItem('theme', gameState.theme);
+                
+                if (gameState.theme === 'Simple') {
+                    document.body.classList.add('simple-theme');
+                } else {
+                    document.body.classList.remove('simple-theme');
+                }
+                
+                renderGameBoard();
+            }
+        });
+
+        // Zoom functions
+        function applyZoom(delta) {
+            if (gameState.isPlayingWinAnimation) return;
+            
+            const gameBoard = document.getElementById('gameBoard');
+            const scrollContainer = document.getElementById('scrollContainer');
+            const wrapper = document.querySelector('.game-board-wrapper');
+            
+            // Store current scroll position relative to center
+            const scrollBefore = scrollContainer.scrollTop;
+            const scrollHeightBefore = scrollContainer.scrollHeight;
+            const containerHeight = scrollContainer.clientHeight;
+            const centerBefore = scrollBefore + containerHeight / 2;
+            const centerRatio = centerBefore / scrollHeightBefore;
+            
+            // Update scale
+            gameState.scale = Math.min(Math.max(gameState.scale + delta, 0.5), 2.0);
+            gameState.lastScale = gameState.scale;
+            gameBoard.style.transform = `scale(${gameState.scale})`;
+            
+            // Update CSS variable for padding
+            wrapper.style.setProperty('--zoom-scale', gameState.scale);
+            
+            // After layout updates, restore centered scroll position
+            requestAnimationFrame(() => {
+                const scrollHeightAfter = scrollContainer.scrollHeight;
+                const newCenter = centerRatio * scrollHeightAfter;
+                scrollContainer.scrollTop = newCenter - containerHeight / 2;
+            });
+        }
+
+        document.getElementById('zoomInButton').addEventListener('click', () => {
+            applyZoom(0.15);
+        });
+
+        document.getElementById('zoomOutButton').addEventListener('click', () => {
+            applyZoom(-0.15);
+        });
+
+        document.getElementById('infoButton').addEventListener('click', () => {
+            if (!gameState.isPlayingWinAnimation) {
+                showModal('rulesModal');
+            }
+        });
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (gameState.isPlayingWinAnimation) return;
+            
+            if (e.key >= 'a' && e.key <= 'z') {
+                handleLetterInput(e.key.toUpperCase());
+            } else if (e.key === 'Backspace') {
+                handleDelete();
+            } else if (e.key === '+' || e.key === '=') {
+                e.preventDefault();
+                applyZoom(0.15);
+            } else if (e.key === '-' || e.key === '_') {
+                e.preventDefault();
+                applyZoom(-0.15);
+            }
+        });
+
+        // Mouse wheel zoom support
+        document.getElementById('scrollContainer').addEventListener('wheel', (e) => {
+            if (gameState.isPlayingWinAnimation) return;
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                applyZoom(delta);
+            }
+        }, { passive: false });
+
+        // Page visibility handling
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                gameState.backgroundTime = new Date();
+                saveProgress();
+            } else {
+                if (gameState.backgroundTime) {
+                    const duration = new Date() - gameState.backgroundTime;
+                    gameState.startTime = new Date(gameState.startTime.getTime() + duration);
+                    gameState.backgroundTime = null;
+                }
+            }
+        });
+
+        // Pinch zoom support
+        let initialDistance = 0;
+        const gameBoard = document.getElementById('gameBoard');
+
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                initialDistance = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+            }
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && !gameState.isPlayingWinAnimation) {
+                const currentDistance = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+                
+                const scale = (currentDistance / initialDistance) * gameState.lastScale;
+                gameState.scale = Math.min(Math.max(scale, 0.5), 2.0);
+                gameBoard.style.transform = `scale(${gameState.scale})`;
+                
+                // Update CSS variable for padding
+                const wrapper = document.querySelector('.game-board-wrapper');
+                wrapper.style.setProperty('--zoom-scale', gameState.scale);
+            }
+        });
+
+        document.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                gameState.lastScale = gameState.scale;
+            }
+        });
+
+        // Listen for dark mode changes to update rules modal images if open
+        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        darkModeQuery.addListener((e) => {
+            const rulesModal = document.getElementById('rulesModal');
+            if (rulesModal && rulesModal.classList.contains('show')) {
+                updateRulesImages();
+            }
+        });
+
+        // Initialize
+        function init() {
+            gameState.level = level;
+            loadProgress();
+            renderGameBoard();
+            renderKeyboard();
+
+            // Initialize zoom CSS variable and center scroll
+            const wrapper = document.querySelector('.game-board-wrapper');
+            const scrollContainer = document.getElementById('scrollContainer');
+            wrapper.style.setProperty('--zoom-scale', gameState.scale);
+            
+            // Center scroll after initial render
+            requestAnimationFrame(() => {
+                const scrollHeight = scrollContainer.scrollHeight;
+                const containerHeight = scrollContainer.clientHeight;
+                scrollContainer.scrollTop = (scrollHeight - containerHeight) / 2;
+            });
+
+            const completedKey = `level_${level.id}_completed`;
+            if (!localStorage.getItem(completedKey)) {
+                gameState.selectedCircleIndex = findHintTargetIndex();
+                renderGameBoard();
+            } else {
+                // Puzzle is completed
+                gameState.showKeyboard = false;
+                gameState.gameCompleted = true;
+                document.getElementById('keyboard').classList.add('hidden');
+                
+                // Hide bottom-right buttons (clear, hint, spell check)
+                document.querySelector('.bottom-right').style.display = 'none';
+                
+                // Hide bottom-left buttons (zoom)
+                document.querySelector('.bottom-left').style.display = 'none';
+                
+                // Add "See Results" button if it doesn't exist
+                if (!document.getElementById('seeResultsButton')) {
+                    const resultsButton = document.createElement('button');
+                    resultsButton.id = 'seeResultsButton';
+                    resultsButton.className = 'icon-button';
+                    resultsButton.innerHTML = '📊';
+                    resultsButton.title = 'See Results';
+                    resultsButton.style.fontSize = '24px';
+                    resultsButton.addEventListener('click', () => {
+                        showWinPageAgain();
+                    });
+                    document.querySelector('.top-right').appendChild(resultsButton);
+                }
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
