@@ -5,6 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Game</title>
     <style>
+        
+        html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+        body {
+            font-family: 'Bradley Hand', cursive, sans-serif;
+            background: linear-gradient(135deg, rgba(209, 89, 161, 0.2), rgba(209, 89, 161, 0.35));
+            min-height: 100vh;
+            /* Remove: overflow: hidden; (now on html, body above) */
+            /* Remove: position: relative; */
+        }
+
+        /* Fix 2: Remove tap highlight on all interactive elements */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* Add this line */
+            -webkit-touch-callout: none; /* Prevents callout on long press */
+        }
+
+        /* Additional fix for buttons specifically */
+        button {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        .icon-button,
+        .key,
+        .main-circle,
+        .modal-button,
+        .win-button {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        
         * {
             margin: 0;
             padding: 0;
