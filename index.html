@@ -1711,14 +1711,27 @@
             gameState.hintedLetters.push(targetIndex);
             
             checkForNewlyCompletedSubwords();
+            
+            let index = targetIndex;
+            do {
+                index++;
+                gameState.selectedCircleIndex = index;
+                
+                if (index >= level.word.length - 2) {
+                    while (gameState.hintedLetters.includes(index) || index >= level.word.length - 1) {
+                        index--;
+                        gameState.selectedCircleIndex = index;
+                        
+                        if (index === 0) {
+                            gameState.selectedCircleIndex = null;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            } while (gameState.hintedLetters.includes(index));
+            
             checkWin();
-
-            let nextIndex = targetIndex + 1;
-            while (nextIndex < level.word.length - 1 && gameState.hintedLetters.includes(nextIndex)) {
-                nextIndex++;
-            }
-            gameState.selectedCircleIndex = nextIndex < level.word.length - 1 ? nextIndex : null;
-
             renderGameBoard();
             
             // Re-validate after hint (non-blocking)
@@ -1996,27 +2009,31 @@
             if (!gameState.hintedLetters.includes(index)) {
                 gameState.guessedLetters[index] = letter;
                 checkForNewlyCompletedSubwords();
-                checkWin();
-
+                
                 // If game was won, stop here - don't update selection or re-render
                 if (gameState.gameCompleted) {
                     return;
                 }
-
-                // Try to move to the next non-hint position
-                let nextIndex = index;
-                do {
-                    if (nextIndex >= level.word.length - 2) break;
-                    nextIndex++;
-                } while (gameState.hintedLetters.includes(nextIndex));
                 
-                // Only update selection if we found a valid non-hint position
-                // (not the last letter, and not a hint)
-                if (nextIndex < level.word.length - 1 && !gameState.hintedLetters.includes(nextIndex)) {
-                    gameState.selectedCircleIndex = nextIndex;
-                }
-                // Otherwise, keep selection on the current position
-
+                // Move to next non-hint position
+                do {
+                    if (index === level.word.length - 2) {
+                        while (gameState.hintedLetters.includes(index)) {
+                            index--;
+                            gameState.selectedCircleIndex = index;
+                            
+                            if (index === 0) {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    
+                    index++;
+                    gameState.selectedCircleIndex = index;
+                } while (gameState.hintedLetters.includes(index));
+                
+                checkWin();
                 renderGameBoard();
                 
                 // Trigger spell check validation after input (non-blocking)
