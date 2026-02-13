@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="rgb(250, 232, 244)" id="theme-color-meta">
+    <meta name="theme-color" content="rgb(252, 240, 248)" id="theme-color-meta">
     <title>Word Game</title>
     <style>
         
@@ -16,8 +16,8 @@
     -webkit-overflow-scrolling: touch;
     margin: 0;
     padding: 0;
-    /* Solid color that matches rgba(209, 89, 161, 0.2) on white background */
-    background: rgb(250, 232, 244);
+    /* Lighter pink background for safe areas */
+    background: rgb(252, 240, 248);
 }
 
         body {
@@ -30,7 +30,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Bradley Hand', cursive, sans-serif;
-    background: linear-gradient(135deg, rgba(209, 89, 161, 0.2), rgba(209, 89, 161, 0.35));
+    background: rgb(252, 240, 248); /* Solid light pink */
     min-height: 100vh;
     min-height: -webkit-fill-available; /* iOS fix */
     /* Extend background into safe areas */
@@ -877,16 +877,16 @@
             }
             
             html, body {
-                background: linear-gradient(135deg, rgb(57, 28, 47), rgb(40, 20, 33));
+                background: rgb(48, 24, 40); /* Solid dark purple */
             }
             
             body {
-                background: linear-gradient(135deg, rgb(57, 28, 47), rgb(40, 20, 33));
+                background: rgb(48, 24, 40); /* Solid dark purple */
                 color: white;
             }
 
             body.simple-theme {
-                background: linear-gradient(135deg, rgb(57, 28, 47), rgb(40, 20, 33));
+                background: rgb(48, 24, 40);
             }
 
             .main-circle {
@@ -1216,17 +1216,19 @@
 
         function updateThemeColor() {
             const meta = document.getElementById('theme-color-meta');
-            if (meta) {
-                const isDark = isDarkMode();
-                meta.content = isDark ? 'rgb(57, 28, 47)' : 'rgb(250, 232, 244)';
-            }
-            
-            // Update html background color immediately
             const htmlElement = document.documentElement;
+            const bodyElement = document.body;
+            
             if (isDarkMode()) {
+                // Dark mode - solid dark purple
+                if (meta) meta.content = 'rgb(48, 24, 40)';
                 htmlElement.style.background = 'rgb(48, 24, 40)';
+                bodyElement.style.background = 'rgb(48, 24, 40)';
             } else {
-                htmlElement.style.background = 'rgb(250, 232, 244)';
+                // Light mode - solid light pink
+                if (meta) meta.content = 'rgb(252, 240, 248)';
+                htmlElement.style.background = 'rgb(252, 240, 248)';
+                bodyElement.style.background = 'rgb(252, 240, 248)';
             }
         }
 
