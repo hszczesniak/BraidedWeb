@@ -30,6 +30,7 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent; /* Add this line */
             -webkit-touch-callout: none; /* Prevents callout on long press */
+            touch-action: manipulation; /* Prevents double-tap zoom */
         }
 
         /* Additional fix for buttons specifically */
@@ -37,6 +38,7 @@
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             user-select: none;
+            touch-action: manipulation; /* Prevents double-tap zoom */
         }
 
         .icon-button,
@@ -47,6 +49,7 @@
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             user-select: none;
+            touch-action: manipulation; /* Prevents double-tap zoom */
         }
         
         * {
@@ -140,15 +143,23 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            outline: none; /* Remove focus outline */
         }
 
-        .icon-button:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: scale(1.1);
+        /* Only apply hover effects on devices that support hover (not touch) */
+        @media (hover: hover) and (pointer: fine) {
+            .icon-button:hover {
+                background: rgba(255, 255, 255, 1);
+                transform: scale(1.1);
+            }
         }
 
         .icon-button:active {
             background: rgba(255, 255, 255, 0.9);
+        }
+
+        .icon-button:focus {
+            outline: none; /* Remove focus outline */
         }
 
         .icon-button.active {
@@ -487,19 +498,27 @@
             font-family: 'Bradley Hand', cursive, sans-serif;
             cursor: pointer;
             transition: all 0.2s;
+            outline: none; /* Remove focus outline */
         }
 
         .simple-theme .key {
             font-family: 'Helvetica', Arial, sans-serif;
         }
 
-        .key:hover {
-            background: rgba(209, 89, 161, 0.4);
-            transform: scale(1.05);
+        /* Only apply hover effects on devices that support hover (not touch) */
+        @media (hover: hover) and (pointer: fine) {
+            .key:hover {
+                background: rgba(209, 89, 161, 0.4);
+                transform: scale(1.05);
+            }
         }
 
         .key:active {
             transform: scale(0.95);
+        }
+
+        .key:focus {
+            outline: none; /* Remove focus outline */
         }
 
         .key.delete {
@@ -2037,14 +2056,10 @@
 
         document.getElementById('zoomInButton').addEventListener('click', () => {
             applyZoom(0.15);
-            // Blur the button to remove focus highlight on mobile
-            document.getElementById('zoomInButton').blur();
         });
 
         document.getElementById('zoomOutButton').addEventListener('click', () => {
             applyZoom(-0.15);
-            // Blur the button to remove focus highlight on mobile
-            document.getElementById('zoomOutButton').blur();
         });
 
         document.getElementById('infoButton').addEventListener('click', () => {
