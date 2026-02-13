@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="rgb(240, 210, 230)" id="theme-color-meta">
+    <meta name="theme-color" content="rgb(250, 232, 244)" id="theme-color-meta">
     <title>Word Game</title>
     <style>
         
@@ -16,8 +16,8 @@
     -webkit-overflow-scrolling: touch;
     margin: 0;
     padding: 0;
-    /* Solid color that matches the middle of the gradient */
-    background: rgb(245, 220, 235);
+    /* Solid color that matches rgba(209, 89, 161, 0.2) on white background */
+    background: rgb(250, 232, 244);
 }
 
         body {
@@ -36,7 +36,6 @@
     /* Extend background into safe areas */
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
-    transition: background 0.3s ease; /* Smooth transition between light/dark */
 }
 
 
@@ -1219,7 +1218,15 @@
             const meta = document.getElementById('theme-color-meta');
             if (meta) {
                 const isDark = isDarkMode();
-                meta.content = isDark ? 'rgb(57, 28, 47)' : 'rgb(245, 220, 235)';
+                meta.content = isDark ? 'rgb(57, 28, 47)' : 'rgb(250, 232, 244)';
+            }
+            
+            // Update html background color immediately
+            const htmlElement = document.documentElement;
+            if (isDarkMode()) {
+                htmlElement.style.background = 'rgb(48, 24, 40)';
+            } else {
+                htmlElement.style.background = 'rgb(250, 232, 244)';
             }
         }
 
