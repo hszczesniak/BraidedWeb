@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="rgb(240, 210, 230)" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="rgb(57, 28, 47)" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="rgb(240, 210, 230)" id="theme-color-meta">
     <title>Word Game</title>
     <style>
         
@@ -1200,14 +1199,11 @@
         }
 
         function updateThemeColor() {
-            const metaTags = document.querySelectorAll('meta[name="theme-color"]');
-            metaTags.forEach(tag => tag.remove());
-            
-            const isDark = isDarkMode();
-            const meta = document.createElement('meta');
-            meta.name = 'theme-color';
-            meta.content = isDark ? 'rgb(57, 28, 47)' : 'rgb(240, 210, 230)';
-            document.head.appendChild(meta);
+            const meta = document.getElementById('theme-color-meta');
+            if (meta) {
+                const isDark = isDarkMode();
+                meta.content = isDark ? 'rgb(57, 28, 47)' : 'rgb(245, 220, 235)';
+            }
         }
 
         function getColorScheme() {
@@ -1945,7 +1941,7 @@
                         this.classList.add('tap-feedback');
                         setTimeout(() => {
                             this.classList.remove('tap-feedback');
-                        }, 500);
+                        }, 200); // Reduced from 500ms to 200ms
                     });
                     row.appendChild(key);
                 });
@@ -1960,7 +1956,7 @@
                         this.classList.add('tap-feedback');
                         setTimeout(() => {
                             this.classList.remove('tap-feedback');
-                        }, 500);
+                        }, 200); // Reduced from 500ms to 200ms
                     });
                     row.appendChild(deleteKey);
                 }
@@ -2151,6 +2147,8 @@
                     gameState.startTime = new Date(gameState.startTime.getTime() + duration);
                     gameState.backgroundTime = null;
                 }
+                // Update theme-color when page becomes visible in case system theme changed
+                updateThemeColor();
             }
         });
 
@@ -2192,14 +2190,28 @@
 
         // Listen for dark mode changes to update rules modal images if open
         const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        darkModeQuery.addListener((e) => {
-            const rulesModal = document.getElementById('rulesModal');
-            if (rulesModal && rulesModal.classList.contains('show')) {
-                updateRulesImages();
-            }
-            // Update theme-color when system theme changes
-            updateThemeColor();
-        });
+        
+        // Use both old and new API for compatibility
+        if (darkModeQuery.addEventListener) {
+            darkModeQuery.addEventListener('change', (e) => {
+                const rulesModal = document.getElementById('rulesModal');
+                if (rulesModal && rulesModal.classList.contains('show')) {
+                    updateRulesImages();
+                }
+                // Update theme-color when system theme changes
+                updateThemeColor();
+            });
+        } else {
+            // Fallback for older browsers
+            darkModeQuery.addListener((e) => {
+                const rulesModal = document.getElementById('rulesModal');
+                if (rulesModal && rulesModal.classList.contains('show')) {
+                    updateRulesImages();
+                }
+                // Update theme-color when system theme changes
+                updateThemeColor();
+            });
+        }
 
         // Initialize
         function init() {
