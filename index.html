@@ -590,10 +590,10 @@
             max-width: 500px;
             margin: auto;
             text-align: center;
-            background: linear-gradient(135deg, rgb(91, 104, 176), rgb(142, 50, 147));
+            background: linear-gradient(135deg, rgb(100, 120, 180), rgb(120, 100, 160));
             border-radius: 20px;
             padding: 40px 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 1);
             position: relative;
             animation: slideIn 0.4s ease-out;
         }
@@ -636,7 +636,7 @@
         .win-date {
             font-size: 32px;
             color: rgb(64, 180, 217);
-            text-shadow: 1px 3px 0 rgba(0, 0, 0, 0.3);
+            text-shadow: 1px 3px 0 rgba(0, 0, 0, 1);
             margin-bottom: 30px;
         }
 
@@ -651,12 +651,13 @@
             font-size: 28px;
             color: white;
             margin-bottom: 10px;
+            font-weight: normal;
         }
 
         .win-word {
             font-size: 42px;
             color: rgb(64, 180, 217);
-            text-shadow: 1px 3px 0 rgba(0, 0, 0, 0.3);
+            text-shadow: 1px 3px 0 rgba(0, 0, 0, 1);
             margin: 15px 0;
         }
 
@@ -671,22 +672,26 @@
             flex-direction: column;
             gap: 15px;
             margin-bottom: 30px;
+            align-items: center;
         }
 
         .win-button {
-            padding: 15px 30px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 12px;
-            font-family: 'Bradley Hand', cursive, sans-serif;
-            font-size: 28px;
+            border-radius: 25px;
+            font-family: inherit;
+            font-size: 22px;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 1);
+            display: inline-block;
+            min-width: auto;
+            max-width: fit-content;
+            font-weight: bold;
         }
 
         .win-button:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
         }
 
         .win-button.share {
@@ -709,6 +714,7 @@
         .win-app-promo h3 {
             font-size: 26px;
             color: white;
+            text-shadow: 1px 2px 0 rgba(0, 0, 0, 1);
             margin-bottom: 10px;
         }
 
@@ -720,14 +726,16 @@
 
         .win-app-link {
             display: inline-block;
-            background: white;
-            color: rgb(142, 50, 147);
+            background: rgb(64, 180, 217);
+            color: white;
             padding: 12px 30px;
             border-radius: 25px;
             text-decoration: none;
             font-size: 22px;
             font-weight: bold;
+            font-family: inherit;
             transition: all 0.2s;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 1);
         }
 
         .win-app-link:hover {
@@ -1084,13 +1092,13 @@
             </div>
 
             <div class="win-buttons">
-                <button class="win-button share" onclick="shareResults()">SHARE</button>
+                <button class="win-button share" onclick="shareResults()">SHARE STATS</button>
             </div>
 
             <div class="win-app-promo">
-                <h3>Want more puzzles?</h3>
+                <h3>WANT MORE PUZZLES?</h3>
                 <p>Download the Braided app for 90 free campaign levels!</p>
-                <a href="https://apps.apple.com/us/app/braided/id6755253476" class="win-app-link" target="_blank">Download Now</a>
+                <a href="https://apps.apple.com/us/app/braided/id6755253476" class="win-app-link" target="_blank">DOWNLOAD NOW</a>
             </div>
         </div>
     </div>
