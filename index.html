@@ -1222,13 +1222,13 @@
             if (isDarkMode()) {
                 // Dark mode - solid dark purple
                 if (meta) meta.content = 'rgb(48, 24, 40)';
-                htmlElement.style.background = 'rgb(48, 24, 40)';
-                bodyElement.style.background = 'rgb(48, 24, 40)';
+                htmlElement.style.setProperty('background', 'rgb(48, 24, 40)', 'important');
+                bodyElement.style.setProperty('background', 'rgb(48, 24, 40)', 'important');
             } else {
                 // Light mode - solid light pink
                 if (meta) meta.content = 'rgb(252, 240, 248)';
-                htmlElement.style.background = 'rgb(252, 240, 248)';
-                bodyElement.style.background = 'rgb(252, 240, 248)';
+                htmlElement.style.setProperty('background', 'rgb(252, 240, 248)', 'important');
+                bodyElement.style.setProperty('background', 'rgb(252, 240, 248)', 'important');
             }
         }
 
