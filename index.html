@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="rgb(240, 210, 230)" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="rgb(57, 28, 47)" media="(prefers-color-scheme: dark)">
     <title>Word Game</title>
     <style>
         
@@ -144,12 +146,13 @@
             justify-content: center;
             transition: all 0.3s;
             outline: none; /* Remove focus outline */
+            color: #000; /* Black in light mode */
         }
 
         /* Only apply hover effects on devices that support hover (not touch) */
         @media (hover: hover) and (pointer: fine) {
             .icon-button:hover {
-                background: rgba(255, 255, 255, 1);
+                background: rgba(255, 255, 255, 0.95);
                 transform: scale(1.1);
             }
         }
@@ -499,6 +502,7 @@
             cursor: pointer;
             transition: all 0.2s;
             outline: none; /* Remove focus outline */
+            color: #000; /* Black in light mode */
         }
 
         .simple-theme .key {
@@ -517,6 +521,12 @@
             transform: scale(0.95);
         }
 
+        /* Tap feedback for mobile - purple highlight for 0.5s */
+        .key.tap-feedback {
+            background: rgba(209, 89, 161, 0.7);
+            transition: background 0.1s;
+        }
+
         .key:focus {
             outline: none; /* Remove focus outline */
         }
@@ -524,6 +534,10 @@
         .key.delete {
             background: rgba(185, 54, 54, 0.2);
             font-family: 'Helvetica', Arial, sans-serif;
+        }
+
+        .key.delete.tap-feedback {
+            background: rgba(185, 54, 54, 0.6);
         }
 
         .modal {
@@ -870,6 +884,12 @@
                 color: white;
             }
 
+            @media (hover: hover) and (pointer: fine) {
+                .icon-button:hover {
+                    background: rgba(70, 70, 70, 0.9);
+                }
+            }
+
             .keyboard {
                 background: transparent;
             }
@@ -1177,6 +1197,17 @@
 
         function isDarkMode() {
             return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+
+        function updateThemeColor() {
+            const metaTags = document.querySelectorAll('meta[name="theme-color"]');
+            metaTags.forEach(tag => tag.remove());
+            
+            const isDark = isDarkMode();
+            const meta = document.createElement('meta');
+            meta.name = 'theme-color';
+            meta.content = isDark ? 'rgb(57, 28, 47)' : 'rgb(240, 210, 230)';
+            document.head.appendChild(meta);
         }
 
         function getColorScheme() {
@@ -1908,7 +1939,14 @@
                     const key = document.createElement('button');
                     key.className = 'key';
                     key.textContent = letter;
-                    key.addEventListener('click', () => handleLetterInput(letter));
+                    key.addEventListener('click', function() {
+                        handleLetterInput(letter);
+                        // Add tap feedback
+                        this.classList.add('tap-feedback');
+                        setTimeout(() => {
+                            this.classList.remove('tap-feedback');
+                        }, 500);
+                    });
                     row.appendChild(key);
                 });
 
@@ -1916,7 +1954,14 @@
                     const deleteKey = document.createElement('button');
                     deleteKey.className = 'key delete';
                     deleteKey.textContent = '⌫';
-                    deleteKey.addEventListener('click', handleDelete);
+                    deleteKey.addEventListener('click', function() {
+                        handleDelete();
+                        // Add tap feedback
+                        this.classList.add('tap-feedback');
+                        setTimeout(() => {
+                            this.classList.remove('tap-feedback');
+                        }, 500);
+                    });
                     row.appendChild(deleteKey);
                 }
             });
@@ -2152,6 +2197,8 @@
             if (rulesModal && rulesModal.classList.contains('show')) {
                 updateRulesImages();
             }
+            // Update theme-color when system theme changes
+            updateThemeColor();
         });
 
         // Initialize
@@ -2160,6 +2207,9 @@
             loadProgress();
             renderGameBoard();
             renderKeyboard();
+            
+            // Set initial theme-color for safe areas
+            updateThemeColor();
 
             // Initialize zoom CSS variable and center scroll
             const wrapper = document.querySelector('.game-board-wrapper');
