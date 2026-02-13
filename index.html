@@ -6,55 +6,24 @@
     <meta name="theme-color" content="rgb(252, 240, 248)" id="theme-color-meta">
     <title>Word Game</title>
     <style>
+        /* ============================================
+           BASE STYLES & RESET
+           ============================================ */
         
-        html {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: fixed;
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: touch;
-    margin: 0;
-    padding: 0;
-    /* Lighter pink background for safe areas */
-    background: rgb(252, 240, 248);
-}
-
-        body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: fixed;
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: touch;
-    margin: 0;
-    padding: 0;
-    font-family: 'Bradley Hand', cursive, sans-serif;
-    background: rgb(252, 240, 248); /* Solid light pink */
-    min-height: 100vh;
-    min-height: -webkit-fill-available; /* iOS fix */
-    /* Extend background into safe areas */
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-}
-
-
-        /* Fix 2: Remove tap highlight on all interactive elements */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent; /* Add this line */
-            -webkit-touch-callout: none; /* Prevents callout on long press */
-            touch-action: manipulation; /* Prevents double-tap zoom */
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            touch-action: manipulation;
         }
 
-        /* Additional fix for buttons specifically */
         button {
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             user-select: none;
-            touch-action: manipulation; /* Prevents double-tap zoom */
+            touch-action: manipulation;
         }
 
         .icon-button,
@@ -65,18 +34,49 @@
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             user-select: none;
-            touch-action: manipulation; /* Prevents double-tap zoom */
+            touch-action: manipulation;
         }
-        
-        * {
+
+        /* ============================================
+           HTML & BODY
+           ============================================ */
+
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: touch;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background: rgb(252, 240, 248);
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: touch;
+            margin: 0;
+            padding: 0;
+            font-family: 'Bradley Hand', cursive, sans-serif;
+            background: rgb(252, 240, 248);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         body.simple-theme {
             font-family: 'Helvetica', Arial, sans-serif;
         }
+
+        /* ============================================
+           GAME CONTAINER
+           ============================================ */
 
         .game-container {
             width: 100vw;
@@ -84,15 +84,18 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            background: transparent; /* Ensure no white background */
+            background: transparent;
         }
+
+        /* ============================================
+           HEADER BUTTONS
+           ============================================ */
 
         .header-buttons {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            /* Add safe area inset for top */
             padding-top: env(safe-area-inset-top);
             z-index: 1000;
             pointer-events: none;
@@ -127,10 +130,9 @@
             right: 0;
         }
 
-        /* Mobile-specific adjustment for bottom-right buttons */
         @media (max-width: 768px) {
             .bottom-right {
-                bottom: calc(190px + env(safe-area-inset-bottom)); /* Move up to stay above keyboard (moved up by half key height) and safe area */
+                bottom: calc(190px + env(safe-area-inset-bottom));
             }
         }
 
@@ -139,6 +141,10 @@
             bottom: 0;
             left: 0;
         }
+
+        /* ============================================
+           ICON BUTTONS
+           ============================================ */
 
         .icon-button {
             width: 50px;
@@ -152,11 +158,10 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
-            outline: none; /* Remove focus outline */
-            color: #000; /* Black in light mode */
+            outline: none;
+            color: #000;
         }
 
-        /* Only apply hover effects on devices that support hover (not touch) */
         @media (hover: hover) and (pointer: fine) {
             .icon-button:hover {
                 background: rgba(255, 255, 255, 0.95);
@@ -169,7 +174,7 @@
         }
 
         .icon-button:focus {
-            outline: none; /* Remove focus outline */
+            outline: none;
         }
 
         .icon-button.active {
@@ -180,6 +185,10 @@
             background: rgb(209, 89, 161);
             color: white;
         }
+
+        /* ============================================
+           SCROLL CONTAINER
+           ============================================ */
 
         .scroll-container {
             flex: 1;
@@ -194,7 +203,6 @@
             overflow: hidden;
         }
 
-        /* Custom scrollbar styling - Chrome/Edge */
         .scroll-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -212,20 +220,19 @@
             background: rgba(209, 89, 161, 0.5);
         }
 
-        /* Firefox scrollbar */
         .scroll-container {
             scrollbar-width: thin;
             scrollbar-color: rgba(209, 89, 161, 0.3) transparent;
         }
 
-        /* Game board wrapper - only center horizontally, allow full vertical scroll */
+        /* ============================================
+           GAME BOARD
+           ============================================ */
+
         .game-board-wrapper {
             min-height: 100%;
             display: flex;
             justify-content: center;
-            /* Padding scales non-linearly with zoom: 
-               at 1x = 5vh, at 1.5x = 17.5vh, at 2x = 40vh 
-               Formula: 5vh + (scale-1) * 35vh */
             padding: calc(5vh + (var(--zoom-scale, 1) - 1) * 35vh) 0;
         }
 
@@ -243,6 +250,10 @@
             margin-bottom: -10px;
             position: relative;
         }
+
+        /* ============================================
+           SUBWORDS
+           ============================================ */
 
         .left-subword {
             width: 150px;
@@ -313,6 +324,10 @@
             margin-left: 10px;
         }
 
+        /* ============================================
+           MAIN CIRCLES
+           ============================================ */
+
         .main-circle-container {
             position: relative;
             width: 120px;
@@ -363,6 +378,7 @@
         .simple-theme .main-circle {
             background: transparent;
             font-size: 28px;
+            border: 4px solid #333;
         }
 
         .simple-theme .main-circle.first-last {
@@ -411,15 +427,9 @@
             border: none;
         }
 
-        .simple-theme .main-circle {
-            border: 4px solid #333;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .simple-theme .main-circle {
-                border-color: white;
-            }
-        }
+        /* ============================================
+           CIRCLE IMAGES (DEFAULT THEME)
+           ============================================ */
 
         .circle-background {
             position: absolute;
@@ -441,12 +451,15 @@
             pointer-events: none;
         }
 
+        /* ============================================
+           SUBWORD LINES (SIMPLE THEME)
+           ============================================ */
+
         .subword-line {
             position: absolute;
             z-index: 101;
         }
 
-        /* Simple theme subword lines */
         .simple-theme .subword-entering {
             width: 30px;
             height: 4px;
@@ -479,11 +492,14 @@
             transform: rotate(10deg);
         }
 
+        /* ============================================
+           KEYBOARD
+           ============================================ */
+
         .keyboard {
             padding: 20px;
             padding-bottom: calc(20px + env(safe-area-inset-bottom));
             background: transparent;
-            /* Move keyboard up by half a key height (20px) */
             transform: translateY(-20px);
         }
 
@@ -508,15 +524,14 @@
             font-family: 'Bradley Hand', cursive, sans-serif;
             cursor: pointer;
             transition: all 0.2s;
-            outline: none; /* Remove focus outline */
-            color: #000; /* Black in light mode */
+            outline: none;
+            color: #000;
         }
 
         .simple-theme .key {
             font-family: 'Helvetica', Arial, sans-serif;
         }
 
-        /* Only apply hover effects on devices that support hover (not touch) */
         @media (hover: hover) and (pointer: fine) {
             .key:hover {
                 background: rgba(209, 89, 161, 0.4);
@@ -528,14 +543,13 @@
             transform: scale(0.95);
         }
 
-        /* Tap feedback for mobile - purple highlight for 0.5s */
         .key.tap-feedback {
             background: rgba(209, 89, 161, 0.7);
             transition: background 0.1s;
         }
 
         .key:focus {
-            outline: none; /* Remove focus outline */
+            outline: none;
         }
 
         .key.delete {
@@ -546,6 +560,10 @@
         .key.delete.tap-feedback {
             background: rgba(185, 54, 54, 0.6);
         }
+
+        /* ============================================
+           MODALS
+           ============================================ */
 
         .modal {
             display: none;
@@ -564,7 +582,124 @@
             display: flex;
         }
 
-        /* Win Page Styles */
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                max-width: calc(100vw - 40px);
+                margin: 0 20px;
+            }
+
+            .rules-content {
+                max-width: calc(100vw - 40px) !important;
+            }
+        }
+
+        .rules-content {
+            max-width: 600px;
+            max-height: 80vh;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rules-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rules-header h2 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 36px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .close-button:hover {
+            color: #333;
+        }
+
+        .rules-scroll {
+            overflow-y: auto;
+            padding: 20px 30px 30px;
+            text-align: left;
+        }
+
+        .rules-section {
+            margin-bottom: 20px;
+        }
+
+        .rules-section p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .rules-image {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            margin: 15px auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .modal-button.primary {
+            background: rgb(209, 89, 161);
+            color: white;
+        }
+
+        .modal-button.secondary {
+            background: #ddd;
+        }
+
+        .modal-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* ============================================
+           WIN PAGE
+           ============================================ */
+
         .win-page {
             display: none;
             position: fixed;
@@ -742,120 +877,9 @@
             transform: scale(1.05);
         }
 
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        /* Mobile-specific modal width */
-        @media (max-width: 768px) {
-            .modal-content {
-                max-width: calc(100vw - 40px);
-                margin: 0 20px;
-            }
-
-            .rules-content {
-                max-width: calc(100vw - 40px) !important;
-            }
-        }
-
-        .rules-content {
-            max-width: 600px;
-            max-height: 80vh;
-            padding: 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .rules-header {
-            padding: 20px 30px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .rules-header h2 {
-            margin: 0;
-            font-size: 32px;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 36px;
-            cursor: pointer;
-            color: #666;
-            padding: 0;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-        }
-
-        .close-button:hover {
-            color: #333;
-        }
-
-        .rules-scroll {
-            overflow-y: auto;
-            padding: 20px 30px 30px;
-            text-align: left;
-        }
-
-        .rules-section {
-            margin-bottom: 20px;
-        }
-
-        .rules-section p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        .rules-image {
-            width: 100%;
-            max-width: 250px;
-            height: auto;
-            margin: 15px auto;
-            display: block;
-            border-radius: 8px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            justify-content: center;
-        }
-
-        .modal-button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-
-        .modal-button.primary {
-            background: rgb(209, 89, 161);
-            color: white;
-        }
-
-        .modal-button.secondary {
-            background: #ddd;
-        }
-
-        .modal-button:hover {
-            transform: scale(1.05);
-        }
+        /* ============================================
+           CONFETTI
+           ============================================ */
 
         .confetti-container {
             position: fixed;
@@ -879,17 +903,21 @@
             object-fit: contain;
         }
 
+        /* ============================================
+           DARK MODE
+           ============================================ */
+
         @media (prefers-color-scheme: dark) {
             html {
                 background: rgb(48, 24, 40) !important;
             }
             
             html, body {
-                background: rgb(48, 24, 40); /* Solid dark purple */
+                background: rgb(48, 24, 40);
             }
             
             body {
-                background: rgb(48, 24, 40); /* Solid dark purple */
+                background: rgb(48, 24, 40);
                 color: white;
             }
 
@@ -900,6 +928,10 @@
             .main-circle {
                 border-color: white;
                 color: white;
+            }
+
+            .simple-theme .main-circle {
+                border-color: white;
             }
 
             .icon-button {
@@ -940,7 +972,10 @@
             }
         }
 
-        /* Color definitions - matching DesignConstants.swift */
+        /* ============================================
+           COLOR CLASSES
+           ============================================ */
+
         .color-lightblue { color: rgb(64, 180, 217); }
         .color-purple { color: rgb(142, 50, 147); }
         .color-green { color: rgb(49, 147, 71); }
@@ -970,6 +1005,7 @@
 </head>
 <body>
     <div class="game-container">
+        <!-- Header Buttons -->
         <div class="header-buttons">
             <div class="button-group top-left">
                 <button class="icon-button" id="zoomInButton">+</button>
@@ -986,12 +1022,14 @@
             </div>
         </div>
 
+        <!-- Game Board -->
         <div class="scroll-container" id="scrollContainer">
             <div class="game-board-wrapper">
                 <div class="game-board" id="gameBoard"></div>
             </div>
         </div>
 
+        <!-- Keyboard -->
         <div class="keyboard" id="keyboard">
             <div class="keyboard-row" id="row1"></div>
             <div class="keyboard-row" id="row2"></div>
@@ -999,6 +1037,7 @@
         </div>
     </div>
 
+    <!-- Modals -->
     <div class="modal" id="clearModal">
         <div class="modal-content">
             <h2>Clear All?</h2>
@@ -1104,7 +1143,10 @@
     </div>
 
     <script>
-        // Game State
+        // ============================================
+        // GAME STATE
+        // ============================================
+        
         const gameState = {
             level: null,
             guessedLetters: {},
@@ -1125,7 +1167,10 @@
             completionTime: null
         };
 
-        // Sample level data - replace with your actual level
+        // ============================================
+        // LEVEL DATA
+        // ============================================
+        
         const level = {
             id: '182',
             word: 'COCONUT',
@@ -1136,7 +1181,10 @@
             ]
         };
 
-        // Color schemes
+        // ============================================
+        // CONSTANTS
+        // ============================================
+        
         const colors = {
             light: ['lightblue', 'purple', 'green', 'blue', 'lightblue', 'purple', 'green', 'blue', 'lightblue', 'purple', 'green', 'blue'],
             dark: ['lightblue', 'dm-purple', 'green', 'dm-blue', 'lightblue', 'dm-purple', 'green', 'dm-blue', 'lightblue', 'dm-purple', 'green', 'dm-blue'],
@@ -1145,12 +1193,14 @@
 
         const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 
-        // Utility Functions
+        // ============================================
+        // DICTIONARY & SPELL CHECK
+        // ============================================
+        
         const dictionaryCache = {};
         const subwordValidationCache = {};
         
         async function checkWordInDictionary(word) {
-            // Check cache first
             if (word in dictionaryCache) {
                 return dictionaryCache[word];
             }
@@ -1167,12 +1217,10 @@
                     dictionaryCache[word] = false;
                     return false;
                 } else {
-                    // For other errors, default to accepting the word
                     dictionaryCache[word] = true;
                     return true;
                 }
             } catch (error) {
-                // Network errors default to accepting the word
                 dictionaryCache[word] = true;
                 return true;
             }
@@ -1191,11 +1239,10 @@
         
         async function validateAllSubwords() {
             if (!gameState.spellCheckEnabled) {
-                // Clear cache when spell check is disabled
                 Object.keys(subwordValidationCache).forEach(key => {
                     delete subwordValidationCache[key];
                 });
-                renderGameBoard(); // Immediately re-render to clear dots
+                renderGameBoard();
                 return;
             }
             
@@ -1203,20 +1250,21 @@
                 const word = getSubwordText(subword);
                 const fullWord = subword.word;
                 
-                // If word doesn't have all letters filled in, mark as invalid
                 if (!word || word.length < fullWord.length) {
                     subwordValidationCache[subIdx] = false;
                 } else if (word.length >= 3) {
-                    // Word is complete, check if it's valid
                     const isValid = await checkWordInDictionary(word);
                     subwordValidationCache[subIdx] = isValid;
                 } else {
-                    // Complete but too short to validate
                     delete subwordValidationCache[subIdx];
                 }
             }
             renderGameBoard();
         }
+
+        // ============================================
+        // THEME & COLOR FUNCTIONS
+        // ============================================
 
         function isDarkMode() {
             return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -1228,12 +1276,10 @@
             const bodyElement = document.body;
             
             if (isDarkMode()) {
-                // Dark mode - solid dark purple
                 if (meta) meta.content = 'rgb(48, 24, 40)';
                 htmlElement.style.setProperty('background', 'rgb(48, 24, 40)', 'important');
                 bodyElement.style.setProperty('background', 'rgb(48, 24, 40)', 'important');
             } else {
-                // Light mode - solid light pink
                 if (meta) meta.content = 'rgb(252, 240, 248)';
                 htmlElement.style.setProperty('background', 'rgb(252, 240, 248)', 'important');
                 bodyElement.style.setProperty('background', 'rgb(252, 240, 248)', 'important');
@@ -1244,6 +1290,10 @@
             if (gameState.theme === 'Simple') return colors.simple;
             return isDarkMode() ? colors.dark : colors.light;
         }
+
+        // ============================================
+        // SAVE & LOAD PROGRESS
+        // ============================================
 
         function saveProgress() {
             const key = `level_${level.id}_progress`;
@@ -1269,7 +1319,6 @@
             localStorage.setItem(`${subwordTimesKey}_values`, JSON.stringify(subwordTimes));
             localStorage.setItem(completedSubwordsKey, JSON.stringify([...gameState.completedSubwords]));
             
-            // Save completion time if puzzle is completed
             if (gameState.completionTime !== null) {
                 localStorage.setItem(completionTimeKey, gameState.completionTime.toString());
             }
@@ -1309,12 +1358,15 @@
                 document.body.classList.add('simple-theme');
             }
             
-            // Load completion time if puzzle was completed
             const savedCompletionTime = localStorage.getItem(completionTimeKey);
             if (savedCompletionTime) {
                 gameState.completionTime = parseFloat(savedCompletionTime);
             }
         }
+
+        // ============================================
+        // GAME LOGIC
+        // ============================================
 
         function checkForNewlyCompletedSubwords() {
             const currentTime = (new Date() - gameState.startTime) / 1000;
@@ -1344,13 +1396,11 @@
             const scrollContainer = document.getElementById('scrollContainer');
             const wrapper = document.querySelector('.game-board-wrapper');
             
-            // Reset zoom to 1x
             gameState.scale = 1;
             gameState.lastScale = 1;
             gameBoard.style.transform = 'scale(1)';
             wrapper.style.setProperty('--zoom-scale', '1');
             
-            // Center scroll after layout updates
             requestAnimationFrame(() => {
                 const scrollHeight = scrollContainer.scrollHeight;
                 const containerHeight = scrollContainer.clientHeight;
@@ -1384,24 +1434,25 @@
                     localStorage.setItem(`level_${level.id}_completed`, 'true');
                     gameState.selectedCircleIndex = null;
                     
-                    // Reset zoom and center scroll BEFORE animation
                     resetZoomAndScroll();
                     
-                    renderGameBoard(); // Immediately remove selection highlight
+                    renderGameBoard();
                     gameState.isPlayingWinAnimation = true;
                     gameState.gameCompleted = true;
                     gameState.completionTime = elapsedTime;
-                    saveProgress(); // Save the completion time
+                    saveProgress();
                     playWinAnimation(elapsedTime);
                 }
             }
         }
 
+        // ============================================
+        // WIN ANIMATION
+        // ============================================
+
         function playWinAnimation(elapsedTime) {
-            // Hide keyboard
             document.getElementById('keyboard').classList.add('hidden');
             
-            // Remove any selection highlights from both containers and circles
             document.querySelectorAll('.main-circle-container').forEach(el => {
                 el.classList.remove('selected');
             });
@@ -1409,14 +1460,12 @@
                 el.classList.remove('selected');
             });
             
-            // Hide controls
             setTimeout(() => {
                 document.querySelectorAll('.top-left, .top-right, .bottom-right').forEach(el => {
                     el.style.opacity = '0';
                 });
             }, 500);
 
-            // Show confetti
             showConfetti();
 
             let currentDelay = 1800;
@@ -1424,22 +1473,18 @@
             const pauseBetween = 300;
             const colorScheme = getColorScheme();
 
-            // Animate each subword in sequence
             level.subwords.forEach((subword, subIdx) => {
                 const color = colorScheme[subIdx % colorScheme.length];
                 
                 setTimeout(() => {
-                    // Pulse the prefix and suffix letters
                     document.querySelectorAll(`[data-subword-index="${subIdx}"] .subword-letter`).forEach(el => {
                         el.classList.add('glowing');
                     });
                     
-                    // Pulse and color the main word letters in this subword
                     for (let i = subword.startIndex; i <= subword.endIndex; i++) {
                         const circle = document.querySelectorAll('.main-circle')[i];
                         if (circle) {
                             circle.classList.add('subword-glow');
-                            // Temporarily change color to subword color
                             const colorClass = `color-${color}`;
                             const colorElement = document.querySelector(`.${colorClass}`);
                             if (colorElement) {
@@ -1451,12 +1496,10 @@
                 }, currentDelay);
                 
                 setTimeout(() => {
-                    // Remove pulse from prefix/suffix
                     document.querySelectorAll(`[data-subword-index="${subIdx}"] .subword-letter`).forEach(el => {
                         el.classList.remove('glowing');
                     });
                     
-                    // Remove pulse and color from main word letters
                     for (let i = subword.startIndex; i <= subword.endIndex; i++) {
                         const circle = document.querySelectorAll('.main-circle')[i];
                         if (circle) {
@@ -1469,7 +1512,6 @@
                 currentDelay += pulseDuration + pauseBetween;
             });
 
-            // Glow entire main word in pink
             setTimeout(() => {
                 document.querySelectorAll('.main-circle').forEach(el => {
                     el.classList.add('win-glow');
@@ -1477,11 +1519,9 @@
             }, currentDelay);
             currentDelay += pulseDuration;
 
-            // Return to normal - remove pink glow and make white (except hints)
             setTimeout(() => {
                 document.querySelectorAll('.main-circle').forEach((el, index) => {
                     el.classList.remove('win-glow');
-                    // Keep hints pink, make others white
                     if (!gameState.hintedLetters.includes(index)) {
                         el.style.color = '';
                     }
@@ -1489,12 +1529,10 @@
             }, currentDelay);
             currentDelay += 300;
 
-            // Hide confetti
             setTimeout(() => {
                 document.querySelector('.confetti-container')?.remove();
             }, currentDelay);
 
-            // Show win page
             setTimeout(() => {
                 showWinPage(elapsedTime);
                 gameState.isPlayingWinAnimation = false;
@@ -1506,7 +1544,6 @@
             container.className = 'confetti-container';
             document.body.appendChild(container);
 
-            // Always use default theme colors for confetti (since we don't have simple theme confetti images)
             const confettiColors = isDarkMode() ? colors.dark : colors.light;
             const pieces = 110;
 
@@ -1517,10 +1554,9 @@
                 piece.style.top = '-100px';
                 
                 const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                const randInt = Math.floor(Math.random() * 3) + 9; // 9, 10, or 11
-                const formattedNum = randInt.toString().padStart(2, '0'); // Format as 09, 10, 11
+                const randInt = Math.floor(Math.random() * 3) + 9;
+                const formattedNum = randInt.toString().padStart(2, '0');
                 
-                // Create img element for confetti
                 const img = document.createElement('img');
                 img.src = `images/${color}-confetti-${formattedNum}.png`;
                 img.style.width = (30 + Math.random() * 20) + 'px';
@@ -1541,7 +1577,6 @@
         }
 
         function showWinPage(elapsedTime) {
-            // Get current date
             const now = new Date();
             const dateString = now.toLocaleDateString('en-US', { 
                 weekday: 'long', 
@@ -1576,7 +1611,6 @@
             
             let shareText = `✨Braided - ${dateString}✨\n`;
             
-            // Main word with hints marked
             let mainWord = level.word[0] + ' ';
             for (let i = 1; i < level.word.length - 1; i++) {
                 if (gameState.hintedLetters.includes(i)) {
@@ -1593,7 +1627,6 @@
             const elapsedTime = gameState.completionTime || (new Date() - gameState.startTime) / 1000;
             shareText += `🧵${mainWord} - ${formatTime(elapsedTime)}\n`;
             
-            // Subwords: sorted by completion time
             const subwordEntries = Object.entries(gameState.subwordCompletionTimes)
                 .map(([idx, time]) => ({ idx: parseInt(idx), time }))
                 .sort((a, b) => a.time - b.time);
@@ -1616,7 +1649,6 @@
                 shareText += `🪡${subwordText} - ${formatTime(time)}\n`;
             }
             
-            // Copy to clipboard or share
             if (navigator.share) {
                 navigator.share({
                     text: shareText
@@ -1631,16 +1663,10 @@
         function admirePuzzle() {
             document.getElementById('winPage').classList.remove('show');
             
-            // Hide bottom-right buttons (clear, hint, spell check)
             document.querySelector('.bottom-right').style.display = 'none';
-            
-            // Hide top-left buttons (zoom)
             document.querySelector('.top-left').style.display = 'none';
-            
-            // Show top-right buttons with opacity transition
             document.querySelector('.top-right').style.opacity = '1';
             
-            // Add a "See Results" button to the top-right if it doesn't exist
             if (!document.getElementById('seeResultsButton')) {
                 const resultsButton = document.createElement('button');
                 resultsButton.id = 'seeResultsButton';
@@ -1656,7 +1682,6 @@
         }
 
         function showWinPageAgain() {
-            // Populate the win page content
             const now = new Date();
             const dateString = now.toLocaleDateString('en-US', { 
                 weekday: 'long', 
@@ -1675,7 +1700,10 @@
             document.getElementById('winPage').classList.add('show');
         }
 
-        // Modal Functions
+        // ============================================
+        // MODAL FUNCTIONS
+        // ============================================
+
         function updateRulesImages() {
             const isDark = isDarkMode();
             const prefix = isDark ? 'dark_rules' : 'rules';
@@ -1706,10 +1734,7 @@
             }
             renderGameBoard();
             saveProgress();
-            
-            // Re-validate after clearing (non-blocking)
             validateAllSubwords();
-            
             closeModal('clearModal');
         }
 
@@ -1741,10 +1766,7 @@
             
             checkWin();
             renderGameBoard();
-            
-            // Re-validate after hint (non-blocking)
             validateAllSubwords();
-            
             closeModal('hintModal');
         }
 
@@ -1768,7 +1790,10 @@
             return 1;
         }
 
-        // Render Functions
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+
         function calculateSubwordSides() {
             const sides = {};
             
@@ -1815,7 +1840,6 @@
                         container.className = 'subword-container';
                         container.setAttribute('data-subword-index', subIdx);
                         
-                        // Show red dot only if spell check is enabled AND word is marked as invalid
                         if (gameState.spellCheckEnabled && subwordValidationCache[subIdx] === false) {
                             const dot = document.createElement('div');
                             dot.className = 'spell-check-dot';
@@ -1836,15 +1860,12 @@
                 const circleContainer = document.createElement('div');
                 circleContainer.className = 'main-circle-container';
                 
-                // Add circle images for Default theme
                 if (gameState.theme === 'Default' && index !== 0 && index !== level.word.length - 1) {
-                    // Base blank circle
                     const blankCircle = document.createElement('img');
                     blankCircle.src = 'images/blank_circle.png';
                     blankCircle.className = 'circle-image';
                     circleContainer.appendChild(blankCircle);
 
-                    // Check for entering subword
                     level.subwords.forEach((subword, subIdx) => {
                         const color = colorScheme[subIdx % colorScheme.length];
                         const side = subwordSides[subIdx];
@@ -1857,7 +1878,6 @@
                         }
                     });
 
-                    // Check for continuing subwords
                     level.subwords.forEach((subword, subIdx) => {
                         const color = colorScheme[subIdx % colorScheme.length];
                         const side = subwordSides[subIdx];
@@ -1870,7 +1890,6 @@
                         }
                     });
 
-                    // Check for exiting subword
                     level.subwords.forEach((subword, subIdx) => {
                         const color = colorScheme[subIdx % colorScheme.length];
                         const side = subwordSides[subIdx];
@@ -1887,7 +1906,6 @@
                 const circle = document.createElement('div');
                 circle.className = 'main-circle';
                 
-                // Add first-last class for simple theme
                 if (gameState.theme === 'Simple' && (index === 0 || index === level.word.length - 1)) {
                     circle.classList.add('first-last');
                 }
@@ -1901,7 +1919,6 @@
                     circle.classList.add('hint');
                 }
 
-                // Add subword lines for simple theme
                 if (gameState.theme === 'Simple') {
                     level.subwords.forEach((subword, subIdx) => {
                         const color = colorScheme[subIdx % colorScheme.length];
@@ -1984,11 +2001,10 @@
                     key.textContent = letter;
                     key.addEventListener('click', function() {
                         handleLetterInput(letter);
-                        // Add tap feedback
                         this.classList.add('tap-feedback');
                         setTimeout(() => {
                             this.classList.remove('tap-feedback');
-                        }, 200); // Reduced from 500ms to 200ms
+                        }, 200);
                     });
                     row.appendChild(key);
                 });
@@ -1999,16 +2015,19 @@
                     deleteKey.textContent = '⌫';
                     deleteKey.addEventListener('click', function() {
                         handleDelete();
-                        // Add tap feedback
                         this.classList.add('tap-feedback');
                         setTimeout(() => {
                             this.classList.remove('tap-feedback');
-                        }, 200); // Reduced from 500ms to 200ms
+                        }, 200);
                     });
                     row.appendChild(deleteKey);
                 }
             });
         }
+
+        // ============================================
+        // INPUT HANDLING
+        // ============================================
 
         function handleLetterInput(letter) {
             if (gameState.selectedCircleIndex === null) return;
@@ -2018,12 +2037,10 @@
                 gameState.guessedLetters[index] = letter;
                 checkForNewlyCompletedSubwords();
                 
-                // If game was won, stop here - don't update selection or re-render
                 if (gameState.gameCompleted) {
                     return;
                 }
                 
-                // Move to next non-hint position
                 do {
                     if (index === level.word.length - 2) {
                         while (gameState.hintedLetters.includes(index)) {
@@ -2043,8 +2060,6 @@
                 
                 checkWin();
                 renderGameBoard();
-                
-                // Trigger spell check validation after input (non-blocking)
                 validateAllSubwords();
             }
         }
@@ -2068,12 +2083,13 @@
             }
 
             renderGameBoard();
-            
-            // Trigger spell check validation after delete (non-blocking)
             validateAllSubwords();
         }
 
-        // Event Listeners
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
         document.getElementById('clearButton').addEventListener('click', () => {
             showModal('clearModal');
         });
@@ -2092,7 +2108,6 @@
             } else {
                 gameState.spellCheckEnabled = false;
                 document.getElementById('spellCheckButton').classList.remove('active');
-                // Clear validation cache and immediately re-render to remove dots
                 Object.keys(subwordValidationCache).forEach(key => {
                     delete subwordValidationCache[key];
                 });
@@ -2115,7 +2130,6 @@
             }
         });
 
-        // Zoom functions
         function applyZoom(delta) {
             if (gameState.isPlayingWinAnimation) return;
             
@@ -2123,22 +2137,17 @@
             const scrollContainer = document.getElementById('scrollContainer');
             const wrapper = document.querySelector('.game-board-wrapper');
             
-            // Store current scroll position relative to center
             const scrollBefore = scrollContainer.scrollTop;
             const scrollHeightBefore = scrollContainer.scrollHeight;
             const containerHeight = scrollContainer.clientHeight;
             const centerBefore = scrollBefore + containerHeight / 2;
             const centerRatio = centerBefore / scrollHeightBefore;
             
-            // Update scale
             gameState.scale = Math.min(Math.max(gameState.scale + delta, 0.5), 2.0);
             gameState.lastScale = gameState.scale;
             gameBoard.style.transform = `scale(${gameState.scale})`;
-            
-            // Update CSS variable for padding
             wrapper.style.setProperty('--zoom-scale', gameState.scale);
             
-            // After layout updates, restore centered scroll position
             requestAnimationFrame(() => {
                 const scrollHeightAfter = scrollContainer.scrollHeight;
                 const newCenter = centerRatio * scrollHeightAfter;
@@ -2160,7 +2169,6 @@
             }
         });
 
-        // Keyboard support
         document.addEventListener('keydown', (e) => {
             if (gameState.isPlayingWinAnimation) return;
             
@@ -2177,7 +2185,6 @@
             }
         });
 
-        // Mouse wheel zoom support
         document.getElementById('scrollContainer').addEventListener('wheel', (e) => {
             if (gameState.isPlayingWinAnimation) return;
             if (e.ctrlKey || e.metaKey) {
@@ -2187,7 +2194,6 @@
             }
         }, { passive: false });
 
-        // Page visibility handling
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 gameState.backgroundTime = new Date();
@@ -2198,12 +2204,10 @@
                     gameState.startTime = new Date(gameState.startTime.getTime() + duration);
                     gameState.backgroundTime = null;
                 }
-                // Update theme-color when page becomes visible in case system theme changed
                 updateThemeColor();
             }
         });
 
-        // Pinch zoom support
         let initialDistance = 0;
 
         document.addEventListener('touchstart', (e) => {
@@ -2227,7 +2231,6 @@
                 const gameBoard = document.getElementById('gameBoard');
                 gameBoard.style.transform = `scale(${gameState.scale})`;
                 
-                // Update CSS variable for padding
                 const wrapper = document.querySelector('.game-board-wrapper');
                 wrapper.style.setProperty('--zoom-scale', gameState.scale);
             }
@@ -2239,47 +2242,42 @@
             }
         });
 
-        // Listen for dark mode changes to update rules modal images if open
         const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
         
-        // Use both old and new API for compatibility
         if (darkModeQuery.addEventListener) {
             darkModeQuery.addEventListener('change', (e) => {
                 const rulesModal = document.getElementById('rulesModal');
                 if (rulesModal && rulesModal.classList.contains('show')) {
                     updateRulesImages();
                 }
-                // Update theme-color when system theme changes
                 updateThemeColor();
             });
         } else {
-            // Fallback for older browsers
             darkModeQuery.addListener((e) => {
                 const rulesModal = document.getElementById('rulesModal');
                 if (rulesModal && rulesModal.classList.contains('show')) {
                     updateRulesImages();
                 }
-                // Update theme-color when system theme changes
                 updateThemeColor();
             });
         }
 
-        // Initialize
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
         function init() {
             gameState.level = level;
             loadProgress();
             renderGameBoard();
             renderKeyboard();
             
-            // Set initial theme-color for safe areas
             updateThemeColor();
 
-            // Initialize zoom CSS variable and center scroll
             const wrapper = document.querySelector('.game-board-wrapper');
             const scrollContainer = document.getElementById('scrollContainer');
             wrapper.style.setProperty('--zoom-scale', gameState.scale);
             
-            // Center scroll after initial render
             requestAnimationFrame(() => {
                 const scrollHeight = scrollContainer.scrollHeight;
                 const containerHeight = scrollContainer.clientHeight;
@@ -2291,18 +2289,13 @@
                 gameState.selectedCircleIndex = findHintTargetIndex();
                 renderGameBoard();
             } else {
-                // Puzzle is completed
                 gameState.showKeyboard = false;
                 gameState.gameCompleted = true;
                 document.getElementById('keyboard').classList.add('hidden');
                 
-                // Hide bottom-right buttons (clear, hint, spell check)
                 document.querySelector('.bottom-right').style.display = 'none';
-                
-                // Hide top-left buttons (zoom)
                 document.querySelector('.top-left').style.display = 'none';
                 
-                // Add "See Results" button if it doesn't exist
                 if (!document.getElementById('seeResultsButton')) {
                     const resultsButton = document.createElement('button');
                     resultsButton.id = 'seeResultsButton';
