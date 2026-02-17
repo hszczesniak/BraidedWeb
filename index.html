@@ -1171,15 +1171,2261 @@
         // LEVEL DATA
         // ============================================
         
-        const level = {
-            id: '182',
-            word: 'COCONUT',
-            subwords: [
-                { word: "STOCKS", prefix: 'ST', startIndex: 1, endIndex: 2, suffix: 'KS' },
-                { word: "SCONE", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'E' },
-                { word: "DONUT", prefix: 'D', startIndex: 3, endIndex: 5, suffix: 'T' }
-            ]
+        // Daily level mapping - paste your converted mapping here
+        const dailyLevelMapping = {
+            "2025-12-19": 112,
+            "2025-12-20": 111,
+            "2025-12-21": 100,
+            "2025-12-22": 103,
+            "2025-12-23": 92,
+            "2025-12-24": 104,
+            "2025-12-25": 99,
+            "2025-12-26": 109,
+            "2025-12-27": 105,
+            "2025-12-28": 108,
+            "2025-12-29": 96,
+            "2025-12-30": 107,
+            "2025-12-31": 101,
+            "2026-01-01": 102,
+            "2026-01-02": 106,
+            "2026-01-03": 97,
+            "2026-01-04": 93,
+            "2026-01-05": 98,
+            "2026-01-06": 110,
+            "2026-01-07": 94,
+            "2026-01-08": 91,
+            "2026-01-09": 95,
+            "2026-01-10": 115,
+            "2026-01-11": 113,
+            "2026-01-12": 116,
+            "2026-01-13": 117,
+            "2026-01-14": 118,
+            "2026-01-15": 119,
+            "2026-01-16": 120,
+            "2026-01-17": 121,
+            "2026-01-18": 122,
+            "2026-01-19": 114,
+            "2026-01-20": 123,
+            "2026-01-21": 124,
+            "2026-01-22": 125,
+            "2026-01-23": 126,
+            "2026-01-24": 127,
+            "2026-01-25": 128,
+            "2026-01-26": 129,
+            "2026-01-27": 130,
+            "2026-01-28": 131,
+            "2026-01-29": 132,
+            "2026-01-30": 140,
+            "2026-01-31": 134,
+            "2026-02-01": 135,
+            "2026-02-02": 136,
+            "2026-02-03": 137,
+            "2026-02-04": 138,
+            "2026-02-05": 139,
+            "2026-02-06": 133,
+            "2026-02-07": 141,
+            "2026-02-08": 142,
+            "2026-02-09": 143,
+            "2026-02-10": 144,
+            "2026-02-11": 145,
+            "2026-02-12": 146,
+            "2026-02-13": 147,
+            "2026-02-14": 149,
+            "2026-02-15": 148,
+            "2026-02-16": 150,
+            "2026-02-17": 151,
+            "2026-02-18": 152,
+            "2026-02-19": 153,
+            "2026-02-20": 154,
+            "2026-02-21": 155,
+            "2026-02-22": 156,
+            "2026-02-23": 157,
+            "2026-02-24": 158,
+            "2026-02-25": 159,
+            "2026-02-26": 160,
+            "2026-02-27": 161,
+            "2026-02-28": 162,
+            "2026-03-01": 163,
+            "2026-03-02": 164,
+            "2026-03-03": 171,
+            "2026-03-04": 166,
+            "2026-03-05": 167,
+            "2026-03-06": 168,
+            "2026-03-07": 169,
+            "2026-03-08": 172,
+            "2026-03-09": 165,
+            "2026-03-10": 170,
+            "2026-03-11": 173,
+            "2026-03-12": 174,
+            "2026-03-13": 175,
+            "2026-03-14": 182,
+            "2026-03-15": 179,
+            "2026-03-16": 178,
+            "2026-03-17": 177,
+            "2026-03-18": 180,
+            "2026-03-19": 181,
+            "2026-03-20": 176,
+            "2026-03-21": 183,
+            "2026-03-22": 184,
+            "2026-03-23": 185,
+            "2026-03-24": 186,
+            "2026-03-25": 187,
+            "2026-03-26": 188,
+            "2026-03-27": 189,
+            "2026-03-28": 190,
+            "2026-03-29": 191,
+            "2026-03-30": 192,
+            "2026-03-31": 193,
         };
+
+        function getDailyKey(date = new Date()) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getDailyLevelId() {
+            const key = getDailyKey();
+            return dailyLevelMapping[key] || null;
+        }
+
+        function isDailyLevel(levelId) {
+            const dailyIds = new Set(Object.values(dailyLevelMapping));
+            return dailyIds.has(levelId);
+        }
+
+        // All levels data - you would add all your level definitions here
+const allLevels = {
+    1: {
+        id: 1,
+        word: 'DYNAMIC',
+        subwords: [
+            { word: "SYNC", prefix: 'S', startIndex: 1, endIndex: 2, suffix: 'C' },
+            { word: "SNAP", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'P' },
+            { word: "CLAMP", prefix: 'CL', startIndex: 3, endIndex: 4, suffix: 'P' },
+            { word: "SMILE", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'LE' }
+        ]
+    },
+    2: {
+        id: 2,
+        word: 'SATURATION',
+        subwords: [
+            { word: "MATURE", prefix: 'M', startIndex: 1, endIndex: 4, suffix: 'E' },
+            { word: "STUN", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'N' },
+            { word: "MURAL", prefix: 'M', startIndex: 3, endIndex: 5, suffix: 'L' },
+            { word: "WRATH", prefix: 'W', startIndex: 4, endIndex: 6, suffix: 'H' },
+            { word: "PATIOS", prefix: 'P', startIndex: 5, endIndex: 8, suffix: 'S' },
+            { word: "UNTIL", prefix: 'UN', startIndex: 6, endIndex: 7, suffix: 'L' }
+        ]
+    },
+    3: {
+        id: 3,
+        word: 'MAXIMUM',
+        subwords: [
+            { word: "TAXES", prefix: 'T', startIndex: 1, endIndex: 2, suffix: 'ES' },
+            { word: "EXIT", prefix: 'E', startIndex: 2, endIndex: 3, suffix: 'T' },
+            { word: "CHIME", prefix: 'CH', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "SMUG", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'G' }
+        ]
+    },
+    4: {
+        id: 4,
+        word: 'TECHNOLOGY',
+        subwords: [
+            { word: "NECK", prefix: 'N', startIndex: 1, endIndex: 2, suffix: 'K' },
+            { word: "ACHE", prefix: 'A', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "KNOW", prefix: 'K', startIndex: 4, endIndex: 5, suffix: 'W' },
+            { word: "COLOR", prefix: 'C', startIndex: 5, endIndex: 7, suffix: 'R' },
+            { word: "BLOGS", prefix: 'B', startIndex: 6, endIndex: 8, suffix: 'S' }
+        ]
+    },
+    5: {
+        id: 5,
+        word: 'PROFOUNDLY',
+        subwords: [
+            { word: "FROG", prefix: 'F', startIndex: 1, endIndex: 2, suffix: 'G' },
+            { word: "EFFORT", prefix: 'EF', startIndex: 3, endIndex: 4, suffix: 'RT' },
+            { word: "BOUNCE", prefix: 'B', startIndex: 4, endIndex: 6, suffix: 'CE' },
+            { word: "THUNDER", prefix: 'TH', startIndex: 5, endIndex: 7, suffix: 'ER' },
+            { word: "ODDLY", prefix: 'OD', startIndex: 7, endIndex: 8, suffix: 'Y' }
+        ]
+    },
+    6: {
+        id: 6,
+        word: 'UTOPIA',
+        subwords: [
+            { word: "STOCK", prefix: 'S', startIndex: 1, endIndex: 2, suffix: 'CK' },
+            { word: "HOPE", prefix: 'H', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "SPILL", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'LL' }
+        ]
+    },
+    7: {
+        id: 7,
+        word: 'NATURAL',
+        subwords: [
+            { word: "STATUS", prefix: 'ST', startIndex: 1, endIndex: 3, suffix: 'S' },
+            { word: "FUTURE", prefix: 'FU', startIndex: 2, endIndex: 4, suffix: 'E' },
+            { word: "BRAG", prefix: 'B', startIndex: 4, endIndex: 5, suffix: 'G' }
+        ]
+    },
+    8: {
+        id: 8,
+        word: 'CONTAINER',
+        subwords: [
+            { word: "DONE", prefix: 'D', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "ANTS", prefix: 'A', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "PETAL", prefix: 'PE', startIndex: 3, endIndex: 4, suffix: 'L' },
+            { word: "BRAINS", prefix: 'BR', startIndex: 4, endIndex: 6, suffix: 'S' },
+            { word: "FINED", prefix: 'F', startIndex: 5, endIndex: 7, suffix: 'D' }
+        ]
+    },
+    9: {
+        id: 9,
+        word: 'FRUSTRATE',
+        subwords: [
+            { word: "BRUSH", prefix: 'B', startIndex: 1, endIndex: 3, suffix: 'H' },
+            { word: "CUSTOM", prefix: 'C', startIndex: 2, endIndex: 4, suffix: 'OM' },
+            { word: "ASTRAL", prefix: 'A', startIndex: 3, endIndex: 6, suffix: 'L' },
+            { word: "INTRO", prefix: 'IN', startIndex: 4, endIndex: 5, suffix: 'O' },
+            { word: "STATIC", prefix: 'ST', startIndex: 6, endIndex: 7, suffix: 'IC' }
+        ]
+    },
+    10: {
+        id: 10,
+        word: 'STILLNESS',
+        subwords: [
+            { word: "ATTIC", prefix: 'AT', startIndex: 1, endIndex: 2, suffix: 'C' },
+            { word: "PILLS", prefix: 'P', startIndex: 2, endIndex: 4, suffix: 'S' },
+            { word: "WALNUT", prefix: 'WA', startIndex: 4, endIndex: 5, suffix: 'UT' },
+            { word: "KNEE", prefix: 'K', startIndex: 5, endIndex: 6, suffix: 'E' },
+            { word: "JEST", prefix: 'J', startIndex: 6, endIndex: 7, suffix: 'T' }
+        ]
+    },
+    11: {
+        id: 11,
+        word: 'SOULFUL',
+        subwords: [
+            { word: "ROUND", prefix: 'R', startIndex: 1, endIndex: 2, suffix: 'ND' },
+            { word: "SULFUR", prefix: 'S', startIndex: 2, endIndex: 5, suffix: 'R' },
+            { word: "GOLFS", prefix: 'GO', startIndex: 3, endIndex: 4, suffix: 'S' }
+        ]
+    },
+    12: {
+        id: 12,
+        word: 'COMPLEXITY',
+        subwords: [
+            { word: "COMB", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'B' },
+            { word: "PUMPS", prefix: 'PU', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "APPLY", prefix: 'AP', startIndex: 3, endIndex: 4, suffix: 'Y' },
+            { word: "FLEXED", prefix: 'F', startIndex: 4, endIndex: 6, suffix: 'ED' },
+            { word: "COEXIST", prefix: 'CO', startIndex: 5, endIndex: 7, suffix: 'ST' },
+            { word: "BITE", prefix: 'B', startIndex: 7, endIndex: 8, suffix: 'E' }
+        ]
+    },
+    13: {
+        id: 13,
+        word: 'SATISFACTORY',
+        subwords: [
+            { word: "RATE", prefix: 'R', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "STICK", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'CK' },
+            { word: "WISH", prefix: 'W', startIndex: 3, endIndex: 4, suffix: 'H' },
+            { word: "MISFIT", prefix: 'MI', startIndex: 4, endIndex: 5, suffix: 'IT' },
+            { word: "SAFARI", prefix: 'SA', startIndex: 5, endIndex: 6, suffix: 'RI' },
+            { word: "LACTOSE", prefix: 'L', startIndex: 6, endIndex: 9, suffix: 'SE' },
+            { word: "CACTI", prefix: 'CA', startIndex: 7, endIndex: 8, suffix: 'I' },
+            { word: "CORD", prefix: 'C', startIndex: 9, endIndex: 10, suffix: 'D' }
+        ]
+    },
+    14: {
+        id: 14,
+        word: 'MULTIFUNCTIONAL',
+        subwords: [
+            { word: "FULL", prefix: 'F', startIndex: 1, endIndex: 2, suffix: 'L' },
+            { word: "ALTER", prefix: 'A', startIndex: 2, endIndex: 3, suffix: 'ER' },
+            { word: "STIFF", prefix: 'S', startIndex: 3, endIndex: 5, suffix: 'F' },
+            { word: "REFUND", prefix: 'RE', startIndex: 5, endIndex: 7, suffix: 'D' },
+            { word: "PUNCH", prefix: 'P', startIndex: 6, endIndex: 8, suffix: 'H' },
+            { word: "ACTIONS", prefix: 'A', startIndex: 8, endIndex: 12, suffix: 'S' },
+            { word: "RATING", prefix: 'RA', startIndex: 9, endIndex: 10, suffix: 'NG' },
+            { word: "RIOT", prefix: 'R', startIndex: 10, endIndex: 11, suffix: 'T' },
+            { word: "SONAR", prefix: 'S', startIndex: 11, endIndex: 13, suffix: 'R' }
+        ]
+    },
+    15: {
+        id: 15,
+        word: 'KALEIDOSCOPE',
+        subwords: [
+            { word: "MALE", prefix: 'M', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "FLEW", prefix: 'F', startIndex: 2, endIndex: 3, suffix: 'W' },
+            { word: "VEIN", prefix: 'V', startIndex: 3, endIndex: 4, suffix: 'N' },
+            { word: "WIDOW", prefix: 'W', startIndex: 4, endIndex: 6, suffix: 'W' },
+            { word: "MUSCLE", prefix: 'MU', startIndex: 7, endIndex: 8, suffix: 'LE' },
+            { word: "ICON", prefix: 'I', startIndex: 8, endIndex: 9, suffix: 'N' },
+            { word: "ADOPT", prefix: 'AD', startIndex: 9, endIndex: 10, suffix: 'T' }
+        ]
+    },
+    16: {
+        id: 16,
+        word: 'INTERACTIVE',
+        subwords: [
+            { word: "ONTO", prefix: 'O', startIndex: 1, endIndex: 2, suffix: 'O' },
+            { word: "ITERATE", prefix: 'I', startIndex: 2, endIndex: 5, suffix: 'TE' },
+            { word: "THERE", prefix: 'TH', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "BACK", prefix: 'B', startIndex: 5, endIndex: 6, suffix: 'K' },
+            { word: "FACTOR", prefix: 'FA', startIndex: 6, endIndex: 7, suffix: 'OR' },
+            { word: "SATIN", prefix: 'SA', startIndex: 7, endIndex: 8, suffix: 'N' },
+            { word: "JIVE", prefix: 'J', startIndex: 8, endIndex: 9, suffix: 'E' }
+        ]
+    },
+    17: {
+        id: 17,
+        word: 'ETHEREAL',
+        subwords: [
+            { word: "PATHS", prefix: 'PA', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "CHERRY", prefix: 'C', startIndex: 2, endIndex: 4, suffix: 'RY' },
+            { word: "BERET", prefix: 'B', startIndex: 3, endIndex: 5, suffix: 'T' },
+            { word: "DREAM", prefix: 'D', startIndex: 4, endIndex: 6, suffix: 'M' }
+        ]
+    },
+    18: {
+        id: 18,
+        word: 'EMBEZZLE',
+        subwords: [
+            { word: "BOMBS", prefix: 'BO', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "AMBER", prefix: 'AM', startIndex: 2, endIndex: 3, suffix: 'R' },
+            { word: "BEZEL", prefix: 'B', startIndex: 3, endIndex: 4, suffix: 'EL' },
+            { word: "JAZZED", prefix: 'JA', startIndex: 4, endIndex: 5, suffix: 'ED' }
+        ]
+    },
+    19: {
+        id: 19,
+        word: 'TECHNIQUE',
+        subwords: [
+            { word: "DECK", prefix: 'D', startIndex: 1, endIndex: 2, suffix: 'K' },
+            { word: "MOCHA", prefix: 'MO', startIndex: 2, endIndex: 3, suffix: 'A' },
+            { word: "SNIDE", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'DE' },
+            { word: "PIQUE", prefix: 'P', startIndex: 5, endIndex: 6, suffix: 'UE' },
+            { word: "SQUAT", prefix: 'S', startIndex: 6, endIndex: 7, suffix: 'AT' }
+        ]
+    },
+    20: {
+        id: 20,
+        word: 'IMAGINATION',
+        subwords: [
+            { word: "SMALL", prefix: 'S', startIndex: 1, endIndex: 2, suffix: 'LL' },
+            { word: "MAGIC", prefix: 'M', startIndex: 2, endIndex: 4, suffix: 'C' },
+            { word: "AGING", prefix: 'A', startIndex: 3, endIndex: 5, suffix: 'G' },
+            { word: "FINAL", prefix: 'F', startIndex: 4, endIndex: 6, suffix: 'L' },
+            { word: "ORNATE", prefix: 'OR', startIndex: 5, endIndex: 7, suffix: 'E' },
+            { word: "BOATING", prefix: 'BO', startIndex: 6, endIndex: 8, suffix: 'NG' },
+            { word: "IDIOT", prefix: 'ID', startIndex: 8, endIndex: 9, suffix: 'T' }
+        ]
+    },
+    21: {
+        id: 21,
+        word: 'GRASSHOPPER',
+        subwords: [
+            { word: "TRASH", prefix: 'T', startIndex: 1, endIndex: 3, suffix: 'H' },
+            { word: "LASSO", prefix: 'L', startIndex: 2, endIndex: 4, suffix: 'O' },
+            { word: "ASHEN", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'EN' },
+            { word: "PHOTO", prefix: 'P', startIndex: 5, endIndex: 6, suffix: 'TO' },
+            { word: "CROPS", prefix: 'CR', startIndex: 6, endIndex: 7, suffix: 'S' },
+            { word: "APPS", prefix: 'A', startIndex: 7, endIndex: 8, suffix: 'S' },
+            { word: "HOPED", prefix: 'HO', startIndex: 8, endIndex: 9, suffix: 'D' }
+        ]
+    },
+    22: {
+        id: 22,
+        word: 'VALEDICTORIAN',
+        subwords: [
+            { word: "TALENT", prefix: 'T', startIndex: 1, endIndex: 3, suffix: 'NT' },
+            { word: "HEDGE", prefix: 'H', startIndex: 3, endIndex: 4, suffix: 'GE' },
+            { word: "ADDICTS", prefix: 'AD', startIndex: 4, endIndex: 7, suffix: 'S' },
+            { word: "RICE", prefix: 'R', startIndex: 5, endIndex: 6, suffix: 'E' },
+            { word: "STORE", prefix: 'S', startIndex: 7, endIndex: 9, suffix: 'E' },
+            { word: "DRIP", prefix: 'D', startIndex: 9, endIndex: 10, suffix: 'P' },
+            { word: "ALIAS", prefix: 'AL', startIndex: 10, endIndex: 11, suffix: 'S' }
+        ]
+    },
+    23: {
+        id: 23,
+        word: 'SYMMETRIC',
+        subwords: [
+            { word: "HYMN", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'N' },
+            { word: "AMMO", prefix: 'A', startIndex: 2, endIndex: 3, suffix: 'O' },
+            { word: "WOMEN", prefix: 'WO', startIndex: 3, endIndex: 4, suffix: 'N' },
+            { word: "BETRAY", prefix: 'B', startIndex: 4, endIndex: 6, suffix: 'AY' },
+            { word: "STRIDE", prefix: 'S', startIndex: 5, endIndex: 7, suffix: 'DE' }
+        ]
+    },
+    24: {
+        id: 24,
+        word: 'PRECALCULUS',
+        subwords: [
+            { word: "TREE", prefix: 'T', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "DECAY", prefix: 'D', startIndex: 2, endIndex: 4, suffix: 'Y' },
+            { word: "BALL", prefix: 'B', startIndex: 4, endIndex: 5, suffix: 'L' },
+            { word: "BELCH", prefix: 'BE', startIndex: 5, endIndex: 6, suffix: 'H' },
+            { word: "MUCUS", prefix: 'MU', startIndex: 6, endIndex: 7, suffix: 'S' },
+            { word: "GULF", prefix: 'G', startIndex: 7, endIndex: 8, suffix: 'F' },
+            { word: "CLUMP", prefix: 'C', startIndex: 8, endIndex: 9, suffix: 'MP' }
+        ]
+    },
+    25: {
+        id: 25,
+        word: 'COMPETITIVE',
+        subwords: [
+            { word: "ROMPER", prefix: 'R', startIndex: 1, endIndex: 4, suffix: 'R' },
+            { word: "LIMPS", prefix: 'LI', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "IMPETUS", prefix: 'IM', startIndex: 3, endIndex: 5, suffix: 'US' },
+            { word: "STILL", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'LL' },
+            { word: "KITE", prefix: 'K', startIndex: 6, endIndex: 7, suffix: 'E' },
+            { word: "STING", prefix: 'S', startIndex: 7, endIndex: 8, suffix: 'NG' },
+            { word: "ALIVE", prefix: 'AL', startIndex: 8, endIndex: 9, suffix: 'E' }
+        ]
+    },
+    26: {
+        id: 26,
+        word: 'WATERMELON',
+        subwords: [
+            { word: "CATERED", prefix: 'C', startIndex: 1, endIndex: 4, suffix: 'ED' },
+            { word: "STEAK", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'AK' },
+            { word: "HARMS", prefix: 'HA', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "OMEN", prefix: 'O', startIndex: 5, endIndex: 6, suffix: 'N' },
+            { word: "BELT", prefix: 'B', startIndex: 6, endIndex: 7, suffix: 'T' },
+            { word: "GLOW", prefix: 'G', startIndex: 7, endIndex: 8, suffix: 'W' }
+        ]
+    },
+    27: {
+        id: 27,
+        word: 'ZOOLOGIST',
+        subwords: [
+            { word: "BOOT", prefix: 'B', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "COLON", prefix: 'C', startIndex: 2, endIndex: 4, suffix: 'N' },
+            { word: "SLOGAN", prefix: 'S', startIndex: 3, endIndex: 5, suffix: 'AN' },
+            { word: "LOGIC", prefix: 'L', startIndex: 4, endIndex: 6, suffix: 'C' },
+            { word: "RAISIN", prefix: 'RA', startIndex: 6, endIndex: 7, suffix: 'IN' }
+        ]
+    },
+    28: {
+        id: 28,
+        word: 'RAINFOREST',
+        subwords: [
+            { word: "GAIT", prefix: 'G', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "PINCH", prefix: 'P', startIndex: 2, endIndex: 3, suffix: 'CH' },
+            { word: "UNFOLD", prefix: 'U', startIndex: 3, endIndex: 5, suffix: 'LD' },
+            { word: "BEFORE", prefix: 'BE', startIndex: 4, endIndex: 6, suffix: 'E' },
+            { word: "BREAD", prefix: 'B', startIndex: 6, endIndex: 7, suffix: 'AD' },
+            { word: "GUESS", prefix: 'GU', startIndex: 7, endIndex: 8, suffix: 'S' }
+        ]
+    },
+    29: {
+        id: 29,
+        word: 'DELIGHTFUL',
+        subwords: [
+            { word: "JELLY", prefix: 'J', startIndex: 1, endIndex: 2, suffix: 'LY' },
+            { word: "SLICE", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'CE' },
+            { word: "FIGHTER", prefix: 'F', startIndex: 3, endIndex: 6, suffix: 'ER' },
+            { word: "HIGHS", prefix: 'HI', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "OUTFIT", prefix: 'OU', startIndex: 6, endIndex: 7, suffix: 'IT' },
+            { word: "REFUSE", prefix: 'RE', startIndex: 7, endIndex: 8, suffix: 'SE' }
+        ]
+    },
+    30: {
+        id: 30,
+        word: 'POSITIVE',
+        subwords: [
+            { word: "LOSS", prefix: 'L', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "ASIDE", prefix: 'A', startIndex: 2, endIndex: 3, suffix: 'DE' },
+            { word: "PITCH", prefix: 'P', startIndex: 3, endIndex: 4, suffix: 'CH' },
+            { word: "ANTIC", prefix: 'AN', startIndex: 4, endIndex: 5, suffix: 'C' },
+            { word: "DIVA", prefix: 'D', startIndex: 5, endIndex: 6, suffix: 'A' }
+        ]
+    },
+    31: {
+        id: 31,
+        word: 'WATERCOLOR',
+        subwords: [
+            { word: "LATERAL", prefix: 'L', startIndex: 1, endIndex: 4, suffix: 'AL' },
+            { word: "STEM", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'M' },
+            { word: "MERCH", prefix: 'M', startIndex: 3, endIndex: 5, suffix: 'H' },
+            { word: "SCOOP", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'OP' },
+            { word: "GOLD", prefix: 'G', startIndex: 6, endIndex: 7, suffix: 'D' },
+            { word: "CLOWN", prefix: 'C', startIndex: 7, endIndex: 8, suffix: 'WN' }
+        ]
+    },
+    32: {
+        id: 32,
+        word: 'APPENDIX',
+        subwords: [
+            { word: "CAPPED", prefix: 'CA', startIndex: 1, endIndex: 3, suffix: 'D' },
+            { word: "OPENER", prefix: 'O', startIndex: 2, endIndex: 4, suffix: 'ER' },
+            { word: "BLENDS", prefix: 'BL', startIndex: 3, endIndex: 5, suffix: 'S' },
+            { word: "AUDIT", prefix: 'AU', startIndex: 5, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    33: {
+        id: 33,
+        word: 'LIPSTICK',
+        subwords: [
+            { word: "HIPPO", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'PO' },
+            { word: "TIPSY", prefix: 'TI', startIndex: 2, endIndex: 3, suffix: 'Y' },
+            { word: "JUSTICE", prefix: 'JU', startIndex: 3, endIndex: 6, suffix: 'E' },
+            { word: "STIR", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'R' }
+        ]
+    },
+    34: {
+        id: 34,
+        word: 'STARSHIP',
+        subwords: [
+            { word: "STARCH", prefix: 'S', startIndex: 1, endIndex: 3, suffix: 'CH' },
+            { word: "SPARSE", prefix: 'SP', startIndex: 2, endIndex: 4, suffix: 'E' },
+            { word: "USHER", prefix: 'U', startIndex: 4, endIndex: 5, suffix: 'ER' },
+            { word: "THIN", prefix: 'T', startIndex: 5, endIndex: 6, suffix: 'N' }
+        ]
+    },
+    35: {
+        id: 35,
+        word: 'TOMORROW',
+        subwords: [
+            { word: "DOOMED", prefix: 'DO', startIndex: 1, endIndex: 2, suffix: 'ED' },
+            { word: "SMOKE", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'KE' },
+            { word: "TORN", prefix: 'T', startIndex: 3, endIndex: 4, suffix: 'N' },
+            { word: "CARROT", prefix: 'CA', startIndex: 4, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    36: {
+        id: 36,
+        word: 'KICKOFF',
+        subwords: [
+            { word: "FLICKED", prefix: 'FL', startIndex: 1, endIndex: 3, suffix: 'ED' },
+            { word: "GECKOS", prefix: 'GE', startIndex: 2, endIndex: 4, suffix: 'S' },
+            { word: "SOFT", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'T' }
+        ]
+    },
+    37: {
+        id: 37,
+        word: 'GLORIOUS',
+        subwords: [
+            { word: "SLOT", prefix: 'S', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "BORING", prefix: 'B', startIndex: 2, endIndex: 4, suffix: 'NG' },
+            { word: "VIOLA", prefix: 'V', startIndex: 4, endIndex: 5, suffix: 'LA' },
+            { word: "ABOUT", prefix: 'AB', startIndex: 5, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    38: {
+        id: 38,
+        word: 'MACARONI',
+        subwords: [
+            { word: "TACKY", prefix: 'T', startIndex: 1, endIndex: 2, suffix: 'KY' },
+            { word: "ESCAPE", prefix: 'ES', startIndex: 2, endIndex: 3, suffix: 'PE' },
+            { word: "BARONS", prefix: 'B', startIndex: 3, endIndex: 6, suffix: 'S' },
+            { word: "GROSS", prefix: 'G', startIndex: 4, endIndex: 5, suffix: 'SS' }
+        ]
+    },
+    39: {
+        id: 39,
+        word: 'QUARTET',
+        subwords: [
+            { word: "SUAVE", prefix: 'S', startIndex: 1, endIndex: 2, suffix: 'VE' },
+            { word: "CARE", prefix: 'C', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "ARTSY", prefix: 'A', startIndex: 3, endIndex: 4, suffix: 'SY' },
+            { word: "ENTER", prefix: 'EN', startIndex: 4, endIndex: 5, suffix: 'R' }
+        ]
+    },
+    40: {
+        id: 40,
+        word: 'VAMPIRE',
+        subwords: [
+            { word: "CAMPS", prefix: 'C', startIndex: 1, endIndex: 3, suffix: 'S' },
+            { word: "UMPIRE", prefix: 'U', startIndex: 2, endIndex: 5, suffix: 'E' },
+            { word: "ALPINE", prefix: 'AL', startIndex: 3, endIndex: 4, suffix: 'NE' }
+        ]
+    },
+    41: {
+        id: 41,
+        word: 'HAPPIEST',
+        subwords: [
+            { word: "CAPE", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "HOPPING", prefix: 'HO', startIndex: 2, endIndex: 4, suffix: 'NG' },
+            { word: "SPIES", prefix: 'S', startIndex: 3, endIndex: 5, suffix: 'S' },
+            { word: "GUEST", prefix: 'GU', startIndex: 5, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    42: {
+        id: 42,
+        word: 'JELLYFISH',
+        subwords: [
+            { word: "MELT", prefix: 'M', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "BELLS", prefix: 'BE', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "FLYER", prefix: 'F', startIndex: 3, endIndex: 4, suffix: 'ER' },
+            { word: "JOYFUL", prefix: 'JO', startIndex: 4, endIndex: 5, suffix: 'UL' },
+            { word: "OFFICE", prefix: 'OF', startIndex: 5, endIndex: 6, suffix: 'CE' },
+            { word: "MISS", prefix: 'M', startIndex: 6, endIndex: 7, suffix: 'S' }
+        ]
+    },
+    43: {
+        id: 43,
+        word: 'BLACKJACK',
+        subwords: [
+            { word: "CLAM", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'M' },
+            { word: "LACE", prefix: 'L', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "KICKS", prefix: 'KI', startIndex: 3, endIndex: 4, suffix: 'S' },
+            { word: "INKJET", prefix: 'IN', startIndex: 4, endIndex: 5, suffix: 'ET' },
+            { word: "HIJACK", prefix: 'HI', startIndex: 5, endIndex: 6, suffix: 'CK' },
+            { word: "TRACE", prefix: 'TR', startIndex: 6, endIndex: 7, suffix: 'E' }
+        ]
+    },
+    44: {
+        id: 44,
+        word: 'GINGERBREAD',
+        subwords: [
+            { word: "FINGERS", prefix: 'F', startIndex: 1, endIndex: 5, suffix: 'S' },
+            { word: "RANGED", prefix: 'RA', startIndex: 2, endIndex: 4, suffix: 'D' },
+            { word: "HARBOR", prefix: 'HA', startIndex: 5, endIndex: 6, suffix: 'OR' },
+            { word: "COBRA", prefix: 'CO', startIndex: 6, endIndex: 7, suffix: 'A' },
+            { word: "GREEN", prefix: 'G', startIndex: 7, endIndex: 8, suffix: 'EN' },
+            { word: "SEAT", prefix: 'S', startIndex: 8, endIndex: 9, suffix: 'T' }
+        ]
+    },
+    45: {
+        id: 45,
+        word: 'RASPBERRY',
+        subwords: [
+            { word: "MASS", prefix: 'M', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "GOSPEL", prefix: 'GO', startIndex: 2, endIndex: 3, suffix: 'EL' },
+            { word: "UPBEAT", prefix: 'U', startIndex: 3, endIndex: 5, suffix: 'AT' },
+            { word: "FIBERS", prefix: 'FI', startIndex: 4, endIndex: 6, suffix: 'S' },
+            { word: "PURRED", prefix: 'PU', startIndex: 6, endIndex: 7, suffix: 'ED' }
+        ]
+    },
+    46: {
+        id: 46,
+        word: 'SPORTSMANSHIP',
+        subwords: [
+            { word: "REPORTED", prefix: 'RE', startIndex: 1, endIndex: 4, suffix: 'ED' },
+            { word: "FORK", prefix: 'F', startIndex: 2, endIndex: 3, suffix: 'K' },
+            { word: "ANTSY", prefix: 'AN', startIndex: 4, endIndex: 5, suffix: 'Y' },
+            { word: "DISMAL", prefix: 'DI', startIndex: 5, endIndex: 7, suffix: 'L' },
+            { word: "WANT", prefix: 'W', startIndex: 7, endIndex: 8, suffix: 'T' },
+            { word: "TENSE", prefix: 'TE', startIndex: 8, endIndex: 9, suffix: 'E' },
+            { word: "GUSHES", prefix: 'GU', startIndex: 9, endIndex: 10, suffix: 'ES' },
+            { word: "CHIN", prefix: 'C', startIndex: 10, endIndex: 11, suffix: 'N' }
+        ]
+    },
+    47: {
+        id: 47,
+        word: 'PHOTOSYNTHESIS',
+        subwords: [
+            { word: "WHOOP", prefix: 'W', startIndex: 1, endIndex: 2, suffix: 'OP' },
+            { word: "MOTOR", prefix: 'M', startIndex: 2, endIndex: 4, suffix: 'R' },
+            { word: "BOOST", prefix: 'BO', startIndex: 4, endIndex: 5, suffix: 'T' },
+            { word: "PSYCH", prefix: 'P', startIndex: 5, endIndex: 6, suffix: 'CH' },
+            { word: "CYNIC", prefix: 'C', startIndex: 6, endIndex: 7, suffix: 'IC' },
+            { word: "MINTY", prefix: 'MI', startIndex: 7, endIndex: 8, suffix: 'Y' },
+            { word: "OTHER", prefix: 'O', startIndex: 8, endIndex: 10, suffix: 'R' },
+            { word: "CHESS", prefix: 'C', startIndex: 9, endIndex: 11, suffix: 'S' },
+            { word: "MUSIC", prefix: 'MU', startIndex: 11, endIndex: 12, suffix: 'C' }
+        ]
+    },
+    48: {
+        id: 48,
+        word: 'OTHERWORLDLY',
+        subwords: [
+            { word: "ETHOS", prefix: 'E', startIndex: 1, endIndex: 2, suffix: 'OS' },
+            { word: "CHEEK", prefix: 'C', startIndex: 2, endIndex: 3, suffix: 'EK' },
+            { word: "NERD", prefix: 'N', startIndex: 3, endIndex: 4, suffix: 'D' },
+            { word: "AIRWAY", prefix: 'AI', startIndex: 4, endIndex: 5, suffix: 'AY' },
+            { word: "SWORD", prefix: 'S', startIndex: 5, endIndex: 7, suffix: 'D' },
+            { word: "POORLY", prefix: 'PO', startIndex: 6, endIndex: 8, suffix: 'Y' },
+            { word: "OLDEN", prefix: 'O', startIndex: 8, endIndex: 9, suffix: 'EN' },
+            { word: "LADLE", prefix: 'LA', startIndex: 9, endIndex: 10, suffix: 'E' }
+        ]
+    },
+    49: {
+        id: 49,
+        word: 'XYLOPHONE',
+        subwords: [
+            { word: "SHYLY", prefix: 'SH', startIndex: 1, endIndex: 2, suffix: 'Y' },
+            { word: "CLOG", prefix: 'C', startIndex: 2, endIndex: 3, suffix: 'G' },
+            { word: "MOPE", prefix: 'M', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "APHID", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'ID' },
+            { word: "SCHOOL", prefix: 'SC', startIndex: 5, endIndex: 6, suffix: 'OL' },
+            { word: "GONE", prefix: 'G', startIndex: 6, endIndex: 7, suffix: 'E' }
+        ]
+    },
+    50: {
+        id: 50,
+        word: 'CONGRATULATIONS',
+        subwords: [
+            { word: "HONK", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'K' },
+            { word: "INGRAIN", prefix: 'I', startIndex: 2, endIndex: 5, suffix: 'IN' },
+            { word: "OGRE", prefix: 'O', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "GRATES", prefix: 'G', startIndex: 4, endIndex: 6, suffix: 'ES' },
+            { word: "STUFF", prefix: 'S', startIndex: 6, endIndex: 7, suffix: 'FF' },
+            { word: "PULP", prefix: 'P', startIndex: 7, endIndex: 8, suffix: 'P' },
+            { word: "PLATE", prefix: 'P', startIndex: 8, endIndex: 10, suffix: 'E' },
+            { word: "DATING", prefix: 'D', startIndex: 9, endIndex: 11, suffix: 'NG' },
+            { word: "PRIOR", prefix: 'PR', startIndex: 11, endIndex: 12, suffix: 'R' },
+            { word: "ALONE", prefix: 'AL', startIndex: 12, endIndex: 13, suffix: 'E' }
+        ]
+    },
+    51: {
+        id: 51,
+        word: 'UNICORN',
+        subwords: [
+            { word: "KNIT", prefix: 'K', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "CLICK", prefix: 'CL', startIndex: 2, endIndex: 3, suffix: 'K' },
+            { word: "SCORE", prefix: 'S', startIndex: 3, endIndex: 5, suffix: 'E' }
+        ]
+    },
+    52: {
+        id: 52,
+        word: 'BURRITO',
+        subwords: [
+            { word: "HURRIES", prefix: 'H', startIndex: 1, endIndex: 4, suffix: 'ES' },
+            { word: "MERRY", prefix: 'ME', startIndex: 2, endIndex: 3, suffix: 'Y' },
+            { word: "STITCH", prefix: 'ST', startIndex: 4, endIndex: 5, suffix: 'CH' }
+        ]
+    },
+    53: {
+        id: 53,
+        word: 'CHAOTIC',
+        subwords: [
+            { word: "WHAT", prefix: 'W', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "BROTH", prefix: 'BR', startIndex: 3, endIndex: 4, suffix: 'H' },
+            { word: "ACTION", prefix: 'AC', startIndex: 4, endIndex: 5, suffix: 'ON' }
+        ]
+    },
+    54: {
+        id: 54,
+        word: 'OVERLAP',
+        subwords: [
+            { word: "SAVED", prefix: 'SA', startIndex: 1, endIndex: 2, suffix: 'D' },
+            { word: "WHERE", prefix: 'WH', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "CURLY", prefix: 'CU', startIndex: 3, endIndex: 4, suffix: 'Y' },
+            { word: "GLAD", prefix: 'G', startIndex: 4, endIndex: 5, suffix: 'D' }
+        ]
+    },
+    55: {
+        id: 55,
+        word: 'VINEYARD',
+        subwords: [
+            { word: "TWINS", prefix: 'TW', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "SNEAK", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'AK' },
+            { word: "LOYAL", prefix: 'LO', startIndex: 4, endIndex: 5, suffix: 'L' },
+            { word: "CHARGE", prefix: 'CH', startIndex: 5, endIndex: 6, suffix: 'GE' }
+        ]
+    },
+    56: {
+        id: 56,
+        word: 'LEGENDARY',
+        subwords: [
+            { word: "REGAL", prefix: 'R', startIndex: 1, endIndex: 2, suffix: 'AL' },
+            { word: "EGGED", prefix: 'EG', startIndex: 2, endIndex: 3, suffix: 'D' },
+            { word: "TENT", prefix: 'T', startIndex: 3, endIndex: 4, suffix: 'T' },
+            { word: "UNDO", prefix: 'U', startIndex: 4, endIndex: 5, suffix: 'O' },
+            { word: "TODAY", prefix: 'TO', startIndex: 5, endIndex: 6, suffix: 'Y' },
+            { word: "DARE", prefix: 'D', startIndex: 6, endIndex: 7, suffix: 'E' }
+        ]
+    },
+    57: {
+        id: 57,
+        word: 'YOUTHFUL',
+        subwords: [
+            { word: "MOUTHFUL", prefix: 'M', startIndex: 1, endIndex: 6, suffix: 'L' },
+            { word: "TRUTH", prefix: 'TR', startIndex: 2, endIndex: 3, suffix: 'H' },
+            { word: "MOTHER", prefix: 'MO', startIndex: 3, endIndex: 4, suffix: 'ER' }
+        ]
+    },
+    58: {
+        id: 58,
+        word: 'ANNIVERSARY',
+        subwords: [
+            { word: "BUNNY", prefix: 'BU', startIndex: 1, endIndex: 2, suffix: 'Y' },
+            { word: "SNIP", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'P' },
+            { word: "HIVE", prefix: 'H', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "EVERY", prefix: 'E', startIndex: 4, endIndex: 6, suffix: 'Y' },
+            { word: "JERSEY", prefix: 'J', startIndex: 5, endIndex: 7, suffix: 'EY' },
+            { word: "ESSAY", prefix: 'ES', startIndex: 7, endIndex: 8, suffix: 'Y' },
+            { word: "SHARE", prefix: 'SH', startIndex: 8, endIndex: 9, suffix: 'E' }
+        ]
+    },
+    59: {
+        id: 59,
+        word: 'MYSTICAL',
+        subwords: [
+            { word: "CYST", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "VASTLY", prefix: 'VA', startIndex: 2, endIndex: 3, suffix: 'LY' },
+            { word: "STINK", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'NK' },
+            { word: "DICE", prefix: 'D', startIndex: 4, endIndex: 5, suffix: 'E' },
+            { word: "SCARE", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'RE' }
+        ]
+    },
+    60: {
+        id: 60,
+        word: 'EQUATION',
+        subwords: [
+            { word: "AQUA", prefix: 'A', startIndex: 1, endIndex: 2, suffix: 'A' },
+            { word: "GUARD", prefix: 'G', startIndex: 2, endIndex: 3, suffix: 'RD' },
+            { word: "STATE", prefix: 'ST', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "GATING", prefix: 'GA', startIndex: 4, endIndex: 5, suffix: 'NG' },
+            { word: "AIOLI", prefix: 'A', startIndex: 5, endIndex: 6, suffix: 'LI' }
+        ]
+    },
+    61: {
+        id: 61,
+        word: 'EMOTIONAL',
+        subwords: [
+            { word: "SMOKY", prefix: 'S', startIndex: 1, endIndex: 2, suffix: 'KY' },
+            { word: "ROOTS", prefix: 'RO', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "RATIONS", prefix: 'RA', startIndex: 3, endIndex: 6, suffix: 'S' },
+            { word: "AXIOM", prefix: 'AX', startIndex: 4, endIndex: 5, suffix: 'M' },
+            { word: "SNARE", prefix: 'S', startIndex: 6, endIndex: 7, suffix: 'RE' }
+        ]
+    },
+    62: {
+        id: 62,
+        word: 'RESPONSIBLE',
+        subwords: [
+            { word: "CHEST", prefix: 'CH', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "WASPS", prefix: 'WA', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "SPOON", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'ON' },
+            { word: "MONEY", prefix: 'M', startIndex: 4, endIndex: 5, suffix: 'EY' },
+            { word: "BONSAI", prefix: 'BO', startIndex: 5, endIndex: 6, suffix: 'AI' },
+            { word: "BASIC", prefix: 'BA', startIndex: 6, endIndex: 7, suffix: 'C' },
+            { word: "VIBE", prefix: 'V', startIndex: 7, endIndex: 8, suffix: 'E' },
+            { word: "ABLE", prefix: 'A', startIndex: 8, endIndex: 9, suffix: 'E' }
+        ]
+    },
+    63: {
+        id: 63,
+        word: 'EVERYDAY',
+        subwords: [
+            { word: "WOVEN", prefix: 'WO', startIndex: 1, endIndex: 2, suffix: 'N' },
+            { word: "HERON", prefix: 'H', startIndex: 2, endIndex: 3, suffix: 'ON' },
+            { word: "DRYLY", prefix: 'D', startIndex: 3, endIndex: 4, suffix: 'LY' },
+            { word: "PAYDAY", prefix: 'PA', startIndex: 4, endIndex: 6, suffix: 'Y' }
+        ]
+    },
+    64: {
+        id: 64,
+        word: 'PRINCESS',
+        subwords: [
+            { word: "GRIND", prefix: 'G', startIndex: 1, endIndex: 3, suffix: 'D' },
+            { word: "MINCE", prefix: 'M', startIndex: 2, endIndex: 4, suffix: 'E' },
+            { word: "CONCERT", prefix: 'CO', startIndex: 3, endIndex: 5, suffix: 'RT' },
+            { word: "GEESE", prefix: 'GE', startIndex: 5, endIndex: 6, suffix: 'E' }
+        ]
+    },
+    65: {
+        id: 65,
+        word: 'ANTEATER',
+        subwords: [
+            { word: "WANTED", prefix: 'WA', startIndex: 1, endIndex: 3, suffix: 'D' },
+            { word: "STEAMY", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'MY' },
+            { word: "BREATH", prefix: 'BR', startIndex: 3, endIndex: 5, suffix: 'H' },
+            { word: "STEEP", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'EP' }
+        ]
+    },
+    66: {
+        id: 66,
+        word: 'PLATYPUS',
+        subwords: [
+            { word: "CLAY", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'Y' },
+            { word: "CRATE", prefix: 'CR', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "STYE", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "HYPER", prefix: 'H', startIndex: 4, endIndex: 5, suffix: 'ER' },
+            { word: "SPUN", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'N' }
+        ]
+    },
+    67: {
+        id: 67,
+        word: 'COMPUTER',
+        subwords: [
+            { word: "COME", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "PAMPER", prefix: 'PA', startIndex: 2, endIndex: 3, suffix: 'ER' },
+            { word: "SPUNK", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'NK' },
+            { word: "FLUTES", prefix: 'FL', startIndex: 4, endIndex: 6, suffix: 'S' }
+        ]
+    },
+    68: {
+        id: 68,
+        word: 'SHIPWRECK',
+        subwords: [
+            { word: "THING", prefix: 'T', startIndex: 1, endIndex: 2, suffix: 'NG' },
+            { word: "SWIPE", prefix: 'SW', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "DOWRY", prefix: 'DO', startIndex: 4, endIndex: 5, suffix: 'Y' },
+            { word: "STREET", prefix: 'ST', startIndex: 5, endIndex: 6, suffix: 'ET' },
+            { word: "PIECE", prefix: 'PI', startIndex: 6, endIndex: 7, suffix: 'E' }
+        ]
+    },
+    69: {
+        id: 69,
+        word: 'EYEGLASSES',
+        subwords: [
+            { word: "SHYER", prefix: 'SH', startIndex: 1, endIndex: 2, suffix: 'R' },
+            { word: "PEGS", prefix: 'P', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "EAGLE", prefix: 'EA', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "CLASSY", prefix: 'C', startIndex: 4, endIndex: 7, suffix: 'Y' },
+            { word: "GRASS", prefix: 'GR', startIndex: 5, endIndex: 6, suffix: 'S' },
+            { word: "LOSER", prefix: 'LO', startIndex: 7, endIndex: 8, suffix: 'R' }
+        ]
+    },
+    70: {
+        id: 70,
+        word: 'SCHOLARSHIP',
+        subwords: [
+            { word: "ETCHED", prefix: 'ET', startIndex: 1, endIndex: 2, suffix: 'ED' },
+            { word: "SHOP", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'P' },
+            { word: "MOLD", prefix: 'M', startIndex: 3, endIndex: 4, suffix: 'D' },
+            { word: "GLASS", prefix: 'G', startIndex: 4, endIndex: 5, suffix: 'SS' },
+            { word: "STARRY", prefix: 'ST', startIndex: 5, endIndex: 6, suffix: 'RY' },
+            { word: "PURSE", prefix: 'PU', startIndex: 6, endIndex: 7, suffix: 'E' },
+            { word: "WISHES", prefix: 'WI', startIndex: 7, endIndex: 8, suffix: 'ES' },
+            { word: "CHILL", prefix: 'C', startIndex: 8, endIndex: 9, suffix: 'LL' }
+        ]
+    },
+    71: {
+        id: 71,
+        word: 'KEEPSAKE',
+        subwords: [
+            { word: "QUEEN", prefix: 'QU', startIndex: 1, endIndex: 2, suffix: 'N' },
+            { word: "KEPT", prefix: 'K', startIndex: 2, endIndex: 3, suffix: 'T' },
+            { word: "UPSET", prefix: 'U', startIndex: 3, endIndex: 4, suffix: 'ET' },
+            { word: "DISARM", prefix: 'DI', startIndex: 4, endIndex: 5, suffix: 'RM' },
+            { word: "RAKE", prefix: 'R', startIndex: 5, endIndex: 6, suffix: 'E' }
+        ]
+    },
+    72: {
+        id: 72,
+        word: 'DINOSAUR',
+        subwords: [
+            { word: "PINT", prefix: 'P', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "KNOCK", prefix: 'K', startIndex: 2, endIndex: 3, suffix: 'CK' },
+            { word: "MOSSY", prefix: 'M', startIndex: 3, endIndex: 4, suffix: 'SY' },
+            { word: "RESALE", prefix: 'RE', startIndex: 4, endIndex: 5, suffix: 'LE' },
+            { word: "GAUGE", prefix: 'G', startIndex: 5, endIndex: 6, suffix: 'GE' }
+        ]
+    },
+    73: {
+        id: 73,
+        word: 'INSANITY',
+        subwords: [
+            { word: "DENSE", prefix: 'DE', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "UNSAFE", prefix: 'UN', startIndex: 2, endIndex: 3, suffix: 'FE' },
+            { word: "PANIC", prefix: 'P', startIndex: 3, endIndex: 5, suffix: 'C' },
+            { word: "UNITED", prefix: 'U', startIndex: 4, endIndex: 6, suffix: 'ED' }
+        ]
+    },
+    74: {
+        id: 74,
+        word: 'MELANCHOLY',
+        subwords: [
+            { word: "GELATO", prefix: 'G', startIndex: 1, endIndex: 3, suffix: 'TO' },
+            { word: "BLANK", prefix: 'B', startIndex: 2, endIndex: 4, suffix: 'K' },
+            { word: "RANCHES", prefix: 'R', startIndex: 3, endIndex: 6, suffix: 'ES' },
+            { word: "INCH", prefix: 'I', startIndex: 4, endIndex: 5, suffix: 'H' },
+            { word: "CHOP", prefix: 'C', startIndex: 6, endIndex: 7, suffix: 'P' },
+            { word: "MOLE", prefix: 'M', startIndex: 7, endIndex: 8, suffix: 'E' }
+        ]
+    },
+    75: {
+        id: 75,
+        word: 'BASKETBALL',
+        subwords: [
+            { word: "CHASE", prefix: 'CH', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "ASKS", prefix: 'A', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "BAKED", prefix: 'BA', startIndex: 3, endIndex: 4, suffix: 'D' },
+            { word: "THETA", prefix: 'TH', startIndex: 4, endIndex: 5, suffix: 'A' },
+            { word: "SETBACK", prefix: 'SE', startIndex: 5, endIndex: 7, suffix: 'CK' },
+            { word: "CALF", prefix: 'C', startIndex: 7, endIndex: 8, suffix: 'F' }
+        ]
+    },
+    76: {
+        id: 76,
+        word: 'PLAYWRIGHT',
+        subwords: [
+            { word: "CLAP", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'P' },
+            { word: "TRAYS", prefix: 'TR', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "ANYWAY", prefix: 'AN', startIndex: 3, endIndex: 4, suffix: 'AY' },
+            { word: "UNWRAP", prefix: 'UN', startIndex: 4, endIndex: 5, suffix: 'AP' },
+            { word: "ORIGIN", prefix: 'O', startIndex: 5, endIndex: 7, suffix: 'IN' },
+            { word: "EIGHT", prefix: 'E', startIndex: 6, endIndex: 8, suffix: 'T' }
+        ]
+    },
+    77: {
+        id: 77,
+        word: 'HALLUCINATE',
+        subwords: [
+            { word: "BALLAD", prefix: 'B', startIndex: 1, endIndex: 3, suffix: 'AD' },
+            { word: "ALLUDE", prefix: 'A', startIndex: 2, endIndex: 4, suffix: 'DE' },
+            { word: "TOUCHY", prefix: 'TO', startIndex: 4, endIndex: 5, suffix: 'HY' },
+            { word: "ACID", prefix: 'A', startIndex: 5, endIndex: 6, suffix: 'D' },
+            { word: "BRINK", prefix: 'BR', startIndex: 6, endIndex: 7, suffix: 'K' },
+            { word: "SNACK", prefix: 'S', startIndex: 7, endIndex: 8, suffix: 'CK' },
+            { word: "MATH", prefix: 'M', startIndex: 8, endIndex: 9, suffix: 'H' }
+        ]
+    },
+    78: {
+        id: 78,
+        word: 'MUSTACHES',
+        subwords: [
+            { word: "MUSE", prefix: 'M', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "PASTA", prefix: 'PA', startIndex: 2, endIndex: 3, suffix: 'A' },
+            { word: "STALK", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'LK' },
+            { word: "NACHO", prefix: 'N', startIndex: 4, endIndex: 5, suffix: 'HO' },
+            { word: "ACHES", prefix: 'A', startIndex: 5, endIndex: 6, suffix: 'ES' },
+            { word: "CHEF", prefix: 'C', startIndex: 6, endIndex: 7, suffix: 'F' }
+        ]
+    },
+    79: {
+        id: 79,
+        word: 'INSPIRATION',
+        subwords: [
+            { word: "ENSUE", prefix: 'E', startIndex: 1, endIndex: 2, suffix: 'UE' },
+            { word: "RASPY", prefix: 'RA', startIndex: 2, endIndex: 3, suffix: 'Y' },
+            { word: "SPIKE", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'KE' },
+            { word: "FIRE", prefix: 'F', startIndex: 4, endIndex: 5, suffix: 'E' },
+            { word: "TRAIN", prefix: 'T', startIndex: 5, endIndex: 6, suffix: 'IN' },
+            { word: "LATE", prefix: 'L', startIndex: 6, endIndex: 7, suffix: 'E' },
+            { word: "MOTIF", prefix: 'MO', startIndex: 7, endIndex: 8, suffix: 'F' }
+        ]
+    },
+    80: {
+        id: 80,
+        word: 'CHAMELEON',
+        subwords: [
+            { word: "THAN", prefix: 'T', startIndex: 1, endIndex: 2, suffix: 'N' },
+            { word: "CRAMP", prefix: 'CR', startIndex: 2, endIndex: 3, suffix: 'P' },
+            { word: "SMELLY", prefix: 'S', startIndex: 3, endIndex: 5, suffix: 'LY' },
+            { word: "MELEE", prefix: 'M', startIndex: 4, endIndex: 6, suffix: 'E' },
+            { word: "MEOW", prefix: 'M', startIndex: 6, endIndex: 7, suffix: 'W' }
+        ]
+    },
+    81: {
+        id: 81,
+        word: 'PASSWORD',
+        subwords: [
+            { word: "GRASSY", prefix: 'GR', startIndex: 1, endIndex: 3, suffix: 'Y' },
+            { word: "ANSWER", prefix: 'AN', startIndex: 3, endIndex: 4, suffix: 'ER' },
+            { word: "AWOKE", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'KE' },
+            { word: "SORT", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    82: {
+        id: 82,
+        word: 'HIPPOPOTAMUS',
+        subwords: [
+            { word: "SHIPS", prefix: 'SH', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "APPLE", prefix: 'A', startIndex: 2, endIndex: 3, suffix: 'LE' },
+            { word: "DEPOT", prefix: 'DE', startIndex: 3, endIndex: 4, suffix: 'T' },
+            { word: "POPS", prefix: 'P', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "EPOXY", prefix: 'E', startIndex: 5, endIndex: 6, suffix: 'XY' },
+            { word: "WROTE", prefix: 'WR', startIndex: 6, endIndex: 7, suffix: 'E' },
+            { word: "STAMP", prefix: 'S', startIndex: 7, endIndex: 9, suffix: 'P' },
+            { word: "LEMUR", prefix: 'LE', startIndex: 9, endIndex: 10, suffix: 'R' }
+        ]
+    },
+    83: {
+        id: 83,
+        word: 'ATTENTION',
+        subwords: [
+            { word: "BATTER", prefix: 'BA', startIndex: 1, endIndex: 2, suffix: 'ER' },
+            { word: "HOTEL", prefix: 'HO', startIndex: 2, endIndex: 3, suffix: 'L' },
+            { word: "MENTION", prefix: 'M', startIndex: 3, endIndex: 7, suffix: 'N' },
+            { word: "ENTITY", prefix: 'E', startIndex: 4, endIndex: 6, suffix: 'TY' }
+        ]
+    },
+    84: {
+        id: 84,
+        word: 'COMMUNITY',
+        subwords: [
+            { word: "COMMA", prefix: 'C', startIndex: 1, endIndex: 3, suffix: 'A' },
+            { word: "HUMMUS", prefix: 'HU', startIndex: 2, endIndex: 4, suffix: 'S' },
+            { word: "BRUNCH", prefix: 'BR', startIndex: 4, endIndex: 5, suffix: 'CH' },
+            { word: "UNIT", prefix: 'U', startIndex: 5, endIndex: 6, suffix: 'T' },
+            { word: "WITCH", prefix: 'W', startIndex: 6, endIndex: 7, suffix: 'CH' }
+        ]
+    },
+    85: {
+        id: 85,
+        word: 'BIOENGINEERING',
+        subwords: [
+            { word: "IDIOM", prefix: 'ID', startIndex: 1, endIndex: 2, suffix: 'M' },
+            { word: "DOES", prefix: 'D', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "GENE", prefix: 'G', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "ANGER", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'ER' },
+            { word: "PAGING", prefix: 'PA', startIndex: 5, endIndex: 7, suffix: 'G' },
+            { word: "COINED", prefix: 'CO', startIndex: 6, endIndex: 8, suffix: 'D' },
+            { word: "KNEEL", prefix: 'KN', startIndex: 8, endIndex: 9, suffix: 'L' },
+            { word: "HERD", prefix: 'H', startIndex: 9, endIndex: 10, suffix: 'D' },
+            { word: "BRIDE", prefix: 'B', startIndex: 10, endIndex: 11, suffix: 'DE' },
+            { word: "SINK", prefix: 'S', startIndex: 11, endIndex: 12, suffix: 'K' }
+        ]
+    },
+    86: {
+        id: 86,
+        word: 'PHILANTHROPIST',
+        subwords: [
+            { word: "CHILLY", prefix: 'C', startIndex: 1, endIndex: 3, suffix: 'LY' },
+            { word: "SALARY", prefix: 'SA', startIndex: 3, endIndex: 4, suffix: 'RY' },
+            { word: "PANTHER", prefix: 'P', startIndex: 4, endIndex: 7, suffix: 'ER' },
+            { word: "MONTH", prefix: 'MO', startIndex: 5, endIndex: 6, suffix: 'H' },
+            { word: "SHREW", prefix: 'S', startIndex: 7, endIndex: 8, suffix: 'EW' },
+            { word: "BROW", prefix: 'B', startIndex: 8, endIndex: 9, suffix: 'W' },
+            { word: "ELOPE", prefix: 'EL', startIndex: 9, endIndex: 10, suffix: 'E' },
+            { word: "TOPIC", prefix: 'TO', startIndex: 10, endIndex: 11, suffix: 'C' },
+            { word: "WHISK", prefix: 'WH', startIndex: 11, endIndex: 12, suffix: 'K' }
+        ]
+    },
+    87: {
+        id: 87,
+        word: 'QUALIFICATION',
+        subwords: [
+            { word: "QUALM", prefix: 'Q', startIndex: 1, endIndex: 3, suffix: 'M' },
+            { word: "MALICE", prefix: 'M', startIndex: 2, endIndex: 4, suffix: 'CE' },
+            { word: "CLIFF", prefix: 'C', startIndex: 3, endIndex: 5, suffix: 'F' },
+            { word: "UNIFIED", prefix: 'UN', startIndex: 4, endIndex: 6, suffix: 'ED' },
+            { word: "OFFICER", prefix: 'OF', startIndex: 5, endIndex: 7, suffix: 'ER' },
+            { word: "SCAR", prefix: 'S', startIndex: 7, endIndex: 8, suffix: 'R' },
+            { word: "PATCH", prefix: 'P', startIndex: 8, endIndex: 9, suffix: 'CH' },
+            { word: "OPTION", prefix: 'OP', startIndex: 9, endIndex: 11, suffix: 'N' }
+        ]
+    },
+    88: {
+        id: 88,
+        word: 'SHENANIGANS',
+        subwords: [
+            { word: "WHEAT", prefix: 'W', startIndex: 1, endIndex: 2, suffix: 'AT' },
+            { word: "VEND", prefix: 'V', startIndex: 2, endIndex: 3, suffix: 'D' },
+            { word: "SNAIL", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'IL' },
+            { word: "MANIC", prefix: 'M', startIndex: 4, endIndex: 6, suffix: 'C' },
+            { word: "ALIGN", prefix: 'AL', startIndex: 6, endIndex: 7, suffix: 'N' },
+            { word: "VEGAN", prefix: 'VE', startIndex: 7, endIndex: 8, suffix: 'N' },
+            { word: "PRANCE", prefix: 'PR', startIndex: 8, endIndex: 9, suffix: 'CE' }
+        ]
+    },
+    89: {
+        id: 89,
+        word: 'LOLLIPOP',
+        subwords: [
+            { word: "FOLK", prefix: 'F', startIndex: 1, endIndex: 2, suffix: 'K' },
+            { word: "MALLS", prefix: 'MA', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "GLINT", prefix: 'G', startIndex: 3, endIndex: 4, suffix: 'NT' },
+            { word: "TRIPLE", prefix: 'TR', startIndex: 4, endIndex: 5, suffix: 'LE' },
+            { word: "SPOT", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    90: {
+        id: 90,
+        word: 'SKEDADDLE',
+        subwords: [
+            { word: "BIKER", prefix: 'BI', startIndex: 1, endIndex: 2, suffix: 'R' },
+            { word: "NEEDS", prefix: 'NE', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "CEDAR", prefix: 'CE', startIndex: 3, endIndex: 4, suffix: 'R' },
+            { word: "BADGE", prefix: 'B', startIndex: 4, endIndex: 5, suffix: 'GE' },
+            { word: "CUDDLY", prefix: 'CU', startIndex: 5, endIndex: 7, suffix: 'Y' }
+        ]
+    },
+    91: {
+        id: 91,
+        word: 'BREAKFAST',
+        subwords: [
+            { word: "BREAD", prefix: 'B', startIndex: 1, endIndex: 2, suffix: 'AD' },
+            { word: "MEAL", prefix: 'M', startIndex: 2, endIndex: 3, suffix: 'L' },
+            { word: "BAKE", prefix: 'B', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "INFANT", prefix: 'IN', startIndex: 5, endIndex: 6, suffix: 'NT' },
+            { word: "DASH", prefix: 'D', startIndex: 6, endIndex: 7, suffix: 'H' }
+        ]
+    },
+    92: {
+        id: 92,
+        word: 'FIRETRUCK',
+        subwords: [
+            { word: "SIREN", prefix: 'S', startIndex: 1, endIndex: 3, suffix: 'N' },
+            { word: "RETRO", prefix: 'R', startIndex: 3, endIndex: 4, suffix: 'RO' },
+            { word: "PATROL", prefix: 'PA', startIndex: 4, endIndex: 5, suffix: 'OL' },
+            { word: "ERUPT", prefix: 'E', startIndex: 5, endIndex: 6, suffix: 'PT' },
+            { word: "OUCH", prefix: 'O', startIndex: 6, endIndex: 7, suffix: 'H' }
+        ]
+    },
+    93: {
+        id: 93,
+        word: 'CONCERT',
+        subwords: [
+            { word: "TONE", prefix: 'T', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "SYNCS", prefix: 'SY', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "SCENE", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'NE' },
+            { word: "OPERA", prefix: 'OP', startIndex: 4, endIndex: 5, suffix: 'A' }
+        ]
+    },
+    94: {
+        id: 94,
+        word: 'BALLOON',
+        subwords: [
+            { word: "TALL", prefix: 'T', startIndex: 1, endIndex: 2, suffix: 'L' },
+            { word: "JOLLY", prefix: 'JO', startIndex: 2, endIndex: 3, suffix: 'Y' },
+            { word: "FLOAT", prefix: 'F', startIndex: 3, endIndex: 4, suffix: 'AT' },
+            { word: "BOOM", prefix: 'B', startIndex: 4, endIndex: 5, suffix: 'M' }
+        ]
+    },
+    95: {
+        id: 95,
+        word: 'PAINTBRUSH',
+        subwords: [
+            { word: "HAIRS", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'RS' },
+            { word: "TINT", prefix: 'T', startIndex: 2, endIndex: 3, suffix: 'T' },
+            { word: "GENTLE", prefix: 'GE', startIndex: 3, endIndex: 4, suffix: 'LE' },
+            { word: "OMBRE", prefix: 'OM', startIndex: 5, endIndex: 6, suffix: 'E' },
+            { word: "CRUSTY", prefix: 'C', startIndex: 6, endIndex: 8, suffix: 'TY' }
+        ]
+    },
+    96: {
+        id: 96,
+        word: 'EXERCISE',
+        subwords: [
+            { word: "EXERT", prefix: 'E', startIndex: 1, endIndex: 3, suffix: 'T' },
+            { word: "FIERCE", prefix: 'FI', startIndex: 2, endIndex: 4, suffix: 'E' },
+            { word: "PACING", prefix: 'PA', startIndex: 4, endIndex: 5, suffix: 'NG' },
+            { word: "HOIST", prefix: 'HO', startIndex: 5, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    97: {
+        id: 97,
+        word: 'SNOWMAN',
+        subwords: [
+            { word: "KNOT", prefix: 'K', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "VOWS", prefix: 'V', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "REMAKE", prefix: 'RE', startIndex: 4, endIndex: 5, suffix: 'KE' }
+        ]
+    },
+    98: {
+        id: 98,
+        word: 'VORTEX',
+        subwords: [
+            { word: "CORE", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "BIRTH", prefix: 'BI', startIndex: 2, endIndex: 3, suffix: 'H' },
+            { word: "STEEL", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'EL' }
+        ]
+    },
+    99: {
+        id: 99,
+        word: 'GINGERY',
+        subwords: [
+            { word: "RING", prefix: 'R', startIndex: 1, endIndex: 2, suffix: 'G' },
+            { word: "ANGEL", prefix: 'A', startIndex: 2, endIndex: 4, suffix: 'L' },
+            { word: "MERRY", prefix: 'M', startIndex: 4, endIndex: 5, suffix: 'RY' }
+        ]
+    },
+    100: {
+        id: 100,
+        word: 'PEPPERMINT',
+        subwords: [
+            { word: "WEPT", prefix: 'W', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "COPPER", prefix: 'CO', startIndex: 2, endIndex: 3, suffix: 'ER' },
+            { word: "SPEAK", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'AK' },
+            { word: "HERMIT", prefix: 'H', startIndex: 4, endIndex: 6, suffix: 'IT' },
+            { word: "PERMIT", prefix: 'PE', startIndex: 5, endIndex: 7, suffix: 'T' },
+            { word: "DOMINO", prefix: 'DO', startIndex: 6, endIndex: 8, suffix: 'O' }
+        ]
+    },
+    101: {
+        id: 101,
+        word: 'COUNTDOWN',
+        subwords: [
+            { word: "HOUR", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'R' },
+            { word: "DRUNK", prefix: 'DR', startIndex: 2, endIndex: 3, suffix: 'K' },
+            { word: "ENTRY", prefix: 'E', startIndex: 3, endIndex: 4, suffix: 'RY' },
+            { word: "OUTDOOR", prefix: 'OU', startIndex: 4, endIndex: 6, suffix: 'OR' },
+            { word: "GOWN", prefix: 'G', startIndex: 6, endIndex: 7, suffix: 'N' }
+        ]
+    },
+    102: {
+        id: 102,
+        word: 'CONFETTI',
+        subwords: [
+            { word: "FRONT", prefix: 'FR', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "CONFER", prefix: 'CO', startIndex: 2, endIndex: 3, suffix: 'ER' },
+            { word: "OFFER", prefix: 'OF', startIndex: 3, endIndex: 4, suffix: 'R' },
+            { word: "BETTER", prefix: 'B', startIndex: 4, endIndex: 6, suffix: 'ER' }
+        ]
+    },
+    103: {
+        id: 103,
+        word: 'MENORAH',
+        subwords: [
+            { word: "EVENT", prefix: 'EV', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "KNOB", prefix: 'K', startIndex: 2, endIndex: 3, suffix: 'B' },
+            { word: "CORAL", prefix: 'C', startIndex: 3, endIndex: 4, suffix: 'AL' },
+            { word: "CRAFT", prefix: 'C', startIndex: 4, endIndex: 5, suffix: 'FT' }
+        ]
+    },
+    104: {
+        id: 104,
+        word: 'REINDEER',
+        subwords: [
+            { word: "BEIGE", prefix: 'B', startIndex: 1, endIndex: 2, suffix: 'GE' },
+            { word: "RINK", prefix: 'R', startIndex: 2, endIndex: 3, suffix: 'K' },
+            { word: "UNDER", prefix: 'U', startIndex: 3, endIndex: 5, suffix: 'R' },
+            { word: "REDEEM", prefix: 'RE', startIndex: 4, endIndex: 6, suffix: 'M' }
+        ]
+    },
+    105: {
+        id: 105,
+        word: 'CHARISMA',
+        subwords: [
+            { word: "SHARING", prefix: 'S', startIndex: 1, endIndex: 4, suffix: 'NG' },
+            { word: "HEART", prefix: 'HE', startIndex: 2, endIndex: 3, suffix: 'T' },
+            { word: "KISS", prefix: 'K', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "COSMIC", prefix: 'CO', startIndex: 5, endIndex: 6, suffix: 'IC' }
+        ]
+    },
+    106: {
+        id: 106,
+        word: 'GLIMMER',
+        subwords: [
+            { word: "CLIMB", prefix: 'C', startIndex: 1, endIndex: 3, suffix: 'B' },
+            { word: "SWIMMER", prefix: 'SW', startIndex: 2, endIndex: 4, suffix: 'ER' },
+            { word: "CAMEL", prefix: 'CA', startIndex: 4, endIndex: 5, suffix: 'L' }
+        ]
+    },
+    107: {
+        id: 107,
+        word: 'VELOCITY',
+        subwords: [
+            { word: "HELP", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'P' },
+            { word: "CLOTH", prefix: 'C', startIndex: 2, endIndex: 3, suffix: 'TH' },
+            { word: "DOCK", prefix: 'D', startIndex: 3, endIndex: 4, suffix: 'K' },
+            { word: "EXCITE", prefix: 'EX', startIndex: 4, endIndex: 5, suffix: 'TE' },
+            { word: "CITY", prefix: 'C', startIndex: 5, endIndex: 6, suffix: 'Y' }
+        ]
+    },
+    108: {
+        id: 108,
+        word: 'COMPASSION',
+        subwords: [
+            { word: "HOME", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "JUMPY", prefix: 'JU', startIndex: 2, endIndex: 3, suffix: 'Y' },
+            { word: "SPARE", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'RE' },
+            { word: "LAST", prefix: 'L', startIndex: 4, endIndex: 5, suffix: 'T' },
+            { word: "MISSION", prefix: 'MI', startIndex: 5, endIndex: 8, suffix: 'N' },
+            { word: "BASIL", prefix: 'BA', startIndex: 6, endIndex: 7, suffix: 'L' }
+        ]
+    },
+    109: {
+        id: 109,
+        word: 'CONCLUSION',
+        subwords: [
+            { word: "CONDO", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'DO' },
+            { word: "PENCIL", prefix: 'PE', startIndex: 2, endIndex: 3, suffix: 'IL' },
+            { word: "NUCLEI", prefix: 'NU', startIndex: 3, endIndex: 4, suffix: 'EI' },
+            { word: "GLUE", prefix: 'G', startIndex: 4, endIndex: 5, suffix: 'E' },
+            { word: "BUSH", prefix: 'B', startIndex: 5, endIndex: 6, suffix: 'H' },
+            { word: "VISION", prefix: 'VI', startIndex: 6, endIndex: 8, suffix: 'N' }
+        ]
+    },
+    110: {
+        id: 110,
+        word: 'LAUGHTER',
+        subwords: [
+            { word: "FAULT", prefix: 'F', startIndex: 1, endIndex: 2, suffix: 'LT' },
+            { word: "COUGH", prefix: 'CO', startIndex: 2, endIndex: 3, suffix: 'H' },
+            { word: "EIGHTY", prefix: 'EI', startIndex: 3, endIndex: 5, suffix: 'Y' },
+            { word: "STEW", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'W' }
+        ]
+    },
+    111: {
+        id: 111,
+        word: 'CIRCULAR',
+        subwords: [
+            { word: "CIRCUS", prefix: 'C', startIndex: 1, endIndex: 4, suffix: 'S' },
+            { word: "PARCEL", prefix: 'PA', startIndex: 2, endIndex: 3, suffix: 'EL' },
+            { word: "GULP", prefix: 'G', startIndex: 4, endIndex: 5, suffix: 'P' },
+            { word: "PLANE", prefix: 'P', startIndex: 5, endIndex: 6, suffix: 'NE' }
+        ]
+    },
+    112: {
+        id: 112,
+        word: 'NINETEEN',
+        subwords: [
+            { word: "DINER", prefix: 'D', startIndex: 1, endIndex: 2, suffix: 'ER' },
+            { word: "HONEY", prefix: 'HO', startIndex: 2, endIndex: 3, suffix: 'Y' },
+            { word: "BEETS", prefix: 'BE', startIndex: 3, endIndex: 4, suffix: 'S' },
+            { word: "STEAL", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'AL' },
+            { word: "SLEEP", prefix: 'SL', startIndex: 5, endIndex: 6, suffix: 'P' }
+        ]
+    },
+    113: {
+        id: 113,
+        word: 'INTRODUCTION',
+        subwords: [
+            { word: "RENTS", prefix: 'RE', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "ULTRA", prefix: 'UL', startIndex: 2, endIndex: 3, suffix: 'A' },
+            { word: "DROP", prefix: 'D', startIndex: 3, endIndex: 4, suffix: 'P' },
+            { word: "GODLY", prefix: 'G', startIndex: 4, endIndex: 5, suffix: 'LY' },
+            { word: "DEDUCTS", prefix: 'DE', startIndex: 5, endIndex: 8, suffix: 'S' },
+            { word: "LUCK", prefix: 'L', startIndex: 6, endIndex: 7, suffix: 'K' },
+            { word: "FACTION", prefix: 'FA', startIndex: 7, endIndex: 10, suffix: 'N' },
+            { word: "STILT", prefix: 'S', startIndex: 8, endIndex: 9, suffix: 'LT' }
+        ]
+    },
+    114: {
+        id: 114,
+        word: 'EQUALITY',
+        subwords: [
+            { word: "EQUIP", prefix: 'E', startIndex: 1, endIndex: 2, suffix: 'IP' },
+            { word: "QUALMS", prefix: 'Q', startIndex: 2, endIndex: 4, suffix: 'MS' },
+            { word: "GOALIE", prefix: 'GO', startIndex: 3, endIndex: 5, suffix: 'E' },
+            { word: "UNITY", prefix: 'UN', startIndex: 5, endIndex: 6, suffix: 'Y' }
+        ]
+    },
+    115: {
+        id: 115,
+        word: 'HOUSEPLANT',
+        subwords: [
+            { word: "MOUSE", prefix: 'M', startIndex: 1, endIndex: 3, suffix: 'E' },
+            { word: "AMUSED", prefix: 'AM', startIndex: 2, endIndex: 4, suffix: 'D' },
+            { word: "CREPT", prefix: 'CR', startIndex: 4, endIndex: 5, suffix: 'T' },
+            { word: "SPLIT", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'IT' },
+            { word: "SLAP", prefix: 'S', startIndex: 6, endIndex: 7, suffix: 'P' },
+            { word: "TANK", prefix: 'T', startIndex: 7, endIndex: 8, suffix: 'K' }
+        ]
+    },
+    116: {
+        id: 116,
+        word: 'CHIHUAHUA',
+        subwords: [
+            { word: "WHIP", prefix: 'W', startIndex: 1, endIndex: 2, suffix: 'P' },
+            { word: "CHUNK", prefix: 'C', startIndex: 3, endIndex: 4, suffix: 'NK' },
+            { word: "QUART", prefix: 'Q', startIndex: 4, endIndex: 5, suffix: 'RT' },
+            { word: "THUMP", prefix: 'T', startIndex: 6, endIndex: 7, suffix: 'MP' }
+        ]
+    },
+    117: {
+        id: 117,
+        word: 'ORIGINAL',
+        subwords: [
+            { word: "PRIZE", prefix: 'P', startIndex: 1, endIndex: 2, suffix: 'ZE' },
+            { word: "HIGH", prefix: 'H', startIndex: 2, endIndex: 3, suffix: 'H' },
+            { word: "EGGING", prefix: 'EG', startIndex: 3, endIndex: 5, suffix: 'G' },
+            { word: "BINARY", prefix: 'B', startIndex: 4, endIndex: 6, suffix: 'RY' }
+        ]
+    },
+    118: {
+        id: 118,
+        word: 'ELECTRIC',
+        subwords: [
+            { word: "CLEAN", prefix: 'C', startIndex: 1, endIndex: 2, suffix: 'AN' },
+            { word: "PECK", prefix: 'P', startIndex: 2, endIndex: 3, suffix: 'K' },
+            { word: "FACTS", prefix: 'FA', startIndex: 3, endIndex: 4, suffix: 'S' },
+            { word: "STRIPE", prefix: 'S', startIndex: 4, endIndex: 6, suffix: 'PE' }
+        ]
+    },
+    119: {
+        id: 119,
+        word: 'ENTERTAIN',
+        subwords: [
+            { word: "INTERN", prefix: 'I', startIndex: 1, endIndex: 4, suffix: 'N' },
+            { word: "EXTEND", prefix: 'EX', startIndex: 2, endIndex: 3, suffix: 'ND' },
+            { word: "PARTS", prefix: 'PA', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "STAR", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'R' },
+            { word: "MAIN", prefix: 'M', startIndex: 6, endIndex: 7, suffix: 'N' }
+        ]
+    },
+    120: {
+        id: 120,
+        word: 'TELEPORT',
+        subwords: [
+            { word: "DELETE", prefix: 'D', startIndex: 1, endIndex: 3, suffix: 'TE' },
+            { word: "REPEL", prefix: 'R', startIndex: 3, endIndex: 4, suffix: 'EL' },
+            { word: "EXPOSE", prefix: 'EX', startIndex: 4, endIndex: 5, suffix: 'SE' },
+            { word: "MORPH", prefix: 'M', startIndex: 5, endIndex: 6, suffix: 'PH' }
+        ]
+    },
+    121: {
+        id: 121,
+        word: 'QUARREL',
+        subwords: [
+            { word: "QUARTZ", prefix: 'Q', startIndex: 1, endIndex: 3, suffix: 'TZ' },
+            { word: "BARREN", prefix: 'B', startIndex: 2, endIndex: 5, suffix: 'N' },
+            { word: "CURRY", prefix: 'CU', startIndex: 3, endIndex: 4, suffix: 'Y' }
+        ]
+    },
+    122: {
+        id: 122,
+        word: 'AUTOBIOGRAPHY',
+        subwords: [
+            { word: "CLUTCH", prefix: 'CL', startIndex: 1, endIndex: 2, suffix: 'CH' },
+            { word: "STOP", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'P' },
+            { word: "LOBE", prefix: 'L', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "DUBIOUS", prefix: 'DU', startIndex: 4, endIndex: 6, suffix: 'US' },
+            { word: "BOOGIE", prefix: 'BO', startIndex: 6, endIndex: 7, suffix: 'IE' },
+            { word: "AGREE", prefix: 'A', startIndex: 7, endIndex: 8, suffix: 'EE' },
+            { word: "GRAPHIC", prefix: 'G', startIndex: 8, endIndex: 11, suffix: 'IC' },
+            { word: "HAPPY", prefix: 'H', startIndex: 9, endIndex: 10, suffix: 'PY' }
+        ]
+    },
+    123: {
+        id: 123,
+        word: 'GRAVITY',
+        subwords: [
+            { word: "BRAIN", prefix: 'B', startIndex: 1, endIndex: 2, suffix: 'IN' },
+            { word: "CAVE", prefix: 'C', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "INVITED", prefix: 'IN', startIndex: 3, endIndex: 5, suffix: 'ED' }
+        ]
+    },
+    124: {
+        id: 124,
+        word: 'LIGHTHEADED',
+        subwords: [
+            { word: "TIGHTEN", prefix: 'T', startIndex: 1, endIndex: 4, suffix: 'EN' },
+            { word: "SIGHS", prefix: 'SI', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "OATHS", prefix: 'OA', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "SHEEP", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'EP' },
+            { word: "LEAN", prefix: 'L', startIndex: 6, endIndex: 7, suffix: 'N' },
+            { word: "JADE", prefix: 'J', startIndex: 7, endIndex: 8, suffix: 'E' },
+            { word: "WIDEN", prefix: 'WI', startIndex: 8, endIndex: 9, suffix: 'N' }
+        ]
+    },
+    125: {
+        id: 125,
+        word: 'MAGICAL',
+        subwords: [
+            { word: "MAGE", prefix: 'M', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "VIGIL", prefix: 'VI', startIndex: 2, endIndex: 3, suffix: 'L' },
+            { word: "DICE", prefix: 'D', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "SCAM", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'M' }
+        ]
+    },
+    126: {
+        id: 126,
+        word: 'LIONESS',
+        subwords: [
+            { word: "ONIONS", prefix: 'ON', startIndex: 1, endIndex: 3, suffix: 'S' },
+            { word: "CLONES", prefix: 'CL', startIndex: 2, endIndex: 4, suffix: 'S' },
+            { word: "CRESS", prefix: 'CR', startIndex: 4, endIndex: 5, suffix: 'S' }
+        ]
+    },
+    127: {
+        id: 127,
+        word: 'ADMISSION',
+        subwords: [
+            { word: "ADMIN", prefix: 'A', startIndex: 1, endIndex: 3, suffix: 'N' },
+            { word: "EMISSION", prefix: 'E', startIndex: 2, endIndex: 7, suffix: 'N' },
+            { word: "VISIT", prefix: 'V', startIndex: 3, endIndex: 4, suffix: 'IT' },
+            { word: "ASSIST", prefix: 'A', startIndex: 4, endIndex: 6, suffix: 'ST' }
+        ]
+    },
+    128: {
+        id: 128,
+        word: 'AEROSPACE',
+        subwords: [
+            { word: "HERE", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "PROSE", prefix: 'P', startIndex: 2, endIndex: 4, suffix: 'E' },
+            { word: "PROSPER", prefix: 'PR', startIndex: 3, endIndex: 5, suffix: 'ER' },
+            { word: "SPADE", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'DE' },
+            { word: "TACK", prefix: 'T', startIndex: 6, endIndex: 7, suffix: 'K' }
+        ]
+    },
+    129: {
+        id: 129,
+        word: 'CLASSROOM',
+        subwords: [
+            { word: "BLAST", prefix: 'B', startIndex: 1, endIndex: 3, suffix: 'T' },
+            { word: "SASSY", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'Y' },
+            { word: "GROUP", prefix: 'G', startIndex: 5, endIndex: 6, suffix: 'UP' },
+            { word: "LOOPY", prefix: 'L', startIndex: 6, endIndex: 7, suffix: 'PY' }
+        ]
+    },
+    130: {
+        id: 130,
+        word: 'EXPLOSIVE',
+        subwords: [
+            { word: "EXPLORE", prefix: 'E', startIndex: 1, endIndex: 4, suffix: 'RE' },
+            { word: "IMPLY", prefix: 'IM', startIndex: 2, endIndex: 3, suffix: 'Y' },
+            { word: "MOST", prefix: 'M', startIndex: 4, endIndex: 5, suffix: 'T' },
+            { word: "BASIN", prefix: 'BA', startIndex: 5, endIndex: 6, suffix: 'N' },
+            { word: "DIVE", prefix: 'D', startIndex: 6, endIndex: 7, suffix: 'E' }
+        ]
+    },
+    131: {
+        id: 131,
+        word: 'SCENARIO',
+        subwords: [
+            { word: "DECENT", prefix: 'DE', startIndex: 1, endIndex: 3, suffix: 'T' },
+            { word: "SNAG", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'G' },
+            { word: "MARCH", prefix: 'M', startIndex: 4, endIndex: 5, suffix: 'CH' },
+            { word: "GRIP", prefix: 'G', startIndex: 5, endIndex: 6, suffix: 'P' }
+        ]
+    },
+    132: {
+        id: 132,
+        word: 'SUNFLOWER',
+        subwords: [
+            { word: "WOUND", prefix: 'WO', startIndex: 1, endIndex: 2, suffix: 'D' },
+            { word: "INFLUX", prefix: 'I', startIndex: 2, endIndex: 4, suffix: 'UX' },
+            { word: "GLOWED", prefix: 'G', startIndex: 4, endIndex: 7, suffix: 'D' },
+            { word: "TOWN", prefix: 'T', startIndex: 5, endIndex: 6, suffix: 'N' }
+        ]
+    },
+    133: {
+        id: 133,
+        word: 'FINGERPRINT',
+        subwords: [
+            { word: "WINE", prefix: 'W', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "LUNGED", prefix: 'LU', startIndex: 2, endIndex: 4, suffix: 'D' },
+            { word: "SWERVE", prefix: 'SW', startIndex: 4, endIndex: 5, suffix: 'VE' },
+            { word: "HARPS", prefix: 'HA', startIndex: 5, endIndex: 6, suffix: 'S' },
+            { word: "APRON", prefix: 'A', startIndex: 6, endIndex: 7, suffix: 'ON' },
+            { word: "BRING", prefix: 'B', startIndex: 7, endIndex: 9, suffix: 'G' }
+        ]
+    },
+    134: {
+        id: 134,
+        word: 'CURATED',
+        subwords: [
+            { word: "YOURS", prefix: 'YO', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "GRATED", prefix: 'G', startIndex: 2, endIndex: 5, suffix: 'D' },
+            { word: "LATCH", prefix: 'L', startIndex: 3, endIndex: 4, suffix: 'CH' }
+        ]
+    },
+    135: {
+        id: 135,
+        word: 'ANNOUNCEMENT',
+        subwords: [
+            { word: "ANNOY", prefix: 'A', startIndex: 1, endIndex: 3, suffix: 'Y' },
+            { word: "RENOUNCED", prefix: 'RE', startIndex: 2, endIndex: 7, suffix: 'D' },
+            { word: "BOUND", prefix: 'B', startIndex: 3, endIndex: 5, suffix: 'D' },
+            { word: "UNCLE", prefix: 'U', startIndex: 5, endIndex: 6, suffix: 'LE' },
+            { word: "CEMENT", prefix: 'C', startIndex: 7, endIndex: 10, suffix: 'T' },
+            { word: "TIMER", prefix: 'TI', startIndex: 8, endIndex: 9, suffix: 'R' }
+        ]
+    },
+    136: {
+        id: 136,
+        word: 'SELECTION',
+        subwords: [
+            { word: "CELERY", prefix: 'C', startIndex: 1, endIndex: 3, suffix: 'RY' },
+            { word: "CHECK", prefix: 'CH', startIndex: 3, endIndex: 4, suffix: 'K' },
+            { word: "ACTIVE", prefix: 'A', startIndex: 4, endIndex: 6, suffix: 'VE' },
+            { word: "LOTION", prefix: 'LO', startIndex: 5, endIndex: 7, suffix: 'N' }
+        ]
+    },
+    137: {
+        id: 137,
+        word: 'COMPLIMENTARY',
+        subwords: [
+            { word: "CHOMPS", prefix: 'CH', startIndex: 1, endIndex: 3, suffix: 'S' },
+            { word: "EMPLOY", prefix: 'E', startIndex: 2, endIndex: 4, suffix: 'OY' },
+            { word: "SLID", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'D' },
+            { word: "LIME", prefix: 'L', startIndex: 5, endIndex: 6, suffix: 'E' },
+            { word: "SMELL", prefix: 'S', startIndex: 6, endIndex: 7, suffix: 'LL' },
+            { word: "HENCE", prefix: 'H', startIndex: 7, endIndex: 8, suffix: 'CE' },
+            { word: "INTAKE", prefix: 'I', startIndex: 8, endIndex: 10, suffix: 'KE' },
+            { word: "BARE", prefix: 'B', startIndex: 10, endIndex: 11, suffix: 'E' }
+        ]
+    },
+    138: {
+        id: 138,
+        word: 'MISTAKE',
+        subwords: [
+            { word: "WHISTLE", prefix: 'WH', startIndex: 1, endIndex: 3, suffix: 'LE' },
+            { word: "POSTAL", prefix: 'PO', startIndex: 2, endIndex: 4, suffix: 'L' },
+            { word: "STAKE", prefix: 'S', startIndex: 3, endIndex: 5, suffix: 'E' }
+        ]
+    },
+    139: {
+        id: 139,
+        word: 'FIANCEE',
+        subwords: [
+            { word: "DIAL", prefix: 'D', startIndex: 1, endIndex: 2, suffix: 'L' },
+            { word: "HAND", prefix: 'H', startIndex: 2, endIndex: 3, suffix: 'D' },
+            { word: "ONCE", prefix: 'O', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "EXCEL", prefix: 'EX', startIndex: 4, endIndex: 5, suffix: 'L' }
+        ]
+    },
+    140: {
+        id: 140,
+        word: 'DETECTIVE',
+        subwords: [
+            { word: "METER", prefix: 'M', startIndex: 1, endIndex: 3, suffix: 'R' },
+            { word: "GECKO", prefix: 'G', startIndex: 3, endIndex: 4, suffix: 'KO' },
+            { word: "ACTS", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "CUTIE", prefix: 'CU', startIndex: 5, endIndex: 6, suffix: 'E' },
+            { word: "LIVE", prefix: 'L', startIndex: 6, endIndex: 7, suffix: 'E' }
+        ]
+    },
+    141: {
+        id: 141,
+        word: 'CARPENTER',
+        subwords: [
+            { word: "SCARE", prefix: 'SC', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "HARPS", prefix: 'HA', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "SPEND", prefix: 'S', startIndex: 3, endIndex: 5, suffix: 'D' },
+            { word: "MINTY", prefix: 'MI', startIndex: 5, endIndex: 6, suffix: 'Y' },
+            { word: "GATES", prefix: 'GA', startIndex: 6, endIndex: 7, suffix: 'S' }
+        ]
+    },
+    142: {
+        id: 142,
+        word: 'AXOLOTL',
+        subwords: [
+            { word: "AXON", prefix: 'A', startIndex: 1, endIndex: 2, suffix: 'N' },
+            { word: "COLORS", prefix: 'C', startIndex: 2, endIndex: 4, suffix: 'RS' },
+            { word: "CLOTH", prefix: 'C', startIndex: 3, endIndex: 5, suffix: 'H' }
+        ]
+    },
+    143: {
+        id: 143,
+        word: 'BEHAVIOR',
+        subwords: [
+            { word: "REHAB", prefix: 'R', startIndex: 1, endIndex: 3, suffix: 'B' },
+            { word: "SHAVE", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'E' },
+            { word: "AVID", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'D' },
+            { word: "LIONS", prefix: 'L', startIndex: 5, endIndex: 6, suffix: 'NS' }
+        ]
+    },
+    144: {
+        id: 144,
+        word: 'MOTIVATE',
+        subwords: [
+            { word: "VOTE", prefix: 'V', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "STILL", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'LL' },
+            { word: "DRIVE", prefix: 'DR', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "AVAIL", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'IL' },
+            { word: "CATTY", prefix: 'C', startIndex: 5, endIndex: 6, suffix: 'TY' }
+        ]
+    },
+    145: {
+        id: 145,
+        word: 'WHITEBOARD',
+        subwords: [
+            { word: "THINK", prefix: 'T', startIndex: 1, endIndex: 2, suffix: 'NK' },
+            { word: "QUITS", prefix: 'QU', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "ITEM", prefix: 'I', startIndex: 3, endIndex: 4, suffix: 'M' },
+            { word: "WEBS", prefix: 'W', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "LABOR", prefix: 'LA', startIndex: 5, endIndex: 6, suffix: 'R' },
+            { word: "GOAT", prefix: 'G', startIndex: 6, endIndex: 7, suffix: 'T' },
+            { word: "DARE", prefix: 'D', startIndex: 7, endIndex: 8, suffix: 'E' }
+        ]
+    },
+    146: {
+        id: 146,
+        word: 'SISTER',
+        subwords: [
+            { word: "RISE", prefix: 'R', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "MOSTLY", prefix: 'MO', startIndex: 2, endIndex: 3, suffix: 'LY' },
+            { word: "STEM", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'M' }
+        ]
+    },
+    147: {
+        id: 147,
+        word: 'PHYSICAL',
+        subwords: [
+            { word: "RHYME", prefix: 'R', startIndex: 1, endIndex: 2, suffix: 'ME' },
+            { word: "ABYSS", prefix: 'AB', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "MUSICAL", prefix: 'MU', startIndex: 3, endIndex: 6, suffix: 'L' },
+            { word: "MICE", prefix: 'M', startIndex: 4, endIndex: 5, suffix: 'E' }
+        ]
+    },
+    148: {
+        id: 148,
+        word: 'HANDSHAKE',
+        subwords: [
+            { word: "CANDY", prefix: 'C', startIndex: 1, endIndex: 3, suffix: 'Y' },
+            { word: "MIDST", prefix: 'MI', startIndex: 3, endIndex: 4, suffix: 'T' },
+            { word: "MASHED", prefix: 'MA', startIndex: 4, endIndex: 5, suffix: 'ED' },
+            { word: "WHAT", prefix: 'W', startIndex: 5, endIndex: 6, suffix: 'T' },
+            { word: "TAKE", prefix: 'T', startIndex: 6, endIndex: 7, suffix: 'E' }
+        ]
+    },
+    149: {
+        id: 149,
+        word: 'CUDDLES',
+        subwords: [
+            { word: "BUDDY", prefix: 'B', startIndex: 1, endIndex: 3, suffix: 'Y' },
+            { word: "MADLY", prefix: 'MA', startIndex: 3, endIndex: 4, suffix: 'Y' },
+            { word: "ASLEEP", prefix: 'AS', startIndex: 4, endIndex: 5, suffix: 'EP' }
+        ]
+    },
+    150: {
+        id: 150,
+        word: 'MOLECULE',
+        subwords: [
+            { word: "FOLK", prefix: 'F', startIndex: 1, endIndex: 2, suffix: 'K' },
+            { word: "GLEE", prefix: 'G', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "PECK", prefix: 'P', startIndex: 3, endIndex: 4, suffix: 'K' },
+            { word: "ACUTE", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'TE' },
+            { word: "MULE", prefix: 'M', startIndex: 5, endIndex: 6, suffix: 'E' }
+        ]
+    },
+    151: {
+        id: 151,
+        word: 'DIFFERENT',
+        subwords: [
+            { word: "LIFT", prefix: 'L', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "OFFERED", prefix: 'O', startIndex: 2, endIndex: 6, suffix: 'D' },
+            { word: "EFFECT", prefix: 'EF', startIndex: 3, endIndex: 4, suffix: 'CT' },
+            { word: "TERM", prefix: 'T', startIndex: 4, endIndex: 5, suffix: 'M' },
+            { word: "WRENCH", prefix: 'W', startIndex: 5, endIndex: 7, suffix: 'CH' }
+        ]
+    },
+    152: {
+        id: 152,
+        word: 'LANDSCAPE',
+        subwords: [
+            { word: "GRANT", prefix: 'GR', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "MENDS", prefix: 'ME', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "SUDSY", prefix: 'SU', startIndex: 3, endIndex: 4, suffix: 'Y' },
+            { word: "ESCAPE", prefix: 'E', startIndex: 4, endIndex: 7, suffix: 'E' },
+            { word: "SCAN", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'N' }
+        ]
+    },
+    153: {
+        id: 153,
+        word: 'FAVORITE',
+        subwords: [
+            { word: "SAVORY", prefix: 'S', startIndex: 1, endIndex: 4, suffix: 'Y' },
+            { word: "EVOKE", prefix: 'E', startIndex: 2, endIndex: 3, suffix: 'KE' },
+            { word: "BRING", prefix: 'B', startIndex: 4, endIndex: 5, suffix: 'NG' },
+            { word: "DITCH", prefix: 'D', startIndex: 5, endIndex: 6, suffix: 'CH' }
+        ]
+    },
+    154: {
+        id: 154,
+        word: 'PERSONAL',
+        subwords: [
+            { word: "AVERSE", prefix: 'AV', startIndex: 1, endIndex: 3, suffix: 'E' },
+            { word: "CURSOR", prefix: 'CU', startIndex: 2, endIndex: 4, suffix: 'R' },
+            { word: "MASONS", prefix: 'MA', startIndex: 3, endIndex: 5, suffix: 'S' },
+            { word: "DONATE", prefix: 'D', startIndex: 4, endIndex: 6, suffix: 'TE' }
+        ]
+    },
+    155: {
+        id: 155,
+        word: 'OUTCOME',
+        subwords: [
+            { word: "OUTCRY", prefix: 'O', startIndex: 1, endIndex: 3, suffix: 'RY' },
+            { word: "SCOPE", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'PE' },
+            { word: "TOMB", prefix: 'T', startIndex: 4, endIndex: 5, suffix: 'B' }
+        ]
+    },
+    156: {
+        id: 156,
+        word: 'TROMBONE',
+        subwords: [
+            { word: "AROMA", prefix: 'A', startIndex: 1, endIndex: 3, suffix: 'A' },
+            { word: "AMBER", prefix: 'A', startIndex: 3, endIndex: 4, suffix: 'ER' },
+            { word: "ABODE", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'DE' },
+            { word: "HONEY", prefix: 'H', startIndex: 5, endIndex: 6, suffix: 'EY' }
+        ]
+    },
+    157: {
+        id: 157,
+        word: 'ANCHOR',
+        subwords: [
+            { word: "DANCE", prefix: 'DA', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "CACHE", prefix: 'CA', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "SHOE", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'E' }
+        ]
+    },
+    158: {
+        id: 158,
+        word: 'ELEGANT',
+        subwords: [
+            { word: "ALLEGE", prefix: 'AL', startIndex: 1, endIndex: 3, suffix: 'E' },
+            { word: "REGAL", prefix: 'R', startIndex: 2, endIndex: 4, suffix: 'L' },
+            { word: "PANTS", prefix: 'P', startIndex: 4, endIndex: 5, suffix: 'TS' }
+        ]
+    },
+    159: {
+        id: 159,
+        word: 'INDECISIVE',
+        subwords: [
+            { word: "UNDER", prefix: 'U', startIndex: 1, endIndex: 3, suffix: 'R' },
+            { word: "NECK", prefix: 'N', startIndex: 3, endIndex: 4, suffix: 'K' },
+            { word: "INCISION", prefix: 'IN', startIndex: 4, endIndex: 7, suffix: 'ON' },
+            { word: "LIST", prefix: 'L', startIndex: 5, endIndex: 6, suffix: 'T' },
+            { word: "FIVE", prefix: 'F', startIndex: 7, endIndex: 8, suffix: 'E' }
+        ]
+    },
+    160: {
+        id: 160,
+        word: 'MOUNTAIN',
+        subwords: [
+            { word: "POUND", prefix: 'P', startIndex: 1, endIndex: 3, suffix: 'D' },
+            { word: "ENTAIL", prefix: 'E', startIndex: 3, endIndex: 6, suffix: 'L' },
+            { word: "ATTACK", prefix: 'AT', startIndex: 4, endIndex: 5, suffix: 'CK' }
+        ]
+    },
+    161: {
+        id: 161,
+        word: 'LADYBUG',
+        subwords: [
+            { word: "MADE", prefix: 'M', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "IDYLL", prefix: 'I', startIndex: 2, endIndex: 3, suffix: 'LL' },
+            { word: "CYBER", prefix: 'C', startIndex: 3, endIndex: 4, suffix: 'ER' },
+            { word: "DEBUT", prefix: 'DE', startIndex: 4, endIndex: 5, suffix: 'T' }
+        ]
+    },
+    162: {
+        id: 162,
+        word: 'PHOTOGRAPHY',
+        subwords: [
+            { word: "WHOM", prefix: 'W', startIndex: 1, endIndex: 2, suffix: 'M' },
+            { word: "NOTE", prefix: 'N', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "AUTOGRAPH", prefix: 'AU', startIndex: 3, endIndex: 8, suffix: 'H' },
+            { word: "PROGRAM", prefix: 'PR', startIndex: 4, endIndex: 6, suffix: 'AM' },
+            { word: "DRAG", prefix: 'D', startIndex: 6, endIndex: 7, suffix: 'G' },
+            { word: "ALPHA", prefix: 'AL', startIndex: 8, endIndex: 9, suffix: 'A' }
+        ]
+    },
+    163: {
+        id: 163,
+        word: 'TROUBLESHOOT',
+        subwords: [
+            { word: "FROG", prefix: 'F', startIndex: 1, endIndex: 2, suffix: 'G' },
+            { word: "DOUBLE", prefix: 'D', startIndex: 2, endIndex: 5, suffix: 'E' },
+            { word: "TUBE", prefix: 'T', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "CLEAN", prefix: 'C', startIndex: 5, endIndex: 6, suffix: 'AN' },
+            { word: "CHEST", prefix: 'CH', startIndex: 6, endIndex: 7, suffix: 'T' },
+            { word: "MUSHY", prefix: 'MU', startIndex: 7, endIndex: 8, suffix: 'Y' },
+            { word: "CHOP", prefix: 'C', startIndex: 8, endIndex: 9, suffix: 'P' },
+            { word: "MOON", prefix: 'M', startIndex: 9, endIndex: 10, suffix: 'N' }
+        ]
+    },
+    164: {
+        id: 164,
+        word: 'DISCUSSION',
+        subwords: [
+            { word: "MIST", prefix: 'M', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "DISCS", prefix: 'DI', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "SCUFF", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'FF' },
+            { word: "MUST", prefix: 'M', startIndex: 4, endIndex: 5, suffix: 'T' },
+            { word: "MISSION", prefix: 'MI', startIndex: 5, endIndex: 8, suffix: 'N' },
+            { word: "BASIC", prefix: 'BA', startIndex: 6, endIndex: 7, suffix: 'C' }
+        ]
+    },
+    165: {
+        id: 165,
+        word: 'ENVIRONMENT',
+        subwords: [
+            { word: "ENVY", prefix: 'E', startIndex: 1, endIndex: 2, suffix: 'Y' },
+            { word: "ANVIL", prefix: 'AN', startIndex: 2, endIndex: 3, suffix: 'L' },
+            { word: "FIRE", prefix: 'F', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "BROWN", prefix: 'B', startIndex: 4, endIndex: 5, suffix: 'WN' },
+            { word: "GONE", prefix: 'G', startIndex: 5, endIndex: 6, suffix: 'E' },
+            { word: "UNMET", prefix: 'U', startIndex: 6, endIndex: 8, suffix: 'T' },
+            { word: "BENT", prefix: 'B', startIndex: 8, endIndex: 9, suffix: 'T' }
+        ]
+    },
+    166: {
+        id: 166,
+        word: 'SURPRISE',
+        subwords: [
+            { word: "SLURPS", prefix: 'SL', startIndex: 1, endIndex: 3, suffix: 'S' },
+            { word: "APRON", prefix: 'A', startIndex: 3, endIndex: 4, suffix: 'ON' },
+            { word: "WRIST", prefix: 'W', startIndex: 4, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    167: {
+        id: 167,
+        word: 'COMMENT',
+        subwords: [
+            { word: "HOME", prefix: 'H', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "BUMMED", prefix: 'BU', startIndex: 2, endIndex: 4, suffix: 'D' },
+            { word: "LEND", prefix: 'L', startIndex: 4, endIndex: 5, suffix: 'D' }
+        ]
+    },
+    168: {
+        id: 168,
+        word: 'GLAMOROUS',
+        subwords: [
+            { word: "LLAMA", prefix: 'L', startIndex: 1, endIndex: 3, suffix: 'A' },
+            { word: "FAMOUS", prefix: 'F', startIndex: 2, endIndex: 4, suffix: 'US' },
+            { word: "FORT", prefix: 'F', startIndex: 4, endIndex: 5, suffix: 'T' },
+            { word: "GROW", prefix: 'G', startIndex: 5, endIndex: 6, suffix: 'W' },
+            { word: "DOUBT", prefix: 'D', startIndex: 6, endIndex: 7, suffix: 'BT' }
+        ]
+    },
+    169: {
+        id: 169,
+        word: 'INEVITABLE',
+        subwords: [
+            { word: "MONEY", prefix: 'MO', startIndex: 1, endIndex: 2, suffix: 'Y' },
+            { word: "DEVIL", prefix: 'D', startIndex: 2, endIndex: 4, suffix: 'L' },
+            { word: "WITH", prefix: 'W', startIndex: 4, endIndex: 5, suffix: 'H' },
+            { word: "STAIR", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'IR' },
+            { word: "CABLE", prefix: 'C', startIndex: 6, endIndex: 8, suffix: 'E' }
+        ]
+    },
+    170: {
+        id: 170,
+        word: 'TRANSPARENT',
+        subwords: [
+            { word: "BRAND", prefix: 'B', startIndex: 1, endIndex: 3, suffix: 'D' },
+            { word: "ENSUE", prefix: 'E', startIndex: 3, endIndex: 4, suffix: 'UE' },
+            { word: "WISPY", prefix: 'WI', startIndex: 4, endIndex: 5, suffix: 'Y' },
+            { word: "SPAT", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'T' },
+            { word: "CARD", prefix: 'C', startIndex: 6, endIndex: 7, suffix: 'D' },
+            { word: "TREND", prefix: 'T', startIndex: 7, endIndex: 9, suffix: 'D' }
+        ]
+    },
+    171: {
+        id: 171,
+        word: 'WILDLIFE',
+        subwords: [
+            { word: "MILL", prefix: 'M', startIndex: 1, endIndex: 2, suffix: 'L' },
+            { word: "OLDER", prefix: 'O', startIndex: 2, endIndex: 3, suffix: 'ER' },
+            { word: "IDLE", prefix: 'I', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "CLIFF", prefix: 'C', startIndex: 4, endIndex: 6, suffix: 'F' }
+        ]
+    },
+    172: {
+        id: 172,
+        word: 'DAYLIGHT',
+        subwords: [
+            { word: "LAYER", prefix: 'L', startIndex: 1, endIndex: 2, suffix: 'ER' },
+            { word: "STYLE", prefix: 'ST', startIndex: 2, endIndex: 3, suffix: 'E' },
+            { word: "FLIGHT", prefix: 'F', startIndex: 3, endIndex: 6, suffix: 'T' },
+            { word: "GIGS", prefix: 'G', startIndex: 4, endIndex: 5, suffix: 'S' }
+        ]
+    },
+    173: {
+        id: 173,
+        word: 'CATEGORY',
+        subwords: [
+            { word: "ELATED", prefix: 'EL', startIndex: 1, endIndex: 3, suffix: 'D' },
+            { word: "LEGS", prefix: 'L', startIndex: 3, endIndex: 4, suffix: 'S' },
+            { word: "VIGOR", prefix: 'VI', startIndex: 4, endIndex: 5, suffix: 'R' },
+            { word: "WORD", prefix: 'W', startIndex: 5, endIndex: 6, suffix: 'D' }
+        ]
+    },
+    174: {
+        id: 174,
+        word: 'ORGANIZE',
+        subwords: [
+            { word: "BARGAIN", prefix: 'BA', startIndex: 1, endIndex: 3, suffix: 'IN' },
+            { word: "MANE", prefix: 'M', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "SONIC", prefix: 'SO', startIndex: 4, endIndex: 5, suffix: 'C' },
+            { word: "FIZZ", prefix: 'F', startIndex: 5, endIndex: 6, suffix: 'Z' }
+        ]
+    },
+    175: {
+        id: 175,
+        word: 'RIDICULOUS',
+        subwords: [
+            { word: "WIDE", prefix: 'W', startIndex: 1, endIndex: 2, suffix: 'E' },
+            { word: "ENDING", prefix: 'EN', startIndex: 2, endIndex: 3, suffix: 'NG' },
+            { word: "MICE", prefix: 'M', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "ACUTE", prefix: 'A', startIndex: 4, endIndex: 5, suffix: 'TE' },
+            { word: "GULL", prefix: 'G', startIndex: 5, endIndex: 6, suffix: 'L' },
+            { word: "SLOT", prefix: 'S', startIndex: 6, endIndex: 7, suffix: 'T' },
+            { word: "MOUSE", prefix: 'M', startIndex: 7, endIndex: 8, suffix: 'SE' }
+        ]
+    },
+    176: {
+        id: 176,
+        word: 'INTERNATIONAL',
+        subwords: [
+            { word: "WINTERY", prefix: 'WI', startIndex: 1, endIndex: 4, suffix: 'Y' },
+            { word: "ITEM", prefix: 'I', startIndex: 2, endIndex: 3, suffix: 'M' },
+            { word: "ORNATE", prefix: 'O', startIndex: 4, endIndex: 7, suffix: 'E' },
+            { word: "SNAP", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'P' },
+            { word: "MOTIONS", prefix: 'MO', startIndex: 7, endIndex: 10, suffix: 'S' },
+            { word: "RIOT", prefix: 'R', startIndex: 8, endIndex: 9, suffix: 'T' },
+            { word: "SONAR", prefix: 'S', startIndex: 9, endIndex: 11, suffix: 'R' }
+        ]
+    },
+    177: {
+        id: 177,
+        word: 'EMERALD',
+        subwords: [
+            { word: "LIMES", prefix: 'LI', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "HERD", prefix: 'H', startIndex: 2, endIndex: 3, suffix: 'D' },
+            { word: "BRAG", prefix: 'B', startIndex: 3, endIndex: 4, suffix: 'G' },
+            { word: "WALK", prefix: 'W', startIndex: 4, endIndex: 5, suffix: 'K' }
+        ]
+    },
+    178: {
+        id: 178,
+        word: 'IGNITION',
+        subwords: [
+            { word: "SIGNS", prefix: 'SI', startIndex: 1, endIndex: 2, suffix: 'S' },
+            { word: "SNIP", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'P' },
+            { word: "KITE", prefix: 'K', startIndex: 3, endIndex: 4, suffix: 'E' },
+            { word: "NATION", prefix: 'NA', startIndex: 4, endIndex: 6, suffix: 'N' }
+        ]
+    },
+    179: {
+        id: 179,
+        word: 'ARTISTIC',
+        subwords: [
+            { word: "PARTISAN", prefix: 'PA', startIndex: 1, endIndex: 4, suffix: 'AN' },
+            { word: "UNTIL", prefix: 'UN', startIndex: 2, endIndex: 3, suffix: 'L' },
+            { word: "MUSTER", prefix: 'MU', startIndex: 4, endIndex: 5, suffix: 'ER' },
+            { word: "STINK", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'NK' }
+        ]
+    },
+    180: {
+        id: 180,
+        word: 'ESCAPE',
+        subwords: [
+            { word: "FISCAL", prefix: 'FI', startIndex: 1, endIndex: 3, suffix: 'L' },
+            { word: "GRAPH", prefix: 'GR', startIndex: 3, endIndex: 4, suffix: 'H' }
+        ]
+    },
+    181: {
+        id: 181,
+        word: 'MAGENTA',
+        subwords: [
+            { word: "PAGENT", prefix: 'P', startIndex: 1, endIndex: 4, suffix: 'T' },
+            { word: "EDGES", prefix: 'ED', startIndex: 2, endIndex: 3, suffix: 'S' },
+            { word: "ONTO", prefix: 'O', startIndex: 4, endIndex: 5, suffix: 'O' }
+        ]
+    },
+    182: {
+        id: 182,
+        word: 'COCONUT',
+        subwords: [
+            { word: "ROCK", prefix: 'R', startIndex: 1, endIndex: 2, suffix: 'K' },
+            { word: "SCONE", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'E' },
+            { word: "DONUT", prefix: 'D', startIndex: 3, endIndex: 5, suffix: 'T' }
+        ]
+    },
+    183: {
+        id: 183,
+        word: 'MANIPULATIVE',
+        subwords: [
+            { word: "PANTS", prefix: 'P', startIndex: 1, endIndex: 2, suffix: 'TS' },
+            { word: "SNIPPY", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'PY' },
+            { word: "SPUN", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'N' },
+            { word: "BULK", prefix: 'B', startIndex: 5, endIndex: 6, suffix: 'K' },
+            { word: "PLATE", prefix: 'P', startIndex: 6, endIndex: 8, suffix: 'E' },
+            { word: "NATIVE", prefix: 'N', startIndex: 7, endIndex: 10, suffix: 'E' },
+            { word: "ATTIC", prefix: 'AT', startIndex: 8, endIndex: 9, suffix: 'C' }
+        ]
+    },
+    184: {
+        id: 184,
+        word: 'EXPERIMENT',
+        subwords: [
+            { word: "EXPERT", prefix: 'E', startIndex: 1, endIndex: 4, suffix: 'T' },
+            { word: "SPED", prefix: 'S', startIndex: 2, endIndex: 3, suffix: 'D' },
+            { word: "PERIL", prefix: 'P', startIndex: 3, endIndex: 5, suffix: 'L' },
+            { word: "SHRIMP", prefix: 'SH', startIndex: 4, endIndex: 6, suffix: 'P' },
+            { word: "CEMENT", prefix: 'CE', startIndex: 6, endIndex: 8, suffix: 'T' }
+        ]
+    },
+    185: {
+        id: 185,
+        word: 'COGNITION',
+        subwords: [
+            { word: "FOGGY", prefix: 'F', startIndex: 1, endIndex: 2, suffix: 'GY' },
+            { word: "IGNITE", prefix: 'I', startIndex: 2, endIndex: 5, suffix: 'E' },
+            { word: "KNIT", prefix: 'K', startIndex: 3, endIndex: 4, suffix: 'T' },
+            { word: "TUITION", prefix: 'TU', startIndex: 4, endIndex: 7, suffix: 'N' },
+            { word: "STING", prefix: 'S', startIndex: 5, endIndex: 6, suffix: 'NG' }
+        ]
+    },
+    186: {
+        id: 186,
+        word: 'FRAGMENT',
+        subwords: [
+            { word: "BRAGS", prefix: 'B', startIndex: 1, endIndex: 3, suffix: 'S' },
+            { word: "MAGMA", prefix: 'MA', startIndex: 3, endIndex: 4, suffix: 'A' },
+            { word: "GAMES", prefix: 'GA', startIndex: 4, endIndex: 5, suffix: 'S' },
+            { word: "BENCH", prefix: 'B', startIndex: 5, endIndex: 6, suffix: 'CH' }
+        ]
+    },
+    187: {
+        id: 187,
+        word: 'EMBODY',
+        subwords: [
+            { word: "COMBO", prefix: 'CO', startIndex: 1, endIndex: 2, suffix: 'O' },
+            { word: "ABOVE", prefix: 'A', startIndex: 2, endIndex: 3, suffix: 'VE' },
+            { word: "NODE", prefix: 'N', startIndex: 3, endIndex: 4, suffix: 'E' }
+        ]
+    },
+    188: {
+        id: 188,
+        word: 'ANIMATION',
+        subwords: [
+            { word: "UNIT", prefix: 'U', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "CLIMATE", prefix: 'CL', startIndex: 2, endIndex: 5, suffix: 'E' },
+            { word: "SMACK", prefix: 'S', startIndex: 3, endIndex: 4, suffix: 'CK' },
+            { word: "RATION", prefix: 'RA', startIndex: 5, endIndex: 7, suffix: 'N' }
+        ]
+    },
+    189: {
+        id: 189,
+        word: 'STRETCH',
+        subwords: [
+            { word: "STREAK", prefix: 'S', startIndex: 1, endIndex: 3, suffix: 'AK' },
+            { word: "MEETS", prefix: 'ME', startIndex: 3, endIndex: 4, suffix: 'S' },
+            { word: "ITCH", prefix: 'I', startIndex: 4, endIndex: 5, suffix: 'H' }
+        ]
+    },
+    190: {
+        id: 190,
+        word: 'MONITOR',
+        subwords: [
+            { word: "PHONICS", prefix: 'PH', startIndex: 1, endIndex: 3, suffix: 'CS' },
+            { word: "SNITCH", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'CH' },
+            { word: "STOP", prefix: 'S', startIndex: 4, endIndex: 5, suffix: 'P' }
+        ]
+    },
+    191: {
+        id: 191,
+        word: 'CAFFEINE',
+        subwords: [
+            { word: "RAFT", prefix: 'R', startIndex: 1, endIndex: 2, suffix: 'T' },
+            { word: "COFFEE", prefix: 'CO', startIndex: 2, endIndex: 4, suffix: 'E' },
+            { word: "REIGN", prefix: 'R', startIndex: 4, endIndex: 5, suffix: 'GN' },
+            { word: "MINT", prefix: 'M', startIndex: 5, endIndex: 6, suffix: 'T' }
+        ]
+    },
+    192: {
+        id: 192,
+        word: 'SKYLIGHT',
+        subwords: [
+            { word: "SKYLINE", prefix: 'S', startIndex: 1, endIndex: 4, suffix: 'NE' },
+            { word: "BYLAW", prefix: 'B', startIndex: 2, endIndex: 3, suffix: 'AW' },
+            { word: "THIGHS", prefix: 'TH', startIndex: 4, endIndex: 6, suffix: 'S' }
+        ]
+    },
+    193: {
+        id: 193,
+        word: 'INVASIVE',
+        subwords: [
+            { word: "INVADE", prefix: 'I', startIndex: 1, endIndex: 3, suffix: 'DE' },
+            { word: "PAST", prefix: 'P', startIndex: 3, endIndex: 4, suffix: 'T' },
+            { word: "BASIN", prefix: 'BA', startIndex: 4, endIndex: 5, suffix: 'N' },
+            { word: "LIVER", prefix: 'L', startIndex: 5, endIndex: 6, suffix: 'ER' }
+        ]
+    }
+};
+
+
+        function getLevelById(levelId) {
+            return allLevels[levelId] || null;
+        }
+
+        // For now, use the hardcoded level, but this would be replaced with:
+        const dailyLevelId = getDailyLevelId();
+        const level = getLevelById(dailyLevelId);
+        
+        // const level = {
+        //     id: '182',
+        //     word: 'COCONUT',
+        //     subwords: [
+        //         { word: "STOCKS", prefix: 'ST', startIndex: 1, endIndex: 2, suffix: 'KS' },
+        //         { word: "SCONE", prefix: 'S', startIndex: 2, endIndex: 4, suffix: 'E' },
+        //         { word: "DONUT", prefix: 'D', startIndex: 3, endIndex: 5, suffix: 'T' }
+        //     ]
+        // };
 
         // ============================================
         // CONSTANTS
@@ -2266,9 +4512,32 @@
         // INITIALIZATION
         // ============================================
 
+        function calculateInitialZoom(wordLength) {
+            // Base zoom levels for different word lengths
+            // Short words (4-6 letters): 1.0x (100%)
+            // Medium words (7-9 letters): 0.8x (80%)
+            // Long words (10+ letters): 0.6x (60%)
+            
+            if (wordLength <= 6) {
+                return 1.0;
+            } else if (wordLength <= 9) {
+                return 0.8;
+            } else if (wordLength <= 12) {
+                return 0.6;
+            } else {
+                return 0.5; // Very long words
+            }
+        }
+
         function init() {
             gameState.level = level;
             loadProgress();
+            
+            // Set initial zoom based on word length
+            const initialZoom = calculateInitialZoom(level.word.length);
+            gameState.scale = initialZoom;
+            gameState.lastScale = initialZoom;
+            
             renderGameBoard();
             renderKeyboard();
             
@@ -2276,7 +4545,11 @@
 
             const wrapper = document.querySelector('.game-board-wrapper');
             const scrollContainer = document.getElementById('scrollContainer');
+            const gameBoard = document.getElementById('gameBoard');
+            
+            // Apply initial zoom
             wrapper.style.setProperty('--zoom-scale', gameState.scale);
+            gameBoard.style.transform = `scale(${gameState.scale})`;
             
             requestAnimationFrame(() => {
                 const scrollHeight = scrollContainer.scrollHeight;
