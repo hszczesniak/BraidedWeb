@@ -44,6 +44,7 @@
         html {
             width: 100%;
             height: 100%;
+            height: 100dvh;
             overflow: hidden;
             position: fixed;
             overscroll-behavior: none;
@@ -56,6 +57,7 @@
         body {
             width: 100%;
             height: 100%;
+            height: 100dvh;
             overflow: hidden;
             position: fixed;
             overscroll-behavior: none;
@@ -81,6 +83,7 @@
         .game-container {
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -497,10 +500,12 @@
            ============================================ */
 
         .keyboard {
-            padding: 20px;
-            padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            padding: 10px 4px;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
             background: transparent;
             transform: translateY(-20px);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .keyboard.hidden {
@@ -510,22 +515,23 @@
         .keyboard-row {
             display: flex;
             justify-content: center;
-            gap: 5px;
-            margin-bottom: 10px;
+            gap: clamp(2px, 1vw, 5px);
+            margin-bottom: clamp(4px, 1.5vw, 10px);
         }
 
         .key {
-            width: 30px;
-            height: 40px;
+            width: clamp(22px, 8.5vw, 30px);
+            height: clamp(34px, 10vw, 40px);
             border: none;
             background: rgba(209, 89, 161, 0.2);
             border-radius: 5px;
-            font-size: 16px;
+            font-size: clamp(12px, 3.5vw, 16px);
             font-family: 'Bradley Hand', cursive, sans-serif;
             cursor: pointer;
             transition: all 0.2s;
             outline: none;
             color: #000;
+            flex-shrink: 0;
         }
 
         .simple-theme .key {
