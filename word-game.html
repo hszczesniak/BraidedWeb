@@ -4524,17 +4524,17 @@ const allLevels = {
             if (gameState.isPlayingWinAnimation) return;
             
             if (e.key >= 'a' && e.key <= 'z') {
-                logEvent(analytics, "key_pressed_web", {});
+                if (window.logEvent && window.analytics) logEvent(analytics, "key_pressed_web", {});
                 handleLetterInput(e.key.toUpperCase());
             } else if (e.key === 'Backspace') {
-                logEvent(analytics, "key_pressed_web", {});
+                if (window.logEvent && window.analytics) logEvent(analytics, "key_pressed_web", {});
                 handleDelete();
             } else if (e.key === '+' || e.key === '=') {
-                logEvent(analytics, "zoom_in_pressed_web", {});
+                if (window.logEvent && window.analytics) logEvent(analytics, "zoom_in_pressed_web", {});
                 e.preventDefault();
                 applyZoom(0.15);
             } else if (e.key === '-' || e.key === '_') {
-                logEvent(analytics, "zoom_out_pressed_web", {});
+                if (window.logEvent && window.analytics) logEvent(analytics, "zoom_out_pressed_web", {});
                 e.preventDefault();
                 applyZoom(-0.15);
             }
