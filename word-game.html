@@ -3725,6 +3725,8 @@ const allLevels = {
                     const elapsedTime = (new Date() - gameState.startTime) / 1000;
                     localStorage.setItem(`level_${level.id}_completed`, 'true');
                     gameState.selectedCircleIndex = null;
+                    submitStats(elapsedTime);
+                    logEvent('won_level', {});
                     
                     resetZoomAndScroll();
                     
@@ -3733,7 +3735,6 @@ const allLevels = {
                     gameState.gameCompleted = true;
                     gameState.completionTime = elapsedTime;
                     saveProgress();
-                    submitStats(elapsedTime);
                     playWinAnimation(elapsedTime);
                 }
             }
@@ -3873,11 +3874,11 @@ const allLevels = {
             try {
                 await addDoc(collection(db, "levelFeedback"), {
                     levelID: level.id,
-                    type: isDailyLevel(level.id) ? "daily" : "campaign",
+                    type: "daily",
                     word: level.word,
-                    hintsUsed: hintedLetters.length,
+                    hintsUsed: gameState.hintedLetters.length,
                     timeElapsed: elapsedTime,
-                    completedCampaignLevels: getCompletedCampaignLevelsCount(),
+                    completedCampaignLevels: 0,
                     completedDailyLevels: getCompletedDailyLevelsCount(),
                     timestamp: serverTimestamp(),
                     deviceID: getOrCreateDeviceID(),
@@ -3887,6 +3888,16 @@ const allLevels = {
             } catch (error) {
                 console.error("Error submitting feedback:", error);
             }
+        }
+
+        function getCompletedLevelsCount(type) {
+            let count = 0;
+            for (const [dateOrId, levelId] of Object.entries(dailyLevelMapping)) {
+                if (type === "daily" && localStorage.getItem(`level_${levelId}_completed`)) {
+                    count++;
+                }
+            }
+            return count;
         }
 
         function getOrCreateDeviceID() {
