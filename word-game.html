@@ -3890,10 +3890,10 @@ const allLevels = {
             }
         }
 
-        function getCompletedLevelsCount(type) {
+        function getCompletedDailyLevelsCount() {
             let count = 0;
             for (const [dateOrId, levelId] of Object.entries(dailyLevelMapping)) {
-                if (type === "daily" && localStorage.getItem(`level_${levelId}_completed`)) {
+                if (localStorage.getItem(`level_${levelId}_completed`)) {
                     count++;
                 }
             }
