@@ -1017,6 +1017,7 @@
             <div class="button-group top-right">
                 <button class="icon-button" id="themeButton">🎨</button>
                 <button class="icon-button" id="infoButton">ℹ️</button>
+                <button class="icon-button" id="downloadButton">⬇️</button>
             </div>
             <div class="button-group bottom-right">
                 <button class="icon-button" id="clearButton">🗑️</button>
@@ -1140,14 +1141,20 @@
             <div class="win-app-promo">
                 <h3>WANT MORE PUZZLES?</h3>
                 <p>Download the Braided app for 90 free campaign levels!</p>
-                <a href="https://apps.apple.com/us/app/braided/id6755253476" class="win-app-link" target="_blank">DOWNLOAD NOW</a>
+                <a 
+                    id="winDownloadButton"
+                    href="https://apps.apple.com/us/app/braided/id6755253476" 
+                    class="win-app-link" 
+                    target="_blank">
+                    DOWNLOAD NOW
+                </a>
             </div>
         </div>
     </div>
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+        import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -1166,6 +1173,9 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+
+         window.analytics = analytics;
+        window.logEvent = logEvent;
      </script>
     <script>
         // ============================================
@@ -1191,6 +1201,10 @@
             gameCompleted: false,
             completionTime: null
         };
+
+        document.getElementById("winDownloadButton")?.addEventListener("click", function () {
+            logEvent(analytics, "download_app_pressed_web", {});
+        });
 
         // ============================================
         // LEVEL DATA
@@ -3946,6 +3960,7 @@ const allLevels = {
                 resultsButton.title = 'See Results';
                 resultsButton.style.fontSize = '24px';
                 resultsButton.addEventListener('click', () => {
+                    logEvent(analytics, "see_results_pressed_web", {});
                     showWinPageAgain();
                 });
                 document.querySelector('.top-right').appendChild(resultsButton);
@@ -4271,6 +4286,7 @@ const allLevels = {
                     key.className = 'key';
                     key.textContent = letter;
                     key.addEventListener('click', function() {
+                        logEvent(analytics, "key_pressed_web", {});
                         handleLetterInput(letter);
                         this.classList.add('tap-feedback');
                         setTimeout(() => {
@@ -4285,6 +4301,7 @@ const allLevels = {
                     deleteKey.className = 'key delete';
                     deleteKey.textContent = '⌫';
                     deleteKey.addEventListener('click', function() {
+                        logEvent(analytics, "key_pressed_web", {});
                         handleDelete();
                         this.classList.add('tap-feedback');
                         setTimeout(() => {
@@ -4361,11 +4378,19 @@ const allLevels = {
         // EVENT LISTENERS
         // ============================================
 
+        document.getElementById('downloadButton').addEventListener('click', () => {
+            logEvent(analytics, "download_app_pressed_web", {});
+            
+            window.open("https://apps.apple.com/us/app/braided/id6755253476", "_blank");
+        });
+
         document.getElementById('clearButton').addEventListener('click', () => {
+            logEvent(analytics, "clear_pressed_web", {});
             showModal('clearModal');
         });
 
         document.getElementById('hintButton').addEventListener('click', () => {
+            logEvent(analytics, "hint_pressed_web", {});
             const message = gameState.selectedCircleIndex !== null 
                 ? 'Are you sure you want to use a hint for the selected letter?'
                 : 'Are you sure you want to use a hint?';
@@ -4375,8 +4400,10 @@ const allLevels = {
 
         document.getElementById('spellCheckButton').addEventListener('click', () => {
             if (!gameState.spellCheckEnabled) {
+                logEvent(analytics, "spellcheck_on_pressed_web", {});
                 showModal('spellCheckModal');
             } else {
+                logEvent(analytics, "spellcheck_off_pressed_web", {});
                 gameState.spellCheckEnabled = false;
                 document.getElementById('spellCheckButton').classList.remove('active');
                 Object.keys(subwordValidationCache).forEach(key => {
@@ -4392,8 +4419,10 @@ const allLevels = {
                 localStorage.setItem('theme', gameState.theme);
                 
                 if (gameState.theme === 'Simple') {
+                    logEvent(analytics, "simple_theme_pressed_web", {});
                     document.body.classList.add('simple-theme');
                 } else {
+                    logEvent(analytics, "default_theme_pressed_web", {});
                     document.body.classList.remove('simple-theme');
                 }
                 
@@ -4427,14 +4456,17 @@ const allLevels = {
         }
 
         document.getElementById('zoomInButton').addEventListener('click', () => {
+            logEvent(analytics, "zoom_in_pressed_web", {});
             applyZoom(0.15);
         });
 
         document.getElementById('zoomOutButton').addEventListener('click', () => {
+            logEvent(analytics, "zoom_out_pressed_web", {});
             applyZoom(-0.15);
         });
 
         document.getElementById('infoButton').addEventListener('click', () => {
+            logEvent(analytics, "rules_pressed_web", {});
             if (!gameState.isPlayingWinAnimation) {
                 showModal('rulesModal');
             }
@@ -4444,13 +4476,17 @@ const allLevels = {
             if (gameState.isPlayingWinAnimation) return;
             
             if (e.key >= 'a' && e.key <= 'z') {
+                logEvent(analytics, "key_pressed_web", {});
                 handleLetterInput(e.key.toUpperCase());
             } else if (e.key === 'Backspace') {
+                logEvent(analytics, "key_pressed_web", {});
                 handleDelete();
             } else if (e.key === '+' || e.key === '=') {
+                logEvent(analytics, "zoom_in_pressed_web", {});
                 e.preventDefault();
                 applyZoom(0.15);
             } else if (e.key === '-' || e.key === '_') {
+                logEvent(analytics, "zoom_out_pressed_web", {});
                 e.preventDefault();
                 applyZoom(-0.15);
             }
