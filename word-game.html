@@ -3872,7 +3872,7 @@ const allLevels = {
 
         async function submitStats(elapsedTime) {
             try {
-                await addDoc(collection(db, "levelFeedback"), {
+                await window.addDoc(collection(db, "levelFeedback"), {
                     levelID: level.id,
                     type: "daily",
                     word: level.word,
@@ -4334,7 +4334,7 @@ const allLevels = {
                     key.className = 'key';
                     key.textContent = letter;
                     key.addEventListener('click', function() {
-                        logEvent(analytics, "key_pressed_web", {});
+                        window.logEvent(analytics, "key_pressed_web", {});
                         handleLetterInput(letter);
                         this.classList.add('tap-feedback');
                         setTimeout(() => {
