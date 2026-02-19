@@ -3726,7 +3726,7 @@ const allLevels = {
                     localStorage.setItem(`level_${level.id}_completed`, 'true');
                     gameState.selectedCircleIndex = null;
                     submitStats(elapsedTime);
-                    logEvent('won_level', {});
+                    window.logEvent(window.analytics, 'won_level', {});
                     
                     resetZoomAndScroll();
                     
